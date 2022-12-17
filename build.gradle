@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'net.starly.core'
+version '1.0'
+
+repositories {
+    mavenCentral()
+    maven { url = "http://feather-s.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
+}
+
+dependencies {
+    //JAVA DEPENDENCIES
+    compileOnly "org.jetbrains:annotations:23.0.0"
+
+    //BUKKIT DEPENDENCIES
+    compileOnly "org.spigotmc:spigot-api:R0.1:1.19.2"
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

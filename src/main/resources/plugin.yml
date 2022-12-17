@@ -1,0 +1,8 @@
+name: ST-Core
+main: net.starly.core.StarlyCore
+author: Starly Store
+
+version: 1.0
+api-version: 1.13
+
+commands:
