@@ -41,7 +41,6 @@ public class GUIBuilder {
         return owner;
     }
 
-
     public void setItem(int slot, Material material) {
         setItem(slot, material, 1);
     }

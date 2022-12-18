@@ -1,11 +1,16 @@
 package net.starly.core.builder;
 
+import net.starly.core.StarlyCore;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +48,13 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder addLoreLine(String line) {
+        List<String> lore = new ArrayList<>(itemMeta.getLore());
+        lore.add(ChatColor.translateAlternateColorCodes('&', line));
+        itemMeta.setLore(lore);
+        return this;
+    }
+
     public ItemBuilder setCustomModelData(int customModelData) {
         itemMeta.setCustomModelData(customModelData);
         return this;
@@ -60,6 +72,26 @@ public class ItemBuilder {
 
     public ItemBuilder addEnchantment(Enchantment enchantment, Integer level) {
         itemMeta.addEnchant(enchantment, level, true);
+        return this;
+    }
+
+    public ItemBuilder removeEnchantment(Enchantment enchantment) {
+        itemMeta.removeEnchant(enchantment);
+        return this;
+    }
+
+    public ItemBuilder setDurability(short durability) {
+        itemStack.setDurability(durability);
+        return this;
+    }
+
+    public ItemBuilder setUnbreakable(boolean unbreakable) {
+        itemMeta.setUnbreakable(unbreakable);
+        return this;
+    }
+
+    public ItemBuilder addNBT(String key, String value, PersistentDataType type) {
+        itemMeta.getPersistentDataContainer().set(new NamespacedKey(JavaPlugin.getProvidingPlugin(StarlyCore.class), key), type, value);
         return this;
     }
 
