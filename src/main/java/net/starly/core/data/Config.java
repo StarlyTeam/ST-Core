@@ -2,6 +2,7 @@ package net.starly.core.data;
 
 import net.starly.core.data.impl.DefaultConfigImpl;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -74,6 +75,28 @@ public class Config implements DefaultConfigImpl {
 
         try {
             getConfig().save(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isFileExist() {
+        return file == null ? false : file.exists();
+    }
+
+    public void remove() {
+        if (file != null) {
+            file.delete();
+            file = null;
+            config = null;
+        }
+    }
+
+    public void reloadConfig() {
+        saveConfig();
+
+        try {
+            config.load(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -362,5 +385,28 @@ public class Config implements DefaultConfigImpl {
         }
 
         return inventory;
+    }
+
+    public void setLocation(String path, Location location) {
+        ConfigurationSection section = getConfig().createSection(path);
+
+        section.set("world", location.getWorld().getName());
+        section.set("x", location.getX());
+        section.set("y", location.getY());
+        section.set("z", location.getZ());
+        section.set("yaw", location.getYaw());
+        section.set("pitch", location.getPitch());
+        saveConfig();
+    }
+
+    public Location getLocation(String path) {
+        return new Location(
+                Bukkit.getWorld(getConfig().getString(path + ".world")),
+                getConfig().getDouble(path + ".x"),
+                getConfig().getDouble(path + ".y"),
+                getConfig().getDouble(path + ".z"),
+                (float) getConfig().getDouble(path + ".yaw"),
+                (float) getConfig().getDouble(path + ".pitch")
+        );
     }
 }
