@@ -3,11 +3,12 @@ plugins {
 }
 
 group 'net.starly.core'
-version '1.1'
+version '1.2'
 
 repositories {
     mavenCentral()
     maven { url = "http://feather-s.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {

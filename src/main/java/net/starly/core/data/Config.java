@@ -43,10 +43,15 @@ public class Config implements DefaultConfigImpl {
 
                 try {
                     file.createNewFile();
-                    config.load(file);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            try {
+                config.load(file);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
