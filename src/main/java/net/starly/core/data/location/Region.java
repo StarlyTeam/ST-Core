@@ -64,4 +64,8 @@ public class Region {
         return contains(player.getLocation()) ||
                 contains(player.getLocation().add(0, 1, 0));
     }
+
+    public long getSize() {
+        return (long) (maxX - minX + 1) * (maxY - minY + 1) * (maxZ - minZ + 1);
+    }
 }
