@@ -27,8 +27,8 @@ public class Config implements DefaultConfigImpl {
     private File file;
     private FileConfiguration config = new YamlConfiguration();
 
-    public Config(String name) {
-        this.plugin = JavaPlugin.getProvidingPlugin(getClass());
+    public Config(String name, JavaPlugin plugin) {
+        this.plugin = plugin;
         this.name = name + ".yml";
         this.file = null;
     }
@@ -37,8 +37,8 @@ public class Config implements DefaultConfigImpl {
         if (file == null) {
             file = new File(plugin.getDataFolder(), name);
             if (!file.exists()) {
-                if (!plugin.getDataFolder().exists()) {
-                    plugin.getDataFolder().mkdir();
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdir();
                 }
 
                 try {
@@ -58,8 +58,10 @@ public class Config implements DefaultConfigImpl {
 
     public void loadDefaultPluginConfig() {
         if (file == null) {
-            plugin.saveResource(name, false);
             file = new File(plugin.getDataFolder(), name);
+
+            if (!file.exists())
+                plugin.saveResource(name, false);
 
             try {
                 config.load(file);
