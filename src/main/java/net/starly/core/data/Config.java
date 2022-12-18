@@ -89,7 +89,12 @@ public class Config implements DefaultConfigImpl {
         return file == null ? false : file.exists();
     }
 
+    @Deprecated
     public void remove() {
+        delete();
+    }
+
+    public void delete() {
         if (file != null) {
             file.delete();
             file = null;
