@@ -69,6 +69,14 @@ public class Region {
         return (long) (maxX - minX + 1) * (maxY - minY + 1) * (maxZ - minZ + 1);
     }
 
+    public Location getCenter() {
+        return new Location(pos1.getWorld(), (minX + maxX) / 2.0, (minY + maxY) / 2.0, (minZ + maxZ) / 2.0);
+    }
+
+    public void teleport(Player player) {
+        player.teleport(getCenter());
+    }
+
     public int getMinX() {
         return minX;
     }
