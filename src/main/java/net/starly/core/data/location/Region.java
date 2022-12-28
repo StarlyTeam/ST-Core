@@ -68,4 +68,42 @@ public class Region {
     public long getSize() {
         return (long) (maxX - minX + 1) * (maxY - minY + 1) * (maxZ - minZ + 1);
     }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public int getMinZ() {
+        return minZ;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
+
+    public int getMaxZ() {
+        return maxZ;
+    }
+
+    @Override
+    public String toString() {
+        return "Region{" +
+                "pos1=" + pos1 +
+                ", pos2=" + pos2 +
+                ", minX=" + minX +
+                ", minY=" + minY +
+                ", minZ=" + minZ +
+                ", maxX=" + maxX +
+                ", maxY=" + maxY +
+                ", maxZ=" + maxZ +
+                '}';
+    }
 }
