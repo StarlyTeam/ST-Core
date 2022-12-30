@@ -2,61 +2,60 @@ package net.starly.core.data;
 
 import org.bukkit.ChatColor;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated Use {@link MessageData} instead.
+ */
+@Deprecated
 public class MessageConfig {
-    private final Object clazz;
-    private final Field field;
+    private Config config;
+    private String prefix;
     private final String prefixPath;
 
-    public MessageConfig(Object clazz, String variableName) {
-        Field field_t = null;
-        try {
-            field_t = clazz.getClass().getField(variableName);
-            field_t.setAccessible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        if (field_t == null) throw new NullPointerException("Field(" + variableName + ") is null");
-        else if (field_t.getType() != Config.class)
-            throw new IllegalArgumentException("변수 " + variableName + " 는 Config 객체가 아닙니다.");
-
-        this.clazz = clazz;
-        this.field = field_t;
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
+    public MessageConfig(Config config) {
+        this.config = config;
+        this.prefix = "";
         this.prefixPath = null;
     }
 
-    public MessageConfig(Object clazz, String variableName, String prefixPath) {
-        Field field_t = null;
-        try {
-            field_t = clazz.getClass().getField(variableName);
-            field_t.setAccessible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        if (field_t == null) throw new NullPointerException("Field(" + variableName + ") is null");
-        else if (field_t.getType() != Config.class)
-            throw new IllegalArgumentException("변수 " + variableName + " 는 Config 객체가 아닙니다.");
-
-        this.clazz = clazz;
-        this.field = field_t;
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
+    public MessageConfig(Config config, String prefixPath) {
+        this.config = config;
+        this.prefix = config.getString(prefixPath);
         this.prefixPath = prefixPath;
     }
 
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
     public String color(String msg) {
         return color(msg, '&');
     }
 
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
     public String color(String msg, char altChar) {
-        return ChatColor.translateAlternateColorCodes(altChar, getPrefix() + msg);
+        return ChatColor.translateAlternateColorCodes(altChar, prefix + msg);
     }
 
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
     public String replace(String message, Map<String, String> map) {
         Map<String, String> newMap = new HashMap<>(map);
         for (Map.Entry<String, String> entry : newMap.entrySet()) {
@@ -66,42 +65,83 @@ public class MessageConfig {
         return message;
     }
 
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
     public String getMessage(String path) {
-        return color(getConfig().getString(path));
+        return color(config.getString(path));
     }
 
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
     public String getMessage(String path, Map<String, String> replacements) {
-        return color(replace(getConfig().getString(path), replacements));
+        return color(replace(config.getString(path), replacements));
     }
 
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
     public List<String> getMessages(String path) {
         List<String> list = new ArrayList<>();
-        for (String msg : getConfig().getStringList(path)) {
+        for (String msg : config.getStringList(path)) {
             list.add(color(msg));
         }
 
         return list;
     }
 
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
     public List<String> getMessages(String path, Map<String, String> replacements) {
         List<String> messages = new ArrayList<>();
-        for (String message : getConfig().getStringList(path)) {
+        for (String message : config.getStringList(path)) {
             messages.add(color(replace(message, replacements)));
         }
 
         return messages;
     }
 
-    public String getPrefix() {
-        return prefixPath == null ? "" : getConfig().getString(prefixPath);
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
+    public Config getConfig() {
+        return config;
     }
 
-    public Config getConfig() {
-        try {
-            return (Config) field.get(clazz);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
+    public void setConfig(Config config) {
+        this.config = config;
+        reloadConfig();
+    }
+
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
+     * @deprecated Use {@link MessageData} instead.
+     */
+    @Deprecated
+    public void reloadConfig() {
+        config.reloadConfig();
+
+        if (prefixPath != null) {
+            String newPrefix = config.getString(prefixPath);
+            prefix = newPrefix != null ? newPrefix : "";
         }
     }
 }
