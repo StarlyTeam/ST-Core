@@ -22,7 +22,7 @@ public class Main {
 }
 ```
 
-### MessageConfig
+### MessageConfig (Deprecated)
 * 간편하게 MessageConfig를 제작합니다.
 ```java
 // net.starly.core.data.MessageConfig
@@ -37,6 +37,27 @@ public class Main {
         player.sendMessage(messageConfig.getMessage("errorMessage.wrong_command"));
         player.sendMessage(messageConfig.getMessage("errorMessage.wrong_command",
                 Map.of("{player}", player.getName())));
+    }
+}
+```
+
+### MessageData
+* 간편하게 MessageData를 제작합니다. (MessageData는 MessageConfig를 대체합니다)
+* Field를 사용하여 Config를 불러오므로, 리로드를 별도로 하지 않아도 되어 더욱 편리합니다.
+```java
+// net.starly.core.data.MessageData
+
+public class Main {
+    public Config config;
+    
+    public static void main() {
+        config = new Config("message", this);
+        config.loadDefaultConfig();
+        
+        config.setString("test", "testValue!");
+        
+        MessageData messageData = new MessageData(this, "config");
+        System.out.println(messageData.getMessage("test"));
     }
 }
 ```
