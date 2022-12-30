@@ -2,7 +2,7 @@ name: ST-Core
 main: net.starly.core.StarlyCore
 author: Starly Team
 
-version: 1.3.2
+version: 1.3.3
 api-version: 1.16
 
 commands:
