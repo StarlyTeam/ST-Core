@@ -18,6 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -30,56 +31,54 @@ public class Config implements DefaultConfigImpl {
     public Config(String name, JavaPlugin plugin) {
         this.plugin = plugin;
         this.name = name + ".yml";
-        this.file = null;
+        loadFile();
+    }
+
+    public void loadFile() {
+        file = new File(plugin.getDataFolder(), name);
     }
 
     public void loadDefaultConfig() {
-        if (file == null) {
-            file = new File(plugin.getDataFolder(), name);
-            if (!file.exists()) {
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdir();
-                }
-
+        if (!isFileExist()) {
+            InputStream is = plugin.getResource(name);
+            if (is != null) {
+                plugin.saveResource(name, false);
+            } else {
                 try {
                     file.createNewFile();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ignored) {
                 }
             }
+        }
 
-            try {
-                config.load(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            config.load(file);
+        } catch (Exception ignored) {
         }
     }
 
+    /**
+     * @deprecated Use {@link Config#loadDefaultConfig} instead.
+     */
+    @Deprecated
     public void loadDefaultPluginConfig() {
-        if (file == null) {
-            file = new File(plugin.getDataFolder(), name);
+        if (!isFileExist()) {
+            plugin.saveResource(name, false);
+        }
 
-            if (!file.exists())
-                plugin.saveResource(name, false);
-
-            try {
-                config.load(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            config.load(file);
+        } catch (Exception ignored) {
         }
     }
 
     public FileConfiguration getConfig() {
-        if (file == null) loadDefaultConfig();
+        if (config == null) loadDefaultConfig();
 
         return config;
     }
 
     public void saveConfig() {
-        if (file == null) loadDefaultConfig();
-
         try {
             getConfig().save(file);
         } catch (Exception e) {
@@ -88,7 +87,7 @@ public class Config implements DefaultConfigImpl {
     }
 
     public boolean isFileExist() {
-        return file == null ? false : file.exists();
+        return file.exists();
     }
 
     @Deprecated
@@ -97,11 +96,9 @@ public class Config implements DefaultConfigImpl {
     }
 
     public void delete() {
-        if (file != null) {
-            file.delete();
-            file = null;
-            config = null;
-        }
+        file.delete();
+        file = null;
+        config = null;
     }
 
     public void reloadConfig() {
@@ -112,6 +109,18 @@ public class Config implements DefaultConfigImpl {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void createSection(String path) {
+        getConfig().createSection(path);
+    }
+
+    public ConfigSection getSection(String path) {
+        return new ConfigSection(this, path);
+    }
+
+    public ConfigurationSection getConfigurationSection(String path) {
+        return getConfig().getConfigurationSection(path);
     }
 
     @Override
@@ -400,7 +409,8 @@ public class Config implements DefaultConfigImpl {
     }
 
     public void setLocation(String path, Location location) {
-        ConfigurationSection section = getConfig().createSection(path);
+        getConfig().createSection(path);
+        ConfigurationSection section = getConfig().getConfigurationSection(path);
 
         section.set("world", location.getWorld().getName());
         section.set("x", location.getX());
@@ -412,13 +422,15 @@ public class Config implements DefaultConfigImpl {
     }
 
     public Location getLocation(String path) {
+        ConfigurationSection section = getConfig().getConfigurationSection(path);
+
         return new Location(
-                Bukkit.getWorld(getConfig().getString(path + ".world")),
-                getConfig().getDouble(path + ".x"),
-                getConfig().getDouble(path + ".y"),
-                getConfig().getDouble(path + ".z"),
-                (float) getConfig().getDouble(path + ".yaw"),
-                (float) getConfig().getDouble(path + ".pitch")
+                Bukkit.getWorld(section.getString("world")),
+                section.getDouble("x"),
+                section.getDouble("y"),
+                section.getDouble("z"),
+                (float) section.getDouble("yaw"),
+                (float) section.getDouble("pitch")
         );
     }
 }
