@@ -27,6 +27,7 @@ public class Config implements DefaultConfigImpl {
     private final String name;
     private File file;
     private FileConfiguration config = new YamlConfiguration();
+    private boolean isLodaded = false;
 
     public Config(String name, JavaPlugin plugin) {
         this.plugin = plugin;
@@ -55,6 +56,8 @@ public class Config implements DefaultConfigImpl {
             config.load(file);
         } catch (Exception ignored) {
         }
+
+        isLodaded = true;
     }
 
     /**
@@ -70,10 +73,12 @@ public class Config implements DefaultConfigImpl {
             config.load(file);
         } catch (Exception ignored) {
         }
+
+        isLodaded = true;
     }
 
     public FileConfiguration getConfig() {
-        if (config == null) loadDefaultConfig();
+        if (!isLodaded) loadDefaultConfig();
 
         return config;
     }

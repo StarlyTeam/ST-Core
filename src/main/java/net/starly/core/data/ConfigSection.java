@@ -76,29 +76,29 @@ public class ConfigSection implements DefaultConfigImpl {
 
     @Override
     public void setString(String path, String value) {
-        getConfig().setString(path, value);
+        getConfig().setString(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public String getString(String path) {
-        return getConfig().getString(path);
+        return getConfig().getString(this.path + "." + path);
     }
 
     @Override
     public void setBoolean(String path, boolean value) {
-        getConfig().setBoolean(path, value);
+        getConfig().setBoolean(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public boolean getBoolean(String path) {
-        return getConfig().getBoolean(path);
+        return getConfig().getBoolean(this.path + "." + path);
     }
 
     @Override
     public void setChar(String path, char value) {
-        getConfig().setChar(path, value);
+        getConfig().setChar(this.path + "." + path, value);
         saveConfig();
     }
 
@@ -109,127 +109,127 @@ public class ConfigSection implements DefaultConfigImpl {
 
     @Override
     public void setByte(String path, byte value) {
-        getConfig().setByte(path, value);
+        getConfig().setByte(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public byte getByte(String path) {
-        return (byte) getConfig().getInt(path);
+        return (byte) getConfig().getInt(this.path + "." + path);
     }
 
     @Override
     public void setShort(String path, short value) {
-        getConfig().setShort(path, value);
+        getConfig().setShort(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public short getShort(String path) {
-        return (short) getConfig().getInt(path);
+        return (short) getConfig().getInt(this.path + "." + path);
     }
 
     @Override
     public void setInt(String path, int value) {
-        getConfig().setInt(path, value);
+        getConfig().setInt(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public int getInt(String path) {
-        return getConfig().getInt(path);
+        return getConfig().getInt(this.path + "." + path);
     }
 
     @Override
     public void setLong(String path, long value) {
-        getConfig().setLong(path, value);
+        getConfig().setLong(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public long getLong(String path) {
-        return getConfig().getLong(path);
+        return getConfig().getLong(this.path + "." + path);
     }
 
     @Override
     public void setFloat(String path, float value) {
-        getConfig().setFloat(path, value);
+        getConfig().setFloat(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public float getFloat(String path) {
-        return (float) getConfig().getDouble(path);
+        return (float) getConfig().getDouble(this.path + "." + path);
     }
 
     @Override
     public void setDouble(String path, double value) {
-        getConfig().setDouble(path, value);
+        getConfig().setDouble(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public double getDouble(String path) {
-        return getConfig().getDouble(path);
+        return getConfig().getDouble(this.path + "." + path);
     }
 
     @Override
     public void setObject(String path, Object value) {
-        getConfig().setObject(path, value);
+        getConfig().setObject(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public Object getObject(String path) {
-        return getConfig().getObject(path);
+        return getConfig().getObject(this.path + "." + path);
     }
 
     @Override
     public void setObjectList(String path, List<Object> value) {
-        getConfig().setObjectList(path, value);
+        getConfig().setObjectList(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public List<Object> getObjectList(String path) {
-        return getConfig().getObjectList(path);
+        return getConfig().getObjectList(this.path + "." + path);
     }
 
     @Override
     public void setStringList(String path, List<String> value) {
-        getConfig().setStringList(path, value);
+        getConfig().setStringList(this.path + "." + path, value);
         saveConfig();
     }
 
     @Override
     public List<String> getStringList(String path) {
-        return getConfig().getStringList(path);
+        return getConfig().getStringList(this.path + "." + path);
     }
 
     public void setItemStack(String path, ItemStack value) {
-        getConfig().setItemStack(path, value);
+        getConfig().setItemStack(this.path + "." + path, value);
         saveConfig();
     }
 
     public ItemStack getItemStack(String path) {
-        return getConfig().getItemStack(path);
+        return getConfig().getItemStack(this.path + "." + path);
     }
 
     public void setInventory(String path, Inventory inventory, String title) {
-        getConfig().setInventory(path, inventory, title);
+        getConfig().setInventory(this.path + "." + path, inventory, title);
         saveConfig();
     }
 
     public Inventory getInventory(String path) {
-        return getConfig().getInventory(path);
+        return getConfig().getInventory(this.path + "." + path);
     }
 
     public void setLocation(String path, Location location) {
-        getConfig().setLocation(path, location);
+        getConfig().setLocation(this.path + "." + path, location);
         saveConfig();
     }
 
     public Location getLocation(String path) {
-        return getConfig().getLocation(path);
+        return getConfig().getLocation(this.path + "." + path);
     }
 }
