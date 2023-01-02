@@ -1,8 +1,11 @@
 name: ST-Core
 main: net.starly.core.StarlyCore
 author: Starly Team
+website: https://discord.gg/TF8jqSJjCG
 
-version: 1.4
+description: Starly-Core
+
+version: 1.4.1
 api-version: 1.16
 
 commands:
