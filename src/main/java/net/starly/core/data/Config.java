@@ -395,7 +395,8 @@ public class Config implements DefaultConfigImpl {
     }
 
     public void setInventory(String path, Inventory inventory, String title) {
-        ConfigurationSection section = getConfig().createSection(path);
+        createSection(path);
+        ConfigurationSection section = getConfigurationSection(path);
         section.set("size", inventory.getSize());
         section.set("title", title);
 
@@ -408,7 +409,7 @@ public class Config implements DefaultConfigImpl {
     }
 
     public Inventory getInventory(String path) {
-        ConfigurationSection section = getConfig().createSection(path);
+        ConfigurationSection section = getConfigurationSection(path);
         Inventory inventory;
         try {
             inventory = Bukkit.createInventory(null, section.getInt("size"), section.getString("title"));
