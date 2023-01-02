@@ -1,10 +1,7 @@
 package net.starly.core.data;
 
 import net.starly.core.data.impl.DefaultConfigImpl;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,19 +16,35 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Config implements DefaultConfigImpl {
     private final JavaPlugin plugin;
-    private final String name;
-    private File file;
+
     private FileConfiguration config = new YamlConfiguration();
-    private boolean isLodaded = false;
+    private File file;
+
+    private final String name;
+    private String prefixPath;
+    private boolean isLoaded = false;
+
+    private final char ALT_COLOR_CHAR = '&';
+    private final char COLOR_CHAR = '§';
 
     public Config(String name, JavaPlugin plugin) {
         this.plugin = plugin;
         this.name = name + ".yml";
+        this.prefixPath = null;
+        loadFile();
+    }
+
+    public Config(String name, String prefixPath, JavaPlugin plugin) {
+        this.plugin = plugin;
+        this.name = name + ".yml";
+        this.prefixPath = prefixPath;
         loadFile();
     }
 
@@ -47,17 +60,15 @@ public class Config implements DefaultConfigImpl {
             } else {
                 try {
                     file.createNewFile();
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
             }
         }
 
         try {
             config.load(file);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
 
-        isLodaded = true;
+        isLoaded = true;
     }
 
     /**
@@ -74,11 +85,11 @@ public class Config implements DefaultConfigImpl {
         } catch (Exception ignored) {
         }
 
-        isLodaded = true;
+        isLoaded = true;
     }
 
     public FileConfiguration getConfig() {
-        if (!isLodaded) loadDefaultConfig();
+        if (!isLoaded) loadDefaultConfig();
 
         return config;
     }
@@ -114,6 +125,10 @@ public class Config implements DefaultConfigImpl {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setPrefix(String prefixPath) {
+        this.prefixPath = prefixPath;
     }
 
     public void createSection(String path) {
@@ -437,5 +452,50 @@ public class Config implements DefaultConfigImpl {
                 (float) section.getDouble("yaw"),
                 (float) section.getDouble("pitch")
         );
+    }
+
+
+
+
+
+
+    private String getPrefix() {
+        return prefixPath == null ? "" : getString(prefixPath);
+    }
+
+    private String color(String msg) {
+        return (getPrefix() + msg).replace(ALT_COLOR_CHAR, COLOR_CHAR);
+    }
+    private String replace(String message, Map<String, String> map) {
+        Map<String, String> newMap = new HashMap<>(map);
+        for (Map.Entry<String, String> entry : newMap.entrySet()) {
+            message = message.replace(entry.getKey(), entry.getValue());
+        }
+
+        return message;
+    }
+
+    public String getMessage(String path) {
+        return color(config.getString(path));
+    }
+    public String getMessage(String path, Map<String, String> replacements) {
+        return color(replace(config.getString(path), replacements));
+    }
+
+    public List<String> getMessages(String path) {
+        List<String> list = new ArrayList<>();
+        for (String msg : config.getStringList(path)) {
+            list.add(color(msg));
+        }
+
+        return list;
+    }
+    public List<String> getMessages(String path, Map<String, String> replacements) {
+        List<String> messages = new ArrayList<>();
+        for (String message : config.getStringList(path)) {
+            messages.add(color(replace(message, replacements)));
+        }
+
+        return messages;
     }
 }

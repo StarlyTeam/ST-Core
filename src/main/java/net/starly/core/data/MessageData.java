@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated Use {@link Config} instead.
+ */
+@Deprecated
 public class MessageData {
     private final Object clazz;
     private final Field field;
