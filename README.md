@@ -135,7 +135,7 @@ public class Main extends JavaPlugin {
         Region region = new Region(loc1, loc2);
         
         // 사용법: Region#getBlocks();
-        // ※ 구역에 포함된 모든 블럭을 반환합니다. (일시적 부하가 발생할 수 있습니다)
+        // ※ 구역에 포함된 모든 블럭을 반환합니다. (일시적 부하가 발생할 수 있습니다.)
         System.out.println(region.getBlocks().size() + "개의 블럭이 구역안에 있습니다!");
         
         // 사용법: Region#contains(loc);
@@ -317,9 +317,8 @@ public class Main extends JavaPlugin {
     }
 }
 ```
-* 작동 예시
+* 작동 예시  
 ![ParticleUtil_1](README/img/particleutil_1.png)
-
 
 ### 4-2. InventoryUtil
 ```java
