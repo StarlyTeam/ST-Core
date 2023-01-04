@@ -24,26 +24,26 @@ public class Time {
     }
 
     public long getMinutes() {
-        return (long) (seconds / 60.0);
+        return (long) getSeconds() / 60;
     }
 
     public long getHours() {
-        return (long) (seconds / 3600.0);
+        return (long) getMinutes() / 60;
     }
 
     public long getDays() {
-        return (long) (seconds / 86400.0);
+        return (long) getHours() / 24;
     }
 
     public long getWeeks() {
-        return (long) (seconds / 604800.0);
+        return (long) getDays() / 7;
     }
 
     public long getMonths() {
-        return (long) (seconds / 2592000.0);
+        return (long) getWeeks() / 4;
     }
 
     public long getYears() {
-        return (long) (seconds / 31536000.0);
+        return (long) getMonths() / 12;
     }
 }
