@@ -414,16 +414,14 @@ public class Config implements DefaultConfigImpl {
         try {
             inventory = Bukkit.createInventory(null, section.getInt("size"), section.getString("title"));
         } catch (Exception e) {
-            Bukkit.getLogger().warning("인벤토리를 불러오는데 실패했습니다. 경로: " + path);
-            return null;
+            throw new IllegalArgumentException("인벤토리를 불러오는데 실패했습니다. 경로: " + path);
         }
 
         try {
             section.getConfigurationSection("items").getKeys(false).forEach(key ->
                     inventory.setItem(Integer.parseInt(key), getItemStack(path + ".items." + key)));
         } catch (Exception e) {
-            Bukkit.getLogger().warning("인벤토리를 불러오는데 실패했습니다. 경로: " + path + ".items");
-            return null;
+            throw new IllegalArgumentException("인벤토리를 불러오는데 실패했습니다. 경로: " + path + ".items");
         }
 
         return inventory;
