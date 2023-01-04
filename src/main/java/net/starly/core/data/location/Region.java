@@ -1,6 +1,8 @@
 package net.starly.core.data.location;
 
+import net.starly.core.util.PreCondition;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -11,14 +13,19 @@ public class Region {
     private final Location pos1;
     private final Location pos2;
 
-    private final int minX;
-    private final int minY;
-    private final int minZ;
-    private final int maxX;
-    private final int maxY;
-    private final int maxZ;
+    private final World world;
+    private final int minX, minY, minZ;
+    private final int maxX, maxY, maxZ;
 
     public Region(Location pos1, Location pos2) {
+        PreCondition.nonNull(pos1, "pos1은 null일 수 없습니다.");
+        PreCondition.nonNull(pos2, "pos2은 null일 수 없습니다.");
+
+        if (pos1.getWorld() != pos2.getWorld()) {
+            throw new IllegalArgumentException("두 위치의 월드는 같아야 합니다.");
+        }
+
+        this.world = pos1.getWorld();
         this.pos1 = pos1;
         this.pos2 = pos2;
 
@@ -30,6 +37,10 @@ public class Region {
 
         this.minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
         this.maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public Location getPos1() {
@@ -45,7 +56,7 @@ public class Region {
         for (int i = minX; i <= maxX; i++) {
             for (int j = minY; j <= maxY; j++) {
                 for (int k = minZ; k <= maxZ; k++) {
-                    blocks.add(pos1.getWorld().getBlockAt(i, j, k));
+                    blocks.add(world.getBlockAt(i, j, k));
                 }
             }
         }
@@ -54,15 +65,14 @@ public class Region {
     }
 
     public boolean contains(Location location) {
-        return location.getWorld().equals(pos1.getWorld()) &&
+        return location.getWorld() == world &&
                 location.getBlockX() >= minX && location.getBlockX() <= maxX &&
                 location.getBlockY() >= minY && location.getBlockY() <= maxY &&
                 location.getBlockZ() >= minZ && location.getBlockZ() <= maxZ;
     }
 
     public boolean isInRegion(Player player) {
-        return contains(player.getLocation()) ||
-                contains(player.getLocation().add(0, 1, 0));
+        return contains(player.getLocation()) || contains(player.getLocation().add(0, 1, 0));
     }
 
     public long getSize() {
@@ -70,7 +80,7 @@ public class Region {
     }
 
     public Location getCenter() {
-        return new Location(pos1.getWorld(), (minX + maxX) / 2.0, (minY + maxY) / 2.0, (minZ + maxZ) / 2.0);
+        return new Location(world, (minX + maxX) / 2.0, (minY + maxY) / 2.0, (minZ + maxZ) / 2.0);
     }
 
     public void teleport(Player player) {
@@ -104,6 +114,7 @@ public class Region {
     @Override
     public String toString() {
         return "Region{" +
+                "world=" + world +
                 "pos1=" + pos1 +
                 ", pos2=" + pos2 +
                 ", minX=" + minX +
@@ -112,6 +123,6 @@ public class Region {
                 ", maxX=" + maxX +
                 ", maxY=" + maxY +
                 ", maxZ=" + maxZ +
-                '}';
+                "}";
     }
 }
