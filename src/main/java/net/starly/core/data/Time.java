@@ -1,49 +1,74 @@
 package net.starly.core.data;
 
-public class Time {
-    private long seconds;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-    public Time(long seconds) {
+public class Time extends BukkitRunnable {
+    private double seconds;
+
+    public Time(double seconds) {
         this.seconds = seconds;
     }
 
-    public void add(long seconds) {
+    public Time(double seconds, JavaPlugin plugin) {
+        this.seconds = seconds;
+        this.runTaskTimer(plugin, 0, 20);
+    }
+
+    public void add(double seconds) {
         this.seconds += seconds;
     }
 
-    public void subtract(long seconds) {
+    public void subtract(double seconds) {
         this.seconds -= seconds;
     }
 
-    public long getSeconds() {
+    public double getSeconds() {
         return this.seconds;
     }
 
-    public void setSeconds(long seconds) {
+    public void setSeconds(double seconds) {
         this.seconds = seconds;
     }
 
     public long getMinutes() {
-        return (long) getSeconds() / 60;
+        return Math.round(getSeconds() / 60);
     }
 
     public long getHours() {
-        return (long) getMinutes() / 60;
+        return Math.round(getMinutes() / 60);
     }
 
     public long getDays() {
-        return (long) getHours() / 24;
+        return Math.round(getHours() / 24);
     }
 
     public long getWeeks() {
-        return (long) getDays() / 7;
+        return Math.round(getDays() / 7);
     }
 
     public long getMonths() {
-        return (long) getWeeks() / 4;
+        return Math.round(getWeeks() / 4);
     }
 
     public long getYears() {
-        return (long) getMonths() / 12;
+        return Math.round(getMonths() / 12);
+    }
+
+
+    @Override
+    public void run() {
+        this.subtract(1);
+
+        if (this.getSeconds() == 0) {
+            this.cancel();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Time{" +
+                "seconds=" + seconds +
+                "}";
     }
 }
