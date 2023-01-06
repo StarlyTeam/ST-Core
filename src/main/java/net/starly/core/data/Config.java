@@ -381,7 +381,7 @@ public class Config implements DefaultConfigImpl {
     }
 
     public ItemStack getItemStack(String path) {
-        ConfigurationSection section = getConfig().createSection(path);
+        ConfigurationSection section = getConfig().getConfigurationSection(path);
         ItemBuilder itemBuilder;
 
 
@@ -474,7 +474,7 @@ public class Config implements DefaultConfigImpl {
 
     public void setInventory(String path, Inventory inventory, String title) {
         createSection(path);
-        ConfigurationSection section = getConfigurationSection(path);
+        ConfigurationSection section = getConfig().getConfigurationSection(path);
         section.set("size", inventory.getSize());
         section.set("title", title);
 
@@ -487,7 +487,7 @@ public class Config implements DefaultConfigImpl {
     }
 
     public Inventory getInventory(String path) {
-        ConfigurationSection section = getConfigurationSection(path);
+        ConfigurationSection section = getConfig().getConfigurationSection(path);
         Inventory inventory;
         try {
             inventory = Bukkit.createInventory(null, section.getInt("size"), section.getString("title"));
@@ -507,7 +507,7 @@ public class Config implements DefaultConfigImpl {
 
     public void setLocation(String path, Location location) {
         getConfig().createSection(path);
-        ConfigurationSection section = getConfig().getConfigurationSection(path);
+        ConfigurationSection section = getConfig().createSection(path);
 
         section.set("world", location.getWorld().getName());
         section.set("x", location.getX());
