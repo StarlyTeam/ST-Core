@@ -17,6 +17,13 @@ public class Region {
     private final int minX, minY, minZ;
     private final int maxX, maxY, maxZ;
 
+
+    /**
+     * Region 오브젝트를 생성합니다.
+     *
+     * @param       pos1        첫번째 위치
+     * @param       pos2        두번째 위치
+     */
     public Region(Location pos1, Location pos2) {
         PreCondition.nonNull(pos1, "pos1은 null일 수 없습니다.");
         PreCondition.nonNull(pos2, "pos2은 null일 수 없습니다.");
@@ -39,18 +46,38 @@ public class Region {
         this.maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
     }
 
+    /**
+     * 구역이 포함된 월드를 반환합니다.
+     *
+     * @return      World       소속된 월드
+     */
     public World getWorld() {
         return world;
     }
 
+    /**
+     * 구역의 첫번째 위치를 반환합니다.
+     *
+     * @return      Location        첫번째 위치
+     */
     public Location getPos1() {
         return pos1;
     }
 
+    /**
+     * 구역의 두번째 위치를 반환합니다.
+     *
+     * @return      Location        두번째 위치
+     */
     public Location getPos2() {
         return pos2;
     }
 
+    /**
+     * 구역에 포함된 모든 블럭을 반환합니다.
+     *
+     * @return      List<Block>     포함된 블럭들
+     */
     public List<Block> getBlocks() {
         List<Block> blocks = new ArrayList<>();
         for (int i = minX; i <= maxX; i++) {
@@ -64,6 +91,12 @@ public class Region {
         return blocks;
     }
 
+    /**
+     * 위치가 구역에 포함되어 있는지 반환합니다.
+     *
+     * @param       location        위치
+     * @return      Boolean         포함 여부
+     */
     public boolean contains(Location location) {
         return location.getWorld() == world &&
                 location.getBlockX() >= minX && location.getBlockX() <= maxX &&
@@ -71,42 +104,93 @@ public class Region {
                 location.getBlockZ() >= minZ && location.getBlockZ() <= maxZ;
     }
 
+    /**
+     * 특정 플레이어가 구역에 포함되어 있는지 반환합니다.
+     *
+     * @param       player          플레이어
+     * @return      Boolean         포함 여부
+     */
     public boolean isInRegion(Player player) {
         return contains(player.getLocation()) || contains(player.getLocation().add(0, 1, 0));
     }
 
+    /**
+     * 구역의 크기를 반환합니다.
+     *
+     * @return      Long            구역의 크기
+     */
     public long getSize() {
         return (long) (maxX - minX + 1) * (maxY - minY + 1) * (maxZ - minZ + 1);
     }
 
+    /**
+     * 구역의 중점을 반환합니다.
+     *
+     * @return      Location        구역의 중점
+     */
     public Location getCenter() {
         return new Location(world, (minX + maxX) / 2.0, (minY + maxY) / 2.0, (minZ + maxZ) / 2.0);
     }
 
+    /**
+     * 플레이어를 구역의 중점으로 텔레포트합니다.
+     *
+     * @param       player          플레이어
+     */
     public void teleport(Player player) {
         player.teleport(getCenter());
     }
 
+    /**
+     * 구역에서 가장 작은 X좌표를 반환합니다.
+     *
+     * @return      Integer         가장 작은 X좌표
+     */
     public int getMinX() {
         return minX;
     }
 
+    /**
+     * 구역에서 가장 작은 Y좌표를 반환합니다.
+     *
+     * @return      Integer         가장 작은 Y좌표
+     */
     public int getMinY() {
         return minY;
     }
 
+    /**
+     * 구역에서 가장 작은 Z좌표를 반환합니다.
+     *
+     * @return      Integer         가장 작은 Z좌표
+     */
     public int getMinZ() {
         return minZ;
     }
 
+    /**
+     * 구역에서 가장 큰 X좌표를 반환합니다.
+     *
+     * @return      Integer         가장 큰 X좌표
+     */
     public int getMaxX() {
         return maxX;
     }
 
+    /**
+     * 구역에서 가장 큰 Y좌표를 반환합니다.
+     *
+     * @return      Integer         가장 큰 Y좌표
+     */
     public int getMaxY() {
         return maxY;
     }
 
+    /**
+     * 구역에서 가장 큰 Z좌표를 반환합니다.
+     *
+     * @return      Integer         가장 큰 Z좌표
+     */
     public int getMaxZ() {
         return maxZ;
     }

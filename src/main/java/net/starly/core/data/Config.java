@@ -1,7 +1,10 @@
 package net.starly.core.data;
 
+import net.starly.core.builder.ItemBuilder;
 import net.starly.core.data.impl.DefaultConfigImpl;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -34,6 +37,12 @@ public class Config implements DefaultConfigImpl {
     private final char ALT_COLOR_CHAR = '&';
     private final char COLOR_CHAR = '§';
 
+    /**
+     * Config 오브젝트를 생성합니다.
+     *
+     * @param name   파일 이름
+     * @param plugin 플러그인 인스턴스
+     */
     public Config(String name, JavaPlugin plugin) {
         this.plugin = plugin;
         this.name = name + ".yml";
@@ -41,17 +50,30 @@ public class Config implements DefaultConfigImpl {
         loadFile();
     }
 
-    public Config(String name, String prefixPath, JavaPlugin plugin) {
+    /**
+     * Config 오브젝트를 생성합니다.
+     *
+     * @param name       파일 이름
+     * @param plugin     플러그인 인스턴스
+     * @param prefixPath 접두사 경로
+     */
+    public Config(String name, JavaPlugin plugin, String prefixPath) {
         this.plugin = plugin;
         this.name = name + ".yml";
         this.prefixPath = prefixPath;
         loadFile();
     }
 
+    /**
+     * File을 로드합니다. (생성시 자동 호출)
+     */
     public void loadFile() {
         file = new File(plugin.getDataFolder(), name);
     }
 
+    /**
+     * FileConfiguration을 로드합니다.
+     */
     public void loadDefaultConfig() {
         if (!isFileExist()) {
             InputStream is = plugin.getResource(name);
@@ -60,19 +82,21 @@ public class Config implements DefaultConfigImpl {
             } else {
                 try {
                     file.createNewFile();
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
             }
         }
 
         try {
             config.load(file);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         isLoaded = true;
     }
 
     /**
-     * @deprecated Use {@link Config#loadDefaultConfig} instead.
+     * @deprecated {@link Config#loadDefaultConfig} 사용을 권장합니다.
      */
     @Deprecated
     public void loadDefaultPluginConfig() {
@@ -88,12 +112,20 @@ public class Config implements DefaultConfigImpl {
         isLoaded = true;
     }
 
+    /**
+     * 콘피그를 반환합니다.
+     *
+     * @return FileConfiguration   콘피그
+     */
     public FileConfiguration getConfig() {
         if (!isLoaded) loadDefaultConfig();
 
         return config;
     }
 
+    /**
+     * 콘피그를 저장합니다.
+     */
     public void saveConfig() {
         try {
             getConfig().save(file);
@@ -102,21 +134,38 @@ public class Config implements DefaultConfigImpl {
         }
     }
 
+    /**
+     * 파일이 존재하는지 반환합니다. <br>
+     * ※ {@link Config#loadDefaultConfig}를 호출한 이후에는 파일이 자동생성되어 항상 true를 반환합니다.
+     *
+     * @return Boolean     존재 여부
+     */
     public boolean isFileExist() {
         return file.exists();
     }
 
+    /**
+     * 파일을 삭제합니다.
+     *
+     * @deprecated {@link Config#delete} 사용을 권장합니다.
+     */
     @Deprecated
     public void remove() {
         delete();
     }
 
+    /**
+     * 파일을 삭제합니다.
+     */
     public void delete() {
         file.delete();
         file = null;
         config = null;
     }
 
+    /**
+     * 콘피그를 저장하고 다시 불러옵니다.
+     */
     public void reloadConfig() {
         saveConfig();
 
@@ -127,18 +176,40 @@ public class Config implements DefaultConfigImpl {
         }
     }
 
+    /**
+     * 접두사를 설정합니다.
+     *
+     * @param prefixPath 접두사 경로
+     */
     public void setPrefix(String prefixPath) {
         this.prefixPath = prefixPath;
     }
 
-    public void createSection(String path) {
-        getConfig().createSection(path);
+    /**
+     * 섹션을 생성합니다.
+     *
+     * @param path 경로
+     */
+    public ConfigurationSection createSection(String path) {
+        return getConfig().createSection(path);
     }
 
+    /**
+     * 섹션을 반환합니다. (ConfigSection)
+     *
+     * @param path 경로
+     * @return ConfigSection   섹션
+     */
     public ConfigSection getSection(String path) {
         return new ConfigSection(this, path);
     }
 
+    /**
+     * 섹션을 반환합니다. (ConfigurationSection)
+     *
+     * @param path 경로
+     * @return ConfigurationSection    섹션
+     */
     public ConfigurationSection getConfigurationSection(String path) {
         return getConfig().getConfigurationSection(path);
     }
@@ -276,14 +347,6 @@ public class Config implements DefaultConfigImpl {
     }
 
     public void setItemStack(String path, ItemStack value) {
-        /*
-         * Slot
-         * Amount
-         * Type
-         * Durability
-         * MetaData
-         */
-
         ConfigurationSection section = getConfig().createSection(path);
 
         section.set("material", value.getType().name());
@@ -300,8 +363,9 @@ public class Config implements DefaultConfigImpl {
             EnchantmentStorageMeta esm = (EnchantmentStorageMeta) value.getItemMeta();
             Map<Enchantment, Integer> enchantments = esm.getStoredEnchants();
 
-            if (enchantments != null)
-                enchantments.keySet().forEach(enchantment -> section.set("Enchant." + enchantment.getName(), enchantments.get(enchantment)));
+            if (enchantments != null) {
+                enchantments.keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
+            }
         } else if (value.hasItemMeta()) { //일반 아이템
             ConfigurationSection metaSection = section.createSection("meta");
 
@@ -317,81 +381,95 @@ public class Config implements DefaultConfigImpl {
     }
 
     public ItemStack getItemStack(String path) {
-        /*
-         * Slot
-         * Amount
-         * Type
-         * Durability
-         * MetaData
-         */
-
         ConfigurationSection section = getConfig().createSection(path);
-        ItemStack itemStack;
-        try {
-            itemStack = new ItemStack(Material.valueOf(section.getString("material")));
-        } catch (Exception e) {
-            Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".material");
-            return null;
-        }
+        ItemBuilder itemBuilder;
+
+
+        // ----------------------------------------------------
+
 
         try {
-            itemStack.setAmount(section.getInt("amount"));
+            itemBuilder = new ItemBuilder(Material.valueOf(section.getString("material")));
         } catch (Exception e) {
-            Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".amount");
-            return null;
+            throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".material");
         }
 
         try {
-            itemStack.setDurability((short) section.getInt("durability"));
+            itemBuilder.setAmount(section.getInt("amount"));
         } catch (Exception e) {
-            Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".durability");
-            return null;
+            throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".amount");
         }
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta != null) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
+        if (section.get("durability") != null) {
             try {
-                section.getConfigurationSection("pdc").getKeys(false).forEach(key ->
-                        data.set(new NamespacedKey(plugin, key), PersistentDataType.LONG, section.getLong("pdc." + key)));
+                itemBuilder.setDurability((short) section.getInt("durability"));
             } catch (Exception e) {
-                Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc");
-                return null;
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".durability");
             }
-
-            try {
-                meta.setDisplayName(section.getString("meta.displayName"));
-            } catch (Exception e) {
-                Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.displayName");
-                return null;
-            }
-
-            try {
-                meta.setLore(section.getStringList("meta.lores"));
-            } catch (Exception e) {
-                Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.lores");
-                return null;
-            }
-
-            try {
-                meta.setCustomModelData(section.getInt("meta.customModelData"));
-            } catch (Exception e) {
-                Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.customModelData");
-                return null;
-            }
-
-            try {
-                section.getConfigurationSection("meta.enchantments").getKeys(false).forEach(key ->
-                        itemStack.addUnsafeEnchantment(Enchantment.getByName(key), section.getInt("meta.enchantments." + key)));
-            } catch (Exception e) {
-                Bukkit.getLogger().warning("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.enchantments");
-                return null;
-            }
-
-            itemStack.setItemMeta(meta);
         }
 
-        return itemStack;
+
+        // ----------------------------------------------------
+
+
+        if (section.getConfigurationSection("pdc") != null) {
+            try {
+
+                section.getConfigurationSection("pdc").getKeys(false).forEach(key -> {
+                    try {
+                        itemBuilder.setNBT(key, section.getString("pdc." + key));
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc." + key);
+                    }
+                });
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc");
+            }
+        }
+
+        if (section.get("meta.displayName") != null) {
+            try {
+                itemBuilder.setDisplayName(section.getString("meta.displayName"));
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.displayName");
+            }
+        }
+
+        if (section.get("meta.lores") != null) {
+            try {
+                itemBuilder.setLore(section.getStringList("meta.lores"));
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.lores");
+            }
+        }
+
+        if (section.get("meta.customModelData") != null) {
+            try {
+                itemBuilder.setCustomModelData(section.getInt("meta.customModelData"));
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.customModelData");
+            }
+        }
+
+        if (section.getConfigurationSection("meta.enchantments") != null) {
+            try {
+                section.getConfigurationSection("meta.enchantments").getKeys(false).forEach(key -> {
+                    try {
+                        itemBuilder.addUnsafeEnchantment(Enchantment.getByName(key), section.getInt("meta.enchantments." + key));
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.enchantments." + key);
+                    }
+                });
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.enchantments");
+            }
+        }
+
+
+        // ----------------------------------------------------
+
+
+        return itemBuilder.build();
     }
 
     public void setInventory(String path, Inventory inventory, String title) {
@@ -454,10 +532,6 @@ public class Config implements DefaultConfigImpl {
     }
 
 
-
-
-
-
     private String getPrefix() {
         return prefixPath == null ? "" : getString(prefixPath);
     }
@@ -465,6 +539,7 @@ public class Config implements DefaultConfigImpl {
     private String color(String msg) {
         return (getPrefix() + msg).replace(ALT_COLOR_CHAR, COLOR_CHAR);
     }
+
     private String replace(String message, Map<String, String> map) {
         Map<String, String> newMap = new HashMap<>(map);
         for (Map.Entry<String, String> entry : newMap.entrySet()) {
@@ -477,6 +552,7 @@ public class Config implements DefaultConfigImpl {
     public String getMessage(String path) {
         return color(config.getString(path));
     }
+
     public String getMessage(String path, Map<String, String> replacements) {
         return color(replace(config.getString(path), replacements));
     }
@@ -489,6 +565,7 @@ public class Config implements DefaultConfigImpl {
 
         return list;
     }
+
     public List<String> getMessages(String path, Map<String, String> replacements) {
         List<String> messages = new ArrayList<>();
         for (String message : config.getStringList(path)) {
