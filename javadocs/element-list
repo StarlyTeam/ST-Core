@@ -1,0 +1,8 @@
+net.starly.core
+net.starly.core.bstats
+net.starly.core.builder
+net.starly.core.data
+net.starly.core.data.impl
+net.starly.core.data.location
+net.starly.core.data.util
+net.starly.core.util

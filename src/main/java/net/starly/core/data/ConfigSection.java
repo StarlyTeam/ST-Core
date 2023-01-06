@@ -1,22 +1,13 @@
 package net.starly.core.data;
 
 import net.starly.core.data.impl.DefaultConfigImpl;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
-import java.util.Map;
 
 public class ConfigSection implements DefaultConfigImpl {
     private final Config config;
@@ -24,6 +15,13 @@ public class ConfigSection implements DefaultConfigImpl {
     private final String path;
 
 
+    /**
+     * ConfigSection 오브젝트를 생성합니다.
+     *
+     * @param       fileName    파일 이름
+     * @param       path        섹션 경로
+     * @param       plugin      플러그인 인스턴스
+     */
     public ConfigSection(String fileName, String path, JavaPlugin plugin) {
         Config config = new Config(fileName, plugin);
         config.loadDefaultConfig();
@@ -33,6 +31,12 @@ public class ConfigSection implements DefaultConfigImpl {
         this.section = config.getConfigurationSection(path);
     }
 
+    /**
+     * ConfigSection 오브젝트를 생성합니다.
+     *
+     * @param       config      Config 오브젝트
+     * @param       path        섹션 경로
+     */
     public ConfigSection(Config config, String path) {
         this.config = config;
         this.section = config.getConfigurationSection(path);

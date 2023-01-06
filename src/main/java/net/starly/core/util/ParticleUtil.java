@@ -18,6 +18,12 @@ import static java.lang.Math.sin;
 
 
 public class ParticleUtil {
+    /**
+     * 폭죽 파티클을 생성합니다.
+     *
+     * @param       loc     파티클이 생성될 위치
+     * @param       color   파티클의 색상
+     */
     public static void firework(Location loc, Color color) {
         Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
         FireworkMeta fm = fw.getFireworkMeta();
@@ -26,6 +32,14 @@ public class ParticleUtil {
         fw.setFireworkMeta(fm);
     }
 
+    /**
+     * 점 파티클을 생성합니다.
+     *
+     * @param       p       파티클을 보여줄 플레이어
+     * @param       count   파티클의 개수
+     * @param       size    파티클의 크기
+     * @param       color   파티클의 색상
+     */
     public static void dot(Player p, int count, double size, Color color) {
         new BukkitRunnable() {
             @Override
@@ -35,6 +49,14 @@ public class ParticleUtil {
         }.runTask(JavaPlugin.getProvidingPlugin(StarlyCore.class));
     }
 
+    /**
+     * 선 파티클을 생성합니다.
+     *
+     * @param       point1  파티클이 생성될 첫번째 위치
+     * @param       point2  파티클이 생성될 두번째 위치
+     * @param       space   파티클 사이의 간격
+     * @param       color   파티클의 색상
+     */
     public static void line(Location point1, Location point2, double space, Color color) {
         double distance = point1.distance(point2);
         Vector p1 = point1.toVector();
@@ -47,6 +69,13 @@ public class ParticleUtil {
         }
     }
 
+    /**
+     * 구 파티클을 생성합니다.
+     *
+     * @param       middle  파티클이 생성될 중심 위치
+     * @param       radius  구의 반지름
+     * @param       color   파티클의 색상
+     */
     public static void sphere(Location middle, double radius, Color color) {
         new BukkitRunnable() {
             @Override
@@ -63,6 +92,14 @@ public class ParticleUtil {
         }.runTask(JavaPlugin.getProvidingPlugin(StarlyCore.class));
     }
 
+    /**
+     * 구 파티클을 생성합니다.
+     *
+     * @param       middle      파티클이 생성될 중심 위치
+     * @param       radius      구의 반지름
+     * @param       distance    파티클 사이의 간격
+     * @param       color       파티클의 색상
+     */
     public static void sphere(Location middle, double radius, double distance, Color color) {
         new BukkitRunnable() {
             @Override
@@ -79,6 +116,14 @@ public class ParticleUtil {
         }.runTask(JavaPlugin.getProvidingPlugin(StarlyCore.class));
     }
 
+    /**
+     * 구체 파티클을 생성합니다.
+     *
+     * @param       middle      파티클이 생성될 중심 위치
+     * @param       radius      구의 반지름
+     * @param       distance    파티클 사이의 간격
+     * @param       particle    파티클의 종류
+     */
     public static void sphere(Location middle, double radius, double distance, Particle particle) {
         new BukkitRunnable() {
             @Override
