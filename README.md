@@ -263,38 +263,6 @@ public class Main extends JavaPlugin {
 }
 ```
 
-### 3-2. GUIBuilder
-* 간편하게 GUI를 제작합니다.
-```java
-import net.starly.core.builder.GUIBuilder;
-
-public class Main extends JavaPlugin {
-    @Override
-    public void onEnable() {
-        // 사용법: new GUIBuilder(title, size, owner);
-        // ↪ title: GUI의 제목.
-        // ↪ size: GUI의 줄의 수. (1 ~ 6 | 9가 곱해져 생성됩니다.)
-        // ↪ owner: GUI의 소유자.
-        GUIBuilder guiBuilder = new GUIBuilder("&e한줄 인벤토리입니다!", 1, null);
-        
-        // 사용법: GUIBuilder#setItem(slot, itemBuilder);
-        // ↪ slot: 아이템을 넣을 슬롯.
-        // ↪ itemBuilder: 아이템빌더 객체.
-        guiBuilder.setItem(1,
-                new ItemBuilder(Material.DIAMOND).setDisplayName("&e다이아몬드").setLore("&e다이아몬드입니다!"));
-        
-        // 사용법: GUIBuilder#setItem(itemStack, slots...);
-        // ↪ itemStack: 아이템.
-        // ↪ slots...: 아이템을 넣을 슬롯.
-        guiBuilder.setItem(new ItemStack(Material.DIAMOND_BLOCK, 1), 2, 3, 4, 5, 6, 7, 8);
-        
-        // 사용법: GUIBuilder#open(player);
-        // ↪ player: GUI를 열 플레이어.
-        guiBuilder.open(Bukkit.getPlayer("Starly"));
-    }
-}
-```
-
 
 ## 4. Util
 
