@@ -164,11 +164,9 @@ public class Config implements DefaultConfigImpl {
     }
 
     /**
-     * 콘피그를 저장하고 다시 불러옵니다.
+     * 콘피그를 다시 불러옵니다.
      */
     public void reloadConfig() {
-        saveConfig();
-
         try {
             config.load(file);
         } catch (Exception e) {
