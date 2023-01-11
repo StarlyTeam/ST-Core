@@ -124,7 +124,8 @@ public class Config implements DefaultConfigImpl {
      * @return  List<File>          파일 목록
      */
     public List<File> getFiles() {
-        return Arrays.stream(file.listFiles()).toList();
+        File dir = new File(plugin.getDataFolder(), name.replace(".yml", ""));
+        return List.of(dir.listFiles());
     }
 
     /**
