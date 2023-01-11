@@ -19,10 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Config implements DefaultConfigImpl {
     private final JavaPlugin plugin;
@@ -110,6 +107,24 @@ public class Config implements DefaultConfigImpl {
         }
 
         isLoaded = true;
+    }
+
+    /**
+     * 폴더 파일들의 이름 목록을 반환합니다.
+     *
+     * @return  List<String>        이름 목록
+     */
+    public List<String> getFileNames() {
+        return getFiles().stream().map(file -> file.getName().replace(".yml", "")).toList();
+    }
+
+    /**
+     * 폴더의 파일 목록을 반환합니다.
+     *
+     * @return  List<File>          파일 목록
+     */
+    public List<File> getFiles() {
+        return Arrays.stream(file.listFiles()).toList();
     }
 
     /**
