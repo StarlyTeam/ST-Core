@@ -1,5 +1,8 @@
 package net.starly.core.data;
 
+import net.minecraft.server.v1_16_R3.InventoryCrafting;
+import net.minecraft.server.v1_16_R3.NBTBase;
+import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import net.starly.core.builder.ItemBuilder;
 import net.starly.core.data.impl.DefaultConfigImpl;
 import org.bukkit.Bukkit;
@@ -8,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -369,9 +373,32 @@ public class Config implements DefaultConfigImpl {
 
         ItemMeta meta = value.getItemMeta();
         if (meta != null) {
+            ConfigurationSection metaSection = section.createSection("meta");
+
+            // ----------------------------------------------------
+
+            if (meta.hasDisplayName()) metaSection.set("displayName", meta.getDisplayName());
+            if (meta.hasLore()) metaSection.set("lores", meta.getLore());
+            if (meta.hasCustomModelData()) metaSection.set("customModelData", meta.getCustomModelData());
+
+            // ----------------------------------------------------
+
             PersistentDataContainer data = meta.getPersistentDataContainer();
-            data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.LONG)));
+            data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.STRING)));
         }
+
+        // ----------------------------------------------------
+
+        net.minecraft.server.v1_16_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(value);
+        NBTTagCompound nbt = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
+
+        nbt.getKeys().forEach(key -> {
+            NBTBase nbtBase = nbt.get(key);
+
+            section.set("nbt." + key, nbtBase);
+        });
+
+        // ----------------------------------------------------
 
         if (value.getType() == Material.ENCHANTED_BOOK) { //인챈트 북
             EnchantmentStorageMeta esm = (EnchantmentStorageMeta) value.getItemMeta();
@@ -381,15 +408,11 @@ public class Config implements DefaultConfigImpl {
                 enchantments.keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
             }
         } else if (value.hasItemMeta()) { //일반 아이템
-            ConfigurationSection metaSection = section.createSection("meta");
-
-            if (meta.hasDisplayName()) metaSection.set("displayName", meta.getDisplayName());
-            if (meta.hasLore()) metaSection.set("lores", meta.getLore());
-            if (meta.hasCustomModelData()) metaSection.set("customModelData", meta.getCustomModelData());
-
             Map<Enchantment, Integer> enchantments = meta.getEnchants();
             value.getEnchantments().keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
         }
+
+
 
         saveConfig();
     }
@@ -428,7 +451,6 @@ public class Config implements DefaultConfigImpl {
 
         if (section.getConfigurationSection("pdc") != null) {
             try {
-
                 section.getConfigurationSection("pdc").getKeys(false).forEach(key -> {
                     try {
                         itemBuilder.setNBT(key, section.getString("pdc." + key));
@@ -479,11 +501,32 @@ public class Config implements DefaultConfigImpl {
             }
         }
 
-
         // ----------------------------------------------------
 
-
         return itemBuilder.build();
+    }
+
+    public net.minecraft.server.v1_16_R3.ItemStack getNMSItemStack(String path) {
+        ConfigurationSection section = getConfig().getConfigurationSection(path);
+
+        ItemStack itemStack = getItemStack(path);
+        net.minecraft.server.v1_16_R3.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
+
+        if (section.getConfigurationSection("nbt") != null) {
+            try {
+                section.getConfigurationSection("nbt").getKeys(false).forEach(key -> {
+                    try {
+                        nmsItemStack.getTag().set(key, section.getObject("nbt." + key, NBTBase.class));
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".nbt." + key);
+                    }
+                });
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".nbt");
+            }
+        }
+
+        return nmsItemStack;
     }
 
     public void setInventory(String path, Inventory inventory, String title) {

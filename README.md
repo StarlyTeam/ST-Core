@@ -276,9 +276,10 @@ public class Main extends JavaPlugin {
         Location loc1 = new Location(Bukkit.getWorld("world"), 0, 0, 0);
         Location loc2 = new Location(Bukkit.getWorld("world"), 0, 10, 0);
         
-        // 사용법: ParticleUtil#line(loc1, loc2, color);
+        // 사용법: ParticleUtil#line(loc1, loc2, space, color);
         // ↪ loc1: 시작 위치.
         // ↪ loc2: 끝 위치.
+        // ↪ space: 파티클 사이의 간격. (단위: 블럭)
         // ↪ color: 파티클의 색상.
         // ※ loc1과 loc2을 잇는 선을 color의 색으로 생성합니다.
         ParticleUtil.line(loc1, loc2, 1, Color.RED);
