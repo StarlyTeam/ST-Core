@@ -1,22 +1,21 @@
 package net.starly.core.data;
 
-import net.minecraft.server.v1_16_R3.InventoryCrafting;
-import net.minecraft.server.v1_16_R3.NBTBase;
-import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import net.starly.core.builder.ItemBuilder;
 import net.starly.core.data.impl.DefaultConfigImpl;
+import net.starly.core.util.PreCondition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +24,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
+@SuppressWarnings("all")
 public class Config implements DefaultConfigImpl {
     private final JavaPlugin plugin;
 
@@ -45,6 +45,9 @@ public class Config implements DefaultConfigImpl {
      * @param plugin 플러그인 인스턴스
      */
     public Config(String name, JavaPlugin plugin) {
+        PreCondition.nonNull(name, "name은 null일 수 없습니다.");
+        PreCondition.nonNull(plugin, "plugin은 null일 수 없습니다.");
+
         this.plugin = plugin;
         this.name = name + ".yml";
         this.prefixPath = null;
@@ -59,6 +62,10 @@ public class Config implements DefaultConfigImpl {
      * @param prefixPath 접두사 경로
      */
     public Config(String name, JavaPlugin plugin, String prefixPath) {
+        PreCondition.nonNull(name, "name은 null일 수 없습니다.");
+        PreCondition.nonNull(plugin, "plugin은 null일 수 없습니다.");
+        PreCondition.nonNull(prefixPath, "prefixPath는 null일 수 없습니다.");
+
         this.plugin = plugin;
         this.name = name + ".yml";
         this.prefixPath = prefixPath;
@@ -200,6 +207,8 @@ public class Config implements DefaultConfigImpl {
      * @param prefixPath 접두사 경로
      */
     public void setPrefix(String prefixPath) {
+        PreCondition.nonNull(prefixPath, "prefixPath는 null일 수 없습니다.");
+
         this.prefixPath = prefixPath;
     }
 
@@ -209,6 +218,8 @@ public class Config implements DefaultConfigImpl {
      * @param path 경로
      */
     public ConfigurationSection createSection(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().createSection(path);
     }
 
@@ -219,6 +230,8 @@ public class Config implements DefaultConfigImpl {
      * @return ConfigSection   섹션
      */
     public ConfigSection getSection(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return new ConfigSection(this, path);
     }
 
@@ -229,147 +242,220 @@ public class Config implements DefaultConfigImpl {
      * @return ConfigurationSection    섹션
      */
     public ConfigurationSection getConfigurationSection(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getConfigurationSection(path);
     }
 
     @Override
     public void setString(String path, String value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public String getString(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getString(path);
     }
 
     @Override
     public void setBoolean(String path, boolean value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public boolean getBoolean(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getBoolean(path);
     }
 
     @Override
     public void setChar(String path, char value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public char getChar(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getString(path).charAt(0);
     }
 
     @Override
     public void setByte(String path, byte value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public byte getByte(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return (byte) getConfig().getInt(path);
     }
 
     @Override
     public void setShort(String path, short value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public short getShort(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return (short) getConfig().getInt(path);
     }
 
     @Override
     public void setInt(String path, int value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public int getInt(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getInt(path);
     }
 
     @Override
     public void setLong(String path, long value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public long getLong(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getLong(path);
     }
 
     @Override
     public void setFloat(String path, float value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public float getFloat(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return (float) getConfig().getDouble(path);
     }
 
     @Override
     public void setDouble(String path, double value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public double getDouble(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getDouble(path);
     }
 
     @Override
     public void setObject(String path, Object value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public Object getObject(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().get(path);
     }
 
     @Override
     public void setObjectList(String path, List<Object> value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public List<Object> getObjectList(String path) {
-        return (List<Object>) getConfig().getList(path);
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
+        return getConfig().getList(path).stream().map(o -> (Object) o).toList();
     }
 
     @Override
     public void setStringList(String path, List<String> value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().set(path, value);
         saveConfig();
     }
 
     @Override
     public List<String> getStringList(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return getConfig().getStringList(path);
     }
 
     public void setItemStack(String path, ItemStack value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         ConfigurationSection section = getConfig().createSection(path);
+
+
+        // ----------------------------------------------------
+
 
         section.set("material", value.getType().name());
         section.set("amount", value.getAmount());
         section.set("durability", value.getDurability());
+
+
+        // ----------------------------------------------------
+
 
         ItemMeta meta = value.getItemMeta();
         if (meta != null) {
@@ -377,47 +463,62 @@ public class Config implements DefaultConfigImpl {
 
             // ----------------------------------------------------
 
+
             if (meta.hasDisplayName()) metaSection.set("displayName", meta.getDisplayName());
             if (meta.hasLore()) metaSection.set("lores", meta.getLore());
             if (meta.hasCustomModelData()) metaSection.set("customModelData", meta.getCustomModelData());
 
+
             // ----------------------------------------------------
+
 
             PersistentDataContainer data = meta.getPersistentDataContainer();
             data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.STRING)));
         }
 
-        // ----------------------------------------------------
-
-        net.minecraft.server.v1_16_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(value);
-        NBTTagCompound nbt = (nmsStack.hasTag()) ? nmsStack.getTag() : new NBTTagCompound();
-
-        nbt.getKeys().forEach(key -> {
-            NBTBase nbtBase = nbt.get(key);
-
-            section.set("nbt." + key, nbtBase);
-        });
 
         // ----------------------------------------------------
 
-        if (value.getType() == Material.ENCHANTED_BOOK) { //인챈트 북
+
+        if (value.getType() == Material.PLAYER_HEAD) {       // 플레이어 머리
+            SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
+            Player ownerPlayer = (Player) skullMeta.getOwningPlayer();
+
+            if (ownerPlayer != null) {
+                section.set("meta.skullOwner", ownerPlayer.getName());
+            }
+        }
+
+
+        // -----------------------------------------------------
+
+
+        if (value.getType() == Material.ENCHANTED_BOOK) {           // 인챈트 북
             EnchantmentStorageMeta esm = (EnchantmentStorageMeta) value.getItemMeta();
             Map<Enchantment, Integer> enchantments = esm.getStoredEnchants();
 
             if (enchantments != null) {
                 enchantments.keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
             }
-        } else if (value.hasItemMeta()) { //일반 아이템
+        } else if (value.getItemMeta().hasEnchants()) {             // 이외 아이템
             Map<Enchantment, Integer> enchantments = meta.getEnchants();
             value.getEnchantments().keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
         }
 
+
+        // ----------------------------------------------------
 
 
         saveConfig();
     }
 
     public ItemStack getItemStack(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
+
+        // ----------------------------------------------------
+
+
         ConfigurationSection section = getConfig().getConfigurationSection(path);
         ItemBuilder itemBuilder;
 
@@ -463,6 +564,10 @@ public class Config implements DefaultConfigImpl {
             }
         }
 
+
+        // ----------------------------------------------------
+
+
         if (section.get("meta.displayName") != null) {
             try {
                 itemBuilder.setDisplayName(section.getString("meta.displayName"));
@@ -470,6 +575,10 @@ public class Config implements DefaultConfigImpl {
                 throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.displayName");
             }
         }
+
+
+        // ----------------------------------------------------
+
 
         if (section.get("meta.lores") != null) {
             try {
@@ -479,6 +588,10 @@ public class Config implements DefaultConfigImpl {
             }
         }
 
+
+        // ----------------------------------------------------
+
+
         if (section.get("meta.customModelData") != null) {
             try {
                 itemBuilder.setCustomModelData(section.getInt("meta.customModelData"));
@@ -486,6 +599,10 @@ public class Config implements DefaultConfigImpl {
                 throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.customModelData");
             }
         }
+
+
+        // ----------------------------------------------------
+
 
         if (section.getConfigurationSection("meta.enchantments") != null) {
             try {
@@ -501,42 +618,43 @@ public class Config implements DefaultConfigImpl {
             }
         }
 
+
         // ----------------------------------------------------
 
-        return itemBuilder.build();
-    }
 
-    public net.minecraft.server.v1_16_R3.ItemStack getNMSItemStack(String path) {
-        ConfigurationSection section = getConfig().getConfigurationSection(path);
+        ItemStack itemStack = itemBuilder.build();
 
-        ItemStack itemStack = getItemStack(path);
-        net.minecraft.server.v1_16_R3.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
+        if (section.getString("meta.skullOwner") != null) {
+            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
-        if (section.getConfigurationSection("nbt") != null) {
             try {
-                section.getConfigurationSection("nbt").getKeys(false).forEach(key -> {
-                    try {
-                        nmsItemStack.getTag().set(key, section.getObject("nbt." + key, NBTBase.class));
-                    } catch (Exception ex) {
-                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".nbt." + key);
-                    }
-                });
+                skullMeta.setOwningPlayer(Bukkit.getPlayer(section.getString("meta.skullOwner")));
             } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".nbt");
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.skullOwner");
             }
+
+            itemStack.setItemMeta(skullMeta);
         }
 
-        return nmsItemStack;
+
+        // ----------------------------------------------------
+
+
+        return itemStack;
     }
 
-    public void setInventory(String path, Inventory inventory, String title) {
+    public void setInventory(String path, Inventory value, String title) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+        PreCondition.nonNull(title, "title은 null일 수 없습니다.");
+
         createSection(path);
         ConfigurationSection section = getConfig().getConfigurationSection(path);
-        section.set("size", inventory.getSize());
+        section.set("size", value.getSize());
         section.set("title", title);
 
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack itemStack = inventory.getItem(i);
+        for (int i = 0; i < value.getSize(); i++) {
+            ItemStack itemStack = value.getItem(i);
             if (itemStack != null) setItemStack(path + ".items." + i, itemStack);
         }
 
@@ -544,6 +662,8 @@ public class Config implements DefaultConfigImpl {
     }
 
     public Inventory getInventory(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         ConfigurationSection section = getConfig().getConfigurationSection(path);
         Inventory inventory;
         try {
@@ -562,20 +682,25 @@ public class Config implements DefaultConfigImpl {
         return inventory;
     }
 
-    public void setLocation(String path, Location location) {
+    public void setLocation(String path, Location value) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
+
         getConfig().createSection(path);
         ConfigurationSection section = getConfig().createSection(path);
 
-        section.set("world", location.getWorld().getName());
-        section.set("x", location.getX());
-        section.set("y", location.getY());
-        section.set("z", location.getZ());
-        section.set("yaw", location.getYaw());
-        section.set("pitch", location.getPitch());
+        section.set("world", value.getWorld().getName());
+        section.set("x", value.getX());
+        section.set("y", value.getY());
+        section.set("z", value.getZ());
+        section.set("yaw", value.getYaw());
+        section.set("pitch", value.getPitch());
         saveConfig();
     }
 
     public Location getLocation(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         ConfigurationSection section = getConfig().getConfigurationSection(path);
 
         return new Location(
@@ -594,10 +719,15 @@ public class Config implements DefaultConfigImpl {
     }
 
     private String color(String msg) {
+        PreCondition.nonNull(msg, "msg는 null일 수 없습니다.");
+
         return (getPrefix() + msg).replace(ALT_COLOR_CHAR, COLOR_CHAR);
     }
 
     private String replace(String message, Map<String, String> map) {
+        PreCondition.nonNull(message, "message는 null일 수 없습니다.");
+        PreCondition.nonNull(map, "map은 null일 수 없습니다.");
+
         Map<String, String> newMap = new HashMap<>(map);
         for (Map.Entry<String, String> entry : newMap.entrySet()) {
             message = message.replace(entry.getKey(), entry.getValue());
@@ -607,23 +737,33 @@ public class Config implements DefaultConfigImpl {
     }
 
     public String getMessage(String path) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
         return color(config.getString(path));
     }
 
     public String getMessage(String path, Map<String, String> replacements) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(replacements, "replacements는 null일 수 없습니다.");
+
         return color(replace(config.getString(path), replacements));
     }
 
     public List<String> getMessages(String path) {
-        List<String> list = new ArrayList<>();
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+
+        List<String> messages = new ArrayList<>();
         for (String msg : config.getStringList(path)) {
-            list.add(color(msg));
+            messages.add(color(msg));
         }
 
-        return list;
+        return messages;
     }
 
     public List<String> getMessages(String path, Map<String, String> replacements) {
+        PreCondition.nonNull(path, "path는 null일 수 없습니다.");
+        PreCondition.nonNull(replacements, "replacements는 null일 수 없습니다.");
+
         List<String> messages = new ArrayList<>();
         for (String message : config.getStringList(path)) {
             messages.add(color(replace(message, replacements)));
