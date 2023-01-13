@@ -1,5 +1,7 @@
 package net.starly.core.data;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import net.starly.core.builder.ItemBuilder;
 import net.starly.core.data.impl.DefaultConfigImpl;
 import net.starly.core.util.PreCondition;
@@ -9,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -22,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.*;
 
 @SuppressWarnings("all")
@@ -482,10 +486,9 @@ public class Config implements DefaultConfigImpl {
 
         if (value.getType() == Material.PLAYER_HEAD) {       // 플레이어 머리
             SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
-            Player ownerPlayer = (Player) skullMeta.getOwningPlayer();
 
-            if (ownerPlayer != null) {
-                section.set("meta.skullOwner", ownerPlayer.getName());
+            if (skullMeta != null) {
+                section.set("skullMeta", skullMeta);
             }
         }
 
@@ -624,16 +627,8 @@ public class Config implements DefaultConfigImpl {
 
         ItemStack itemStack = itemBuilder.build();
 
-        if (section.getString("meta.skullOwner") != null) {
-            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-
-            try {
-                skullMeta.setOwningPlayer(Bukkit.getPlayer(section.getString("meta.skullOwner")));
-            } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.skullOwner");
-            }
-
-            itemStack.setItemMeta(skullMeta);
+        if (section.get("skullMeta") != null) {
+            itemStack.setItemMeta(section.getObject("skullMeta", SkullMeta.class));
         }
 
 
