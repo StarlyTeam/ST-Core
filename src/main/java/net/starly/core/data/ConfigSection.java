@@ -95,7 +95,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setString(String path, String value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setString(this.path + "." + path, value);
         saveConfig();
@@ -111,7 +110,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setBoolean(String path, boolean value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setBoolean(this.path + "." + path, value);
         saveConfig();
@@ -120,14 +118,12 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public boolean getBoolean(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getBoolean(this.path + "." + path);
     }
 
     @Override
     public void setChar(String path, char value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setChar(this.path + "." + path, value);
         saveConfig();
@@ -143,7 +139,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setByte(String path, byte value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setByte(this.path + "." + path, value);
         saveConfig();
@@ -159,7 +154,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setShort(String path, short value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setShort(this.path + "." + path, value);
         saveConfig();
@@ -175,7 +169,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setInt(String path, int value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setInt(this.path + "." + path, value);
         saveConfig();
@@ -191,7 +184,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setLong(String path, long value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setLong(this.path + "." + path, value);
         saveConfig();
@@ -207,7 +199,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setFloat(String path, float value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setFloat(this.path + "." + path, value);
         saveConfig();
@@ -223,7 +214,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setDouble(String path, double value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setDouble(this.path + "." + path, value);
         saveConfig();
@@ -239,7 +229,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setObject(String path, Object value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setObject(this.path + "." + path, value);
         saveConfig();
@@ -255,7 +244,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setObjectList(String path, List<Object> value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setObjectList(this.path + "." + path, value);
         saveConfig();
@@ -271,7 +259,6 @@ public class ConfigSection implements DefaultConfigImpl {
     @Override
     public void setStringList(String path, List<String> value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setStringList(this.path + "." + path, value);
         saveConfig();
@@ -286,7 +273,6 @@ public class ConfigSection implements DefaultConfigImpl {
 
     public void setItemStack(String path, ItemStack value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setItemStack(this.path + "." + path, value);
         saveConfig();
@@ -294,15 +280,12 @@ public class ConfigSection implements DefaultConfigImpl {
 
     public ItemStack getItemStack(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getItemStack(this.path + "." + path);
     }
 
     public void setInventory(String path, Inventory value, String title) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
         PreCondition.nonNull(title, "title은 null일 수 없습니다.");
-
 
         getConfig().setInventory(this.path + "." + path, value, title);
         saveConfig();
@@ -316,7 +299,6 @@ public class ConfigSection implements DefaultConfigImpl {
 
     public void setLocation(String path, Location value) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
         getConfig().setLocation(this.path + "." + path, value);
         saveConfig();

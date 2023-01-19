@@ -1,19 +1,16 @@
 package net.starly.core.data;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import net.starly.core.builder.ItemBuilder;
 import net.starly.core.data.impl.DefaultConfigImpl;
 import net.starly.core.util.PreCondition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -25,7 +22,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.*;
 
 @SuppressWarnings("all")
@@ -223,7 +219,6 @@ public class Config implements DefaultConfigImpl {
      */
     public ConfigurationSection createSection(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().createSection(path);
     }
 
@@ -235,7 +230,6 @@ public class Config implements DefaultConfigImpl {
      */
     public ConfigSection getSection(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return new ConfigSection(this, path);
     }
 
@@ -247,7 +241,6 @@ public class Config implements DefaultConfigImpl {
      */
     public ConfigurationSection getConfigurationSection(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getConfigurationSection(path);
     }
 
@@ -263,7 +256,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public String getString(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getString(path);
     }
 
@@ -279,7 +271,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public boolean getBoolean(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getBoolean(path);
     }
 
@@ -295,7 +286,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public char getChar(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getString(path).charAt(0);
     }
 
@@ -311,7 +301,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public byte getByte(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return (byte) getConfig().getInt(path);
     }
 
@@ -327,7 +316,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public short getShort(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return (short) getConfig().getInt(path);
     }
 
@@ -343,7 +331,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public int getInt(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getInt(path);
     }
 
@@ -359,7 +346,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public long getLong(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getLong(path);
     }
 
@@ -375,7 +361,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public float getFloat(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return (float) getConfig().getDouble(path);
     }
 
@@ -391,7 +376,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public double getDouble(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getDouble(path);
     }
 
@@ -407,7 +391,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public Object getObject(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().get(path);
     }
 
@@ -423,7 +406,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public List<Object> getObjectList(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getList(path).stream().map(o -> (Object) o).toList();
     }
 
@@ -439,7 +421,6 @@ public class Config implements DefaultConfigImpl {
     @Override
     public List<String> getStringList(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return getConfig().getStringList(path);
     }
 
@@ -470,27 +451,33 @@ public class Config implements DefaultConfigImpl {
 
             if (meta.hasDisplayName()) metaSection.set("displayName", meta.getDisplayName());
             if (meta.hasLore()) metaSection.set("lores", meta.getLore());
-            if (meta.hasCustomModelData()) metaSection.set("customModelData", meta.getCustomModelData());
+            try {
+                if (meta.hasCustomModelData()) metaSection.set("customModelData", meta.getCustomModelData());
+            } catch (Exception ignored) {}
 
 
             // ----------------------------------------------------
 
 
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.STRING)));
+            try {
+                PersistentDataContainer data = meta.getPersistentDataContainer();
+                data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.STRING)));
+            } catch (Exception ignored) {}
         }
 
 
         // ----------------------------------------------------
 
 
-        if (value.getType() == Material.PLAYER_HEAD) {       // 플레이어 머리
-            SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
+        try {
+            if (value.getType() == Material.PLAYER_HEAD) {       // 플레이어 머리
+                SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
 
-            if (skullMeta != null) {
-                section.set("skullMeta", skullMeta);
+                if (skullMeta != null) {
+                    section.set("skullMeta", skullMeta);
+                }
             }
-        }
+        } catch (Exception ignored) {}
 
 
         // -----------------------------------------------------
@@ -517,7 +504,6 @@ public class Config implements DefaultConfigImpl {
 
     public ItemStack getItemStack(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
 
         // ----------------------------------------------------
 
@@ -551,21 +537,6 @@ public class Config implements DefaultConfigImpl {
 
 
         // ----------------------------------------------------
-
-
-        if (section.getConfigurationSection("pdc") != null) {
-            try {
-                section.getConfigurationSection("pdc").getKeys(false).forEach(key -> {
-                    try {
-                        itemBuilder.setNBT(key, section.getString("pdc." + key));
-                    } catch (Exception ex) {
-                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc." + key);
-                    }
-                });
-            } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc");
-            }
-        }
 
 
         // ----------------------------------------------------
@@ -628,7 +599,21 @@ public class Config implements DefaultConfigImpl {
         ItemStack itemStack = itemBuilder.build();
 
         if (section.get("skullMeta") != null) {
-            itemStack.setItemMeta(section.getObject("skullMeta", SkullMeta.class));
+            itemStack.setItemMeta((SkullMeta) section.get("skullMeta"));
+        }
+
+        if (section.getConfigurationSection("pdc") != null) {
+            try {
+                section.getConfigurationSection("pdc").getKeys(false).forEach(key -> {
+                    try {
+                        itemStack.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, key), PersistentDataType.STRING, section.getString("pdc." + key));
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc." + key);
+                    }
+                });
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc");
+            }
         }
 
 
@@ -658,7 +643,6 @@ public class Config implements DefaultConfigImpl {
 
     public Inventory getInventory(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         ConfigurationSection section = getConfig().getConfigurationSection(path);
         Inventory inventory;
         try {
@@ -695,7 +679,6 @@ public class Config implements DefaultConfigImpl {
 
     public Location getLocation(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         ConfigurationSection section = getConfig().getConfigurationSection(path);
 
         return new Location(
@@ -733,7 +716,6 @@ public class Config implements DefaultConfigImpl {
 
     public String getMessage(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         return color(config.getString(path));
     }
 
@@ -746,7 +728,6 @@ public class Config implements DefaultConfigImpl {
 
     public List<String> getMessages(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-
         List<String> messages = new ArrayList<>();
         for (String msg : config.getStringList(path)) {
             messages.add(color(msg));
