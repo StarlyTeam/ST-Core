@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @SuppressWarnings("all")
@@ -452,17 +453,19 @@ public class Config implements DefaultConfigImpl {
             if (meta.hasDisplayName()) metaSection.set("displayName", meta.getDisplayName());
             if (meta.hasLore()) metaSection.set("lores", meta.getLore());
             try {
+                meta.getClass().getMethod("hasCustomModelData");
                 if (meta.hasCustomModelData()) metaSection.set("customModelData", meta.getCustomModelData());
-            } catch (Exception ignored) {}
+            } catch (NoSuchMethodException ignored) {}
 
 
             // ----------------------------------------------------
 
 
             try {
+                meta.getClass().getMethod("getPersistentDataContainer");
                 PersistentDataContainer data = meta.getPersistentDataContainer();
                 data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.STRING)));
-            } catch (Exception ignored) {}
+            } catch (NoSuchMethodException ignored) {}
         }
 
 
