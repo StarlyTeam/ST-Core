@@ -5,6 +5,7 @@ website: https://discord.gg/TF8jqSJjCG
 
 description: Starly-Core
 
-version: 1.5.3
+version: 1.5.4
+api-version: 1.13
 
 commands:
