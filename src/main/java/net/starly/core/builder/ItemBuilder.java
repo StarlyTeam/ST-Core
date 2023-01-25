@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemBuilder {
     private final ItemStack itemStack;
@@ -68,7 +69,7 @@ public class ItemBuilder {
      * @return      ItemBuilder     재귀함수
      */
     public ItemBuilder setLore(String... lore) {
-        itemMeta.setLore(Arrays.stream(lore).map(s -> ChatColor.translateAlternateColorCodes('&', s)).toList());
+        itemMeta.setLore(Arrays.stream(lore).map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList()));
         return this;
     }
 
@@ -79,7 +80,7 @@ public class ItemBuilder {
      * @return      ItemBuilder     재귀함수
      */
     public ItemBuilder setLore(List<String> lore) {
-        itemMeta.setLore(Arrays.stream(lore.toArray()).map(s -> ChatColor.translateAlternateColorCodes('&', s.toString())).toList());
+        itemMeta.setLore(Arrays.stream(lore.toArray()).map(s -> ChatColor.translateAlternateColorCodes('&', s.toString())).collect(Collectors.toList()));
         return this;
     }
 

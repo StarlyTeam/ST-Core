@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("all")
 public class Config implements DefaultConfigImpl {
@@ -127,7 +128,7 @@ public class Config implements DefaultConfigImpl {
      * @return  List<String>        이름 목록
      */
     public List<String> getFileNames() {
-        return getFiles().stream().map(file -> file.getName().replace(".yml", "")).toList();
+        return getFiles().stream().map(file -> file.getName().replace(".yml", "")).collect(Collectors.toList());
     }
 
     /**
@@ -137,7 +138,7 @@ public class Config implements DefaultConfigImpl {
      */
     public List<File> getFiles() {
         File dir = new File(plugin.getDataFolder(), name.replace(".yml", ""));
-        return List.of(dir.listFiles());
+        return Arrays.asList(dir.listFiles());
     }
 
     /**
@@ -407,7 +408,7 @@ public class Config implements DefaultConfigImpl {
     @Override
     public List<Object> getObjectList(String path) {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
-        return getConfig().getList(path).stream().map(o -> (Object) o).toList();
+        return getConfig().getList(path).stream().map(o -> (Object) o).collect(Collectors.toList());
     }
 
     @Override
