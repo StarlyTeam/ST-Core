@@ -473,15 +473,17 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        try {
-            if (value.getType() == Material.PLAYER_HEAD) {
-                SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
+        if (!Bukkit.getVersion().contains("1.12")) {
+            try {
+                if (value.getType() == Material.PLAYER_HEAD) {
+                    SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
 
-                if (skullMeta != null) {
-                    section.set("skullMeta", skullMeta);
+                    if (skullMeta != null) {
+                        section.set("skullMeta", skullMeta);
+                    }
                 }
-            }
-        } catch (Exception ignored) {}
+            } catch (Exception ignored) {}
+        }
 
 
         // -----------------------------------------------------
