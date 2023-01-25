@@ -1,5 +1,6 @@
 package net.starly.core.data;
 
+import net.starly.core.StarlyCore;
 import net.starly.core.builder.ItemBuilder;
 import net.starly.core.data.impl.DefaultConfigImpl;
 import net.starly.core.util.PreCondition;
@@ -472,17 +473,15 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (!Bukkit.getVersion().contains("1.12")) {
-            try {
-                if (value.getType() == Material.PLAYER_HEAD) {
-                    SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
+        try {
+            if (value.getType() == Material.PLAYER_HEAD) {
+                SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
 
-                    if (skullMeta != null) {
-                        section.set("skullMeta", skullMeta);
-                    }
+                if (skullMeta != null) {
+                    section.set("skullMeta", skullMeta);
                 }
-            } catch (Exception ignored) {}
-        }
+            }
+        } catch (Exception ignored) {}
 
 
         // -----------------------------------------------------
@@ -544,9 +543,6 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        // ----------------------------------------------------
-
-
         if (section.get("meta.displayName") != null) {
             try {
                 itemBuilder.setDisplayName(section.getString("meta.displayName"));
@@ -583,24 +579,6 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (section.getConfigurationSection("meta.enchantments") != null) {
-            try {
-                section.getConfigurationSection("meta.enchantments").getKeys(false).forEach(key -> {
-                    try {
-                        itemBuilder.addUnsafeEnchantment(Enchantment.getByName(key), section.getInt("meta.enchantments." + key));
-                    } catch (Exception ex) {
-                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.enchantments." + key);
-                    }
-                });
-            } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.enchantments");
-            }
-        }
-
-
-        // ----------------------------------------------------
-
-
         ItemStack itemStack = itemBuilder.build();
 
         if (section.get("skullMeta") != null) {
@@ -618,6 +596,20 @@ public class Config implements DefaultConfigImpl {
                 });
             } catch (Exception e) {
                 throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc");
+            }
+        }
+
+        if (section.getConfigurationSection("enchantments") != null) {
+            try {
+                section.getConfigurationSection("enchantments").getKeys(false).forEach(key -> {
+                    try {
+                        itemStack.addUnsafeEnchantment(Enchantment.getByName(key), section.getInt("enchantments." + key));
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments." + key);
+                    }
+                });
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments");
             }
         }
 
