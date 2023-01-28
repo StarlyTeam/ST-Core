@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"net.starly.core"},{"l":"net.starly.core.bstats"},{"l":"net.starly.core.builder"},{"l":"net.starly.core.data"},{"l":"net.starly.core.data.impl"},{"l":"net.starly.core.data.location"},{"l":"net.starly.core.data.util"},{"l":"net.starly.core.util"}];updateSearchResults();
