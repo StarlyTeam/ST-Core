@@ -636,6 +636,7 @@ public class Config implements DefaultConfigImpl {
             ItemStack itemStack = value.getItem(i);
             if (itemStack != null) setItemStack(path + ".items." + i, itemStack);
         }
+        if (getConfigurationSection(path + ".items") == null) setObject(path + ".items", new HashMap<>());
 
         saveConfig();
     }
