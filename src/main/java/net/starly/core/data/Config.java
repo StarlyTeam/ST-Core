@@ -455,6 +455,22 @@ public class Config implements DefaultConfigImpl {
                 PersistentDataContainer data = meta.getPersistentDataContainer();
                 data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.STRING)));
             } catch (NoSuchMethodException ignored) {}
+
+
+            // ----------------------------------------------------
+
+
+            if (value.getType() == Material.ENCHANTED_BOOK) {                       // 인챈트 북
+                EnchantmentStorageMeta esm = (EnchantmentStorageMeta) meta;
+                Map<Enchantment, Integer> enchantments = esm.getStoredEnchants();
+
+                if (enchantments != null) {
+                    enchantments.keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
+                }
+            } else if (value.getItemMeta().hasEnchants()) {                         // 일반 아이템
+                Map<Enchantment, Integer> enchantments = meta.getEnchants();
+                value.getEnchantments().keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
+            }
         }
 
 
@@ -471,22 +487,6 @@ public class Config implements DefaultConfigImpl {
                     }
                 }
             } catch (Exception ignored) {}
-        }
-
-
-        // -----------------------------------------------------
-
-
-        if (value.getType() == Material.ENCHANTED_BOOK) {           // 인챈트 북
-            EnchantmentStorageMeta esm = (EnchantmentStorageMeta) value.getItemMeta();
-            Map<Enchantment, Integer> enchantments = esm.getStoredEnchants();
-
-            if (enchantments != null) {
-                enchantments.keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
-            }
-        } else if (value.getItemMeta().hasEnchants()) {             // 이외 아이템
-            Map<Enchantment, Integer> enchantments = meta.getEnchants();
-            value.getEnchantments().keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
         }
 
 
