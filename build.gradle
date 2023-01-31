@@ -8,7 +8,6 @@ version '1.5.7'
 repositories {
     mavenCentral()
     maven { url = "http://feather-s.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
@@ -17,10 +16,7 @@ dependencies {
 
     //BUKKIT DEPENDENCIES
     compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
-    compileOnly "org.bukkit.craftbukkit:craftbukkit:R0.1:1.16.5"
 }
-
-compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
