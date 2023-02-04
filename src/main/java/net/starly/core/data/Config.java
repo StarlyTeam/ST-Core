@@ -454,7 +454,6 @@ public class Config implements DefaultConfigImpl {
 
             try {
                 meta.getClass().getMethod("getPersistentDataContainer");
-
                 if (meta.getPersistentDataContainer().getKeys().size() > 0) section.set("pdc", meta.getPersistentDataContainer());
             } catch (NoSuchMethodException ignored) {}
 
@@ -467,7 +466,7 @@ public class Config implements DefaultConfigImpl {
                 Map<Enchantment, Integer> enchantments = esm.getStoredEnchants();
 
                 if (enchantments != null) {
-                    enchantments.keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
+                    enchantments.keySet().forEach(enchantment -> section.set("bookEnchantments." + enchantment.getName(), enchantments.get(enchantment)));
                 }
             } else if (value.getItemMeta().hasEnchants()) {                         // 일반 아이템
                 Map<Enchantment, Integer> enchantments = meta.getEnchants();
@@ -600,6 +599,23 @@ public class Config implements DefaultConfigImpl {
                 });
             } catch (Exception e) {
                 throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments");
+            }
+        }
+
+        if (section.getConfigurationSection("bookEnchantments") != null) {
+            try {
+                section.getConfigurationSection("bookEnchantments").getKeys(false).forEach(key -> {
+                    try {
+                        EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemStack.getItemMeta();
+
+                        meta.addStoredEnchant(Enchantment.getByName(key), section.getInt("bookEnchantments." + key), true);
+                        itemStack.setItemMeta(meta);
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".bookEnchantments." + key);
+                    }
+                });
+            } catch (Exception e) {
+                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".bookEnchantments");
             }
         }
 
