@@ -23,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -452,8 +453,7 @@ public class Config implements DefaultConfigImpl {
 
             try {
                 meta.getClass().getMethod("getPersistentDataContainer");
-                PersistentDataContainer data = meta.getPersistentDataContainer();
-                data.getKeys().forEach(key -> section.set("pdc." + key.getKey(), data.get(key, PersistentDataType.STRING)));
+                section.set("pdc", meta.getPersistentDataContainer());
             } catch (NoSuchMethodException ignored) {}
 
 
@@ -575,15 +575,15 @@ public class Config implements DefaultConfigImpl {
             itemStack.setItemMeta((SkullMeta) section.get("skullMeta"));
         }
 
-        if (section.getConfigurationSection("pdc") != null) {
+        if (section.getObject("pdc", Object.class) != null) {
             try {
-                section.getConfigurationSection("pdc").getKeys(false).forEach(key -> {
-                    try {
-                        itemStack.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, key), PersistentDataType.STRING, section.getString("pdc." + key));
-                    } catch (Exception ex) {
-                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc." + key);
-                    }
-                });
+                ItemMeta meta = itemStack.getItemMeta();
+
+                Field field = meta.getClass().getDeclaredField("persistentDataContainer");
+                field.setAccessible(true);
+                field.set(section.getObject("pdc", PersistentDataContainer.class), meta);
+
+                itemStack.setItemMeta(meta);
             } catch (Exception e) {
                 throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc");
             }

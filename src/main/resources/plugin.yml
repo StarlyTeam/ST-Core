@@ -3,9 +3,9 @@ main: net.starly.core.StarlyCore
 author: Starly Team
 website: http://starly.kr/discord
 
-description: Starly-Core
+description: Core Plugin.
 
-version: 1.5.7
+version: 1.6
 api-version: 1.13
 
 commands:
