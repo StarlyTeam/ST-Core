@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -420,15 +421,16 @@ public class Config implements DefaultConfigImpl {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
         PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
-        ConfigurationSection section = getConfig().createSection(path);
+        getConfig().createSection(path);
+        ConfigSection section = getSection(path);
 
 
         // ----------------------------------------------------
 
 
-        section.set("material", value.getType().name());
-        section.set("amount", value.getAmount());
-        section.set("durability", value.getDurability());
+        section.setString("material", value.getType().name());
+        section.setInt("amount", value.getAmount());
+        section.setFloat("durability", value.getDurability());
 
 
         // ----------------------------------------------------
@@ -436,16 +438,17 @@ public class Config implements DefaultConfigImpl {
 
         ItemMeta meta = value.getItemMeta();
         if (meta != null) {
-            ConfigurationSection metaSection = section.createSection("meta");
+            section.createSection("meta");
+            ConfigSection metaSection = section.getSection("meta");
 
             // ----------------------------------------------------
 
 
-            if (meta.hasDisplayName()) metaSection.set("displayName", meta.getDisplayName());
-            if (meta.hasLore()) metaSection.set("lores", meta.getLore());
+            if (meta.hasDisplayName()) metaSection.setString("displayName", meta.getDisplayName());
+            if (meta.hasLore()) metaSection.setStringList("lores", meta.getLore());
             try {
                 meta.getClass().getMethod("hasCustomModelData");
-                if (meta.hasCustomModelData()) metaSection.set("customModelData", meta.getCustomModelData());
+                if (meta.hasCustomModelData()) metaSection.setInt("customModelData", meta.getCustomModelData());
             } catch (NoSuchMethodException ignored) {}
 
 
@@ -454,7 +457,7 @@ public class Config implements DefaultConfigImpl {
 
             try {
                 meta.getClass().getMethod("getPersistentDataContainer");
-                if (meta.getPersistentDataContainer().getKeys().size() > 0) section.set("pdc", meta.getPersistentDataContainer());
+                if (meta.getPersistentDataContainer().getKeys().size() > 0) section.setObject("pdc", meta.getPersistentDataContainer());
             } catch (NoSuchMethodException ignored) {}
 
 
@@ -466,12 +469,20 @@ public class Config implements DefaultConfigImpl {
                 Map<Enchantment, Integer> enchantments = esm.getStoredEnchants();
 
                 if (enchantments != null) {
-                    enchantments.keySet().forEach(enchantment -> section.set("bookEnchantments." + enchantment.getName(), enchantments.get(enchantment)));
+                    enchantments.keySet().forEach(enchantment -> metaSection.setInt("bookEnchantments." + enchantment.getName(), enchantments.get(enchantment)));
                 }
             } else if (value.getItemMeta().hasEnchants()) {                         // 일반 아이템
                 Map<Enchantment, Integer> enchantments = meta.getEnchants();
-                value.getEnchantments().keySet().forEach(enchantment -> section.set("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
+                value.getEnchantments().keySet().forEach(enchantment -> metaSection.setInt("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
             }
+
+
+            // ----------------------------------------------------
+
+
+            try {
+                metaSection.setStringList("flags", value.getItemMeta().getItemFlags().stream().map(ItemFlag::name).collect(Collectors.toList()));
+            } catch (Exception ignored) {}
         }
 
 
@@ -484,7 +495,7 @@ public class Config implements DefaultConfigImpl {
                     SkullMeta skullMeta = (SkullMeta) value.getItemMeta();
 
                     if (skullMeta != null) {
-                        section.set("skullMeta", skullMeta);
+                        section.setObject("skullMeta", skullMeta);
                     }
                 }
             } catch (Exception ignored) {}
@@ -503,7 +514,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        ConfigurationSection section = getConfig().getConfigurationSection(path);
+        ConfigSection section = getSection(path);
         ItemBuilder itemBuilder;
 
 
@@ -522,7 +533,7 @@ public class Config implements DefaultConfigImpl {
             throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".amount");
         }
 
-        if (section.get("durability") != null) {
+        if (section.getObject("durability") != null) {
             try {
                 itemBuilder.setDurability((short) section.getInt("durability"));
             } catch (Exception e) {
@@ -534,7 +545,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (section.get("meta.displayName") != null) {
+        if (section.getObject("meta.displayName") != null) {
             try {
                 itemBuilder.setDisplayName(section.getString("meta.displayName"));
             } catch (Exception e) {
@@ -546,7 +557,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (section.get("meta.lores") != null) {
+        if (section.getObject("meta.lores") != null) {
             try {
                 itemBuilder.setLore(section.getStringList("meta.lores"));
             } catch (Exception e) {
@@ -558,7 +569,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (section.get("meta.customModelData") != null) {
+        if (section.getObject("meta.customModelData") != null) {
             try {
                 itemBuilder.setCustomModelData(section.getInt("meta.customModelData"));
             } catch (Exception e) {
@@ -572,25 +583,25 @@ public class Config implements DefaultConfigImpl {
 
         ItemStack itemStack = itemBuilder.build();
 
-        if (section.get("skullMeta") != null) {
-            itemStack.setItemMeta((SkullMeta) section.get("skullMeta"));
+        if (section.getObject("skullMeta") != null) {
+            itemStack.setItemMeta((SkullMeta) section.getObject("skullMeta"));
         }
 
-        if (section.get("pdc") != null) {
+        if (section.getObject("pdc") != null) {
             try {
                 ItemMeta meta = itemStack.getItemMeta();
 
                 Field field = meta.getClass().getDeclaredField("persistentDataContainer");
                 field.setAccessible(true);
-                field.set(meta, section.getObject("pdc", PersistentDataContainer.class));
+                field.set(meta, section.getObject("pdc"));
 
                 itemStack.setItemMeta(meta);
             } catch (Exception ignored) {}
         }
 
-        if (section.getConfigurationSection("enchantments") != null) {
+        if (section.getObject("meta.enchantments") != null) {
             try {
-                section.getConfigurationSection("enchantments").getKeys(false).forEach(key -> {
+                section.getConfigurationSection("meta.enchantments").getKeys(false).forEach(key -> {
                     try {
                         itemStack.addUnsafeEnchantment(Enchantment.getByName(key), section.getInt("enchantments." + key));
                     } catch (Exception ex) {
@@ -602,9 +613,9 @@ public class Config implements DefaultConfigImpl {
             }
         }
 
-        if (section.getConfigurationSection("bookEnchantments") != null) {
+        if (section.getObject("meta.bookEnchantments") != null) {
             try {
-                section.getConfigurationSection("bookEnchantments").getKeys(false).forEach(key -> {
+                section.getConfigurationSection("meta.bookEnchantments").getKeys(false).forEach(key -> {
                     try {
                         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemStack.getItemMeta();
 
@@ -617,6 +628,15 @@ public class Config implements DefaultConfigImpl {
             } catch (Exception e) {
                 throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".bookEnchantments");
             }
+        }
+
+        if (section.getObject("meta.flags") != null) {
+            List<String> flagNames = section.getStringList("meta.flags");
+            List<ItemFlag> flags = flagNames.stream().map(ItemFlag::valueOf).collect(Collectors.toList());
+
+            ItemMeta meta = itemStack.getItemMeta();
+            flags.forEach(meta::addItemFlags);
+            itemStack.setItemMeta(meta);
         }
 
 
