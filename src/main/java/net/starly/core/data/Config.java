@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import sun.reflect.annotation.ExceptionProxy;
 
 import java.io.File;
 import java.io.InputStream;
@@ -453,7 +454,8 @@ public class Config implements DefaultConfigImpl {
 
             try {
                 meta.getClass().getMethod("getPersistentDataContainer");
-                section.set("pdc", meta.getPersistentDataContainer());
+
+                if (meta.getPersistentDataContainer().getKeys().size() > 0) section.set("pdc", meta.getPersistentDataContainer());
             } catch (NoSuchMethodException ignored) {}
 
 
@@ -575,18 +577,16 @@ public class Config implements DefaultConfigImpl {
             itemStack.setItemMeta((SkullMeta) section.get("skullMeta"));
         }
 
-        if (section.getObject("pdc", Object.class) != null) {
+        if (section.get("pdc") != null) {
             try {
                 ItemMeta meta = itemStack.getItemMeta();
 
                 Field field = meta.getClass().getDeclaredField("persistentDataContainer");
                 field.setAccessible(true);
-                field.set(section.getObject("pdc", PersistentDataContainer.class), meta);
+                field.set(meta, section.getObject("pdc", PersistentDataContainer.class));
 
                 itemStack.setItemMeta(meta);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".pdc");
-            }
+            } catch (Exception ignored) {}
         }
 
         if (section.getConfigurationSection("enchantments") != null) {
