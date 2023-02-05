@@ -11,6 +11,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_16_R3.persistence.CraftPersistentDataContainer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -19,9 +20,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import sun.reflect.annotation.ExceptionProxy;
 
 import java.io.File;
 import java.io.InputStream;
@@ -421,6 +420,7 @@ public class Config implements DefaultConfigImpl {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
         PreCondition.nonNull(value, "value는 null일 수 없습니다.");
 
+
         getConfig().createSection(path);
         ConfigSection section = getSection(path);
 
@@ -446,8 +446,14 @@ public class Config implements DefaultConfigImpl {
 
             if (meta.hasDisplayName()) metaSection.setString("displayName", meta.getDisplayName());
             if (meta.hasLore()) metaSection.setStringList("lores", meta.getLore());
+
+
+            // ----------------------------------------------------
+
+
             try {
-                meta.getClass().getMethod("hasCustomModelData");
+                meta.getClass().getMethod("getCustomModelData");
+
                 if (meta.hasCustomModelData()) metaSection.setInt("customModelData", meta.getCustomModelData());
             } catch (NoSuchMethodException ignored) {}
 
@@ -457,6 +463,7 @@ public class Config implements DefaultConfigImpl {
 
             try {
                 meta.getClass().getMethod("getPersistentDataContainer");
+
                 if (meta.getPersistentDataContainer().getKeys().size() > 0) section.setObject("pdc", meta.getPersistentDataContainer());
             } catch (NoSuchMethodException ignored) {}
 
@@ -465,15 +472,14 @@ public class Config implements DefaultConfigImpl {
 
 
             if (value.getType() == Material.ENCHANTED_BOOK) {                       // 인챈트 북
-                EnchantmentStorageMeta esm = (EnchantmentStorageMeta) meta;
-                Map<Enchantment, Integer> enchantments = esm.getStoredEnchants();
+                Map<Enchantment, Integer> enchantments = ((EnchantmentStorageMeta) meta).getStoredEnchants();
 
                 if (enchantments != null) {
-                    enchantments.keySet().forEach(enchantment -> metaSection.setInt("bookEnchantments." + enchantment.getName(), enchantments.get(enchantment)));
+                    enchantments.keySet().forEach(enchantment -> section.setInt("bookEnchantments." + enchantment.getName(), enchantments.get(enchantment)));
                 }
             } else if (value.getItemMeta().hasEnchants()) {                         // 일반 아이템
                 Map<Enchantment, Integer> enchantments = meta.getEnchants();
-                value.getEnchantments().keySet().forEach(enchantment -> metaSection.setInt("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
+                value.getEnchantments().keySet().forEach(enchantment -> section.setInt("enchantments." + enchantment.getName(), enchantments.get(enchantment)));
             }
 
 
@@ -514,7 +520,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        ConfigSection section = getSection(path);
+        ConfigurationSection section = getConfigurationSection(path);
         ItemBuilder itemBuilder;
 
 
@@ -533,7 +539,7 @@ public class Config implements DefaultConfigImpl {
             throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".amount");
         }
 
-        if (section.getObject("durability") != null) {
+        if (section.get("durability") != null) {
             try {
                 itemBuilder.setDurability((short) section.getInt("durability"));
             } catch (Exception e) {
@@ -545,7 +551,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (section.getObject("meta.displayName") != null) {
+        if (section.get("meta.displayName") != null) {
             try {
                 itemBuilder.setDisplayName(section.getString("meta.displayName"));
             } catch (Exception e) {
@@ -557,7 +563,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (section.getObject("meta.lores") != null) {
+        if (section.get("meta.lores") != null) {
             try {
                 itemBuilder.setLore(section.getStringList("meta.lores"));
             } catch (Exception e) {
@@ -569,7 +575,7 @@ public class Config implements DefaultConfigImpl {
         // ----------------------------------------------------
 
 
-        if (section.getObject("meta.customModelData") != null) {
+        if (section.get("meta.customModelData") != null) {
             try {
                 itemBuilder.setCustomModelData(section.getInt("meta.customModelData"));
             } catch (Exception e) {
@@ -583,39 +589,39 @@ public class Config implements DefaultConfigImpl {
 
         ItemStack itemStack = itemBuilder.build();
 
-        if (section.getObject("skullMeta") != null) {
-            itemStack.setItemMeta((SkullMeta) section.getObject("skullMeta"));
+        if (section.get("skullMeta") != null) {
+            itemStack.setItemMeta(section.getObject("skullMeta", SkullMeta.class));
         }
 
-        if (section.getObject("pdc") != null) {
+        if (section.get("pdc") != null) {
             try {
                 ItemMeta meta = itemStack.getItemMeta();
 
                 Field field = meta.getClass().getDeclaredField("persistentDataContainer");
                 field.setAccessible(true);
-                field.set(meta, section.getObject("pdc"));
+                field.set(meta, section.getObject("pdc", PersistentDataContainer.class));
 
                 itemStack.setItemMeta(meta);
             } catch (Exception ignored) {}
         }
 
-        if (section.getObject("meta.enchantments") != null) {
+        if (section.get("enchantments") != null) {
             try {
-                section.getConfigurationSection("meta.enchantments").getKeys(false).forEach(key -> {
+                section.getConfigurationSection("enchantments").getKeys(false).forEach(key -> {
                     try {
                         itemStack.addUnsafeEnchantment(Enchantment.getByName(key), section.getInt("enchantments." + key));
-                    } catch (Exception ex) {
+                    } catch (Exception ignored) {
                         throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments." + key);
                     }
                 });
-            } catch (Exception e) {
+            } catch (Exception ignored) {
                 throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments");
             }
         }
 
-        if (section.getObject("meta.bookEnchantments") != null) {
+        if (section.get("bookEnchantments") != null) {
             try {
-                section.getConfigurationSection("meta.bookEnchantments").getKeys(false).forEach(key -> {
+                section.getConfigurationSection("bookEnchantments").getKeys(false).forEach(key -> {
                     try {
                         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemStack.getItemMeta();
 
@@ -630,7 +636,7 @@ public class Config implements DefaultConfigImpl {
             }
         }
 
-        if (section.getObject("meta.flags") != null) {
+        if (section.get("meta.flags") != null) {
             List<String> flagNames = section.getStringList("meta.flags");
             List<ItemFlag> flags = flagNames.stream().map(ItemFlag::valueOf).collect(Collectors.toList());
 
@@ -672,6 +678,7 @@ public class Config implements DefaultConfigImpl {
         try {
             inventory = Bukkit.createInventory(null, section.getInt("size"), section.getString("title"));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException("인벤토리를 불러오는데 실패했습니다. 경로: " + path);
         }
 
@@ -679,6 +686,7 @@ public class Config implements DefaultConfigImpl {
             section.getConfigurationSection("items").getKeys(false).forEach(key ->
                     inventory.setItem(Integer.parseInt(key), getItemStack(path + ".items." + key)));
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException("인벤토리를 불러오는데 실패했습니다. 경로: " + path + ".items");
         }
 

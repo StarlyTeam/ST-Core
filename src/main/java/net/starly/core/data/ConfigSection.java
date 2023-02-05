@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigSection implements DefaultConfigImpl {
@@ -84,6 +85,10 @@ public class ConfigSection implements DefaultConfigImpl {
         PreCondition.nonNull(path, "path는 null일 수 없습니다.");
 
         return new ConfigSection(config, path);
+    }
+
+    public List<String> getKeys() {
+        return new ArrayList<>(section.getKeys(false));
     }
 
     public ConfigurationSection getConfigurationSection(String path) {
