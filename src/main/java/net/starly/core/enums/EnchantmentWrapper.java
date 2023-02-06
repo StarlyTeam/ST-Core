@@ -55,9 +55,7 @@ public enum EnchantmentWrapper {
     }
 
     public String getName(Locale locale) {
-        if (locale == Locale.KR) return kr;
-        else if (locale == Locale.EN) return en;
-        else throw new IllegalArgumentException("존재하지 않는 언어입니다.");
+        return locale == Locale.KR ? kr : (locale == Locale.EN ? en : null);
     }
 
     public Enchantment getEnchantment() {
@@ -66,23 +64,21 @@ public enum EnchantmentWrapper {
 
     public static EnchantmentWrapper getWrapper(Enchantment enchantment) {
         for (EnchantmentWrapper wrapper : values()) {
-            if (wrapper.name().equals(enchantment.getName())) return wrapper;
+            if (wrapper.getEnchantment() == enchantment) return wrapper;
         }
 
         return null;
     }
 
     public static EnchantmentWrapper getWrapper(Locale locale, String name) {
-        if (locale == Locale.KR)
-            for (EnchantmentWrapper wrapper : values()) {
-                if (wrapper.kr.equals(name)) return wrapper;
-            }
-        else if (locale == Locale.EN)
-            for (EnchantmentWrapper wrapper : values()) {
-                if (wrapper.en.equals(name)) return wrapper;
-            }
-        else {
-            throw new IllegalArgumentException("존재하지 않는 언어입니다.");
+        for (EnchantmentWrapper wrapper : values()) {
+            if (wrapper
+                    .getName(locale)
+                    .replace(" ", "")
+                    .equals(
+                            name
+                                    .replace(" ", "")
+                    )) return wrapper;
         }
 
         return null;
