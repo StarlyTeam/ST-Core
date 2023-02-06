@@ -210,6 +210,34 @@ public class ItemBuilder {
         return this;
     }
 
+
+    /**
+     * 아이템에 PDC를 추가합니다.
+     *
+     * @param       key             PDC 키 (STRING)
+     * @param       value           PDC 값 (STRING)
+     * @param       type            PDC 타입 (PersistentDataType)
+     * @param       plugin          플러그인
+     * @return      ItemBuilder     재귀함수
+     */
+    public ItemBuilder setPDC(String key, String value, PersistentDataType type, JavaPlugin plugin) {
+        itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, key), type, value);
+        return this;
+    }
+
+    /**
+     * 아이템의 PDC를 제거합니다.
+     *
+     * @param       key             PDC 키 (STRING)
+     * @param       plugin          플러그인
+     * @return      ItemBuilder     재귀함수
+     */
+    public ItemBuilder removePDC(String key, JavaPlugin plugin) {
+        itemMeta.getPersistentDataContainer().remove(new NamespacedKey(plugin, key));
+        return this;
+    }
+
+
     /**
      * 아이템을 빌드합니다.
      *
