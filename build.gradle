@@ -3,11 +3,11 @@ plugins {
 }
 
 group 'net.starly.core'
-version '1.6'
+version '1.6.1'
 
 repositories {
     mavenCentral()
-    maven { url = "http://feather-s.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
+    maven { url = "http://starly.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
 }
 
 dependencies {
