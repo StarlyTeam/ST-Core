@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group 'net.starly.core'
@@ -13,11 +15,16 @@ repositories {
 dependencies {
     //JAVA DEPENDENCIES
     compileOnly "org.jetbrains:annotations:23.0.0"
+    api "org.reflections:reflections:0.10.2"
 
     //BUKKIT DEPENDENCIES
     compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
 }
 
-tasks.withType(JavaCompile).configureEach {
+tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    finalizedBy shadowJar
 }
