@@ -9,7 +9,7 @@ public class StarlyCore extends JavaPlugin {
     @Override
     public void onEnable() {
         new Metrics(this, 17172);
-        LicenseUtil.checkLicense(this, "831983e6-e4bf-4ca9-afd1-3cde282d269b");
+        LicenseUtil.checkLicense(this, "license");
     }
 
     @Override
