@@ -18,7 +18,7 @@ public class LicenseUtil {
             final Key[] aesKey = new Key[1];
             final Key[] rsaPublicKey = new Key[1];
 
-            WebSocketClient webSocketClient = new WebSocketClient(new URI("ws://localhost:84")) {
+            WebSocketClient webSocketClient = new WebSocketClient(new URI("ws://starly.kr:84")) {
                 @Override
                 public void onOpen(ServerHandshake serverHandshake) {
                     send("CHECK_CONNECTION_1");
