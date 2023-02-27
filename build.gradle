@@ -1,4 +1,5 @@
 plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.8.10"
     id 'java'
     id 'java-library'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
@@ -29,6 +30,10 @@ dependencies {
 
     //BUKKIT DEPENDENCIES
     compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
+
+    // KOTLIN
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8"
 }
 
 tasks.withType(JavaCompile) {
