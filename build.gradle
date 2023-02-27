@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'java-library'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'maven-publish'
 }
 
 group 'net.starly.core'
@@ -9,6 +10,7 @@ version '1.6.3'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url = "http://starly.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
 }
 
@@ -17,7 +19,13 @@ dependencies {
     compileOnly "org.jetbrains:annotations:23.0.0"
     api "org.reflections:reflections:0.10.2"
     api "org.java-websocket:Java-WebSocket:1.5.1"
+    api group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    api group: 'commons-io', name: 'commons-io', version: '2.6'
     implementation 'org.json:json:20220924'
+
+    // LOMBOK
+    compileOnly "org.projectlombok:lombok:1.18.26"
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     //BUKKIT DEPENDENCIES
     compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
@@ -25,6 +33,18 @@ dependencies {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'net.starly.core'
+            artifactId = 'ST-Core'
+            version = '1.6.3'
+
+            from components.java
+        }
+    }
 }
 
 jar {

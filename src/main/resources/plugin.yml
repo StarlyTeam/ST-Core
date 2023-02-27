@@ -9,3 +9,4 @@ version: 1.6.3
 api-version: 1.13
 
 commands:
+  core:
