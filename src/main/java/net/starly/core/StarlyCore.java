@@ -1,5 +1,7 @@
 package net.starly.core;
 
+import kotlin.Suppress;
+import net.starly.core.jb.container.ContainerListener;
 import net.starly.core.jb.repo.STArgumentRepository;
 import net.starly.core.jb.repo.impl.$STArgumentRepositoryImpl;
 import net.starly.core.jb.util.AsyncExecutor;
@@ -13,15 +15,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class StarlyCore extends JavaPlugin {
 
     private static $STArgumentRepositoryImpl argumentRepository;
+    private static StarlyCore instance;
 
     @Override
+    @SuppressWarnings("all")
     public void onEnable() {
+        instance = this;
         argumentRepository = new $STArgumentRepositoryImpl();
         new Metrics(this, 17172);
 
         VersionController.$initializing(this);
         PlayerSkullManager.$initializing(VersionController.getInstance().getVersion(), getServer());
         ItemStackNameUtil.$initializingLocale(this);
+
+        getServer().getPluginManager().registerEvents(new ContainerListener(), this);
     }
 
     @Override
@@ -31,5 +38,6 @@ public class StarlyCore extends JavaPlugin {
     }
 
     public static STArgumentRepository getArgumentRepository() { return argumentRepository; }
+    public static StarlyCore getInstance() { return instance; }
 
 }
