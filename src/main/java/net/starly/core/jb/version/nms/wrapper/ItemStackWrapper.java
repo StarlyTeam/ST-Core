@@ -2,16 +2,16 @@ package net.starly.core.jb.version.nms.wrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.starly.core.jb.version.nms.tank.NmsItemStackTank;
-import net.starly.core.jb.version.nms.tank.NmsItemTank;
+import net.starly.core.jb.version.nms.tank.NmsItemStackUtil;
+import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 
 @Data
 @AllArgsConstructor
 public class ItemStackWrapper {
 
     private Object nmsItemStack;
-    private NmsItemTank itemSupport;
-    private NmsItemStackTank wrapper;
+    private NmsItemUtil itemSupport;
+    private NmsItemStackUtil wrapper;
 
     /**
      * ItemStack 에 있는 NMSTagCompound 를 가져옵니다.
@@ -21,7 +21,7 @@ public class ItemStackWrapper {
         try {
             Object obj = wrapper.getGetTagMethod().invoke(nmsItemStack);
             if (obj == null) return null;
-            return new NBTTagCompoundWrapper(obj, wrapper.getNbtCompoundTank());
+            return new NBTTagCompoundWrapper(obj, wrapper.getNbtCompoundUtil());
         } catch (Exception e) {
             return null;
         }

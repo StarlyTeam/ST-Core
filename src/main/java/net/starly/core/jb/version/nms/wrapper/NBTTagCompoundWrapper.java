@@ -3,14 +3,14 @@ package net.starly.core.jb.version.nms.wrapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.starly.core.jb.util.JsonUtil;
-import net.starly.core.jb.version.nms.tank.NmsNbtTagCompoundTank;
+import net.starly.core.jb.version.nms.tank.NmsNbtTagCompoundUtil;
 
 @Data
 @AllArgsConstructor
 public class NBTTagCompoundWrapper {
 
     private Object nbtTagCompound;
-    private NmsNbtTagCompoundTank wrapper;
+    private NmsNbtTagCompoundUtil wrapper;
 
     /**
      * NBTTagCompound 에서 String 으로 설정된 값을 가져옵니다.

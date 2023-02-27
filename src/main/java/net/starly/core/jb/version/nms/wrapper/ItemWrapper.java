@@ -1,16 +1,16 @@
 package net.starly.core.jb.version.nms.wrapper;
 
 import lombok.Getter;
-import net.starly.core.jb.version.nms.tank.NmsItemTank;
+import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 
 import java.lang.reflect.Method;
 
 public class ItemWrapper {
 
-    private NmsItemTank support;
+    private NmsItemUtil support;
     @Getter private Object Item;
 
-    public ItemWrapper(NmsItemTank itemSupport, ItemStackWrapper nmsItemStackWrapper) {
+    public ItemWrapper(NmsItemUtil itemSupport, ItemStackWrapper nmsItemStackWrapper) {
         try {
             support = itemSupport;
             Method getItemMethod;

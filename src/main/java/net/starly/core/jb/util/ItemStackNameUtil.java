@@ -4,7 +4,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import net.starly.core.jb.version.VersionController;
-import net.starly.core.jb.version.nms.tank.NmsItemStackTank;
+import net.starly.core.jb.version.nms.tank.NmsItemStackUtil;
 import net.starly.core.jb.version.nms.wrapper.ItemStackWrapper;
 import net.starly.core.jb.version.nms.wrapper.ItemWrapper;
 import org.apache.commons.io.IOUtils;
@@ -62,7 +62,7 @@ public class ItemStackNameUtil {
             return itemStack.getItemMeta().getDisplayName();
 
         try {
-            NmsItemStackTank nmsItem = NmsItemStackTank.getInstance();
+            NmsItemStackUtil nmsItem = NmsItemStackUtil.getInstance();
             ItemStackWrapper nmsItemStack = nmsItem.asNMSCopy(itemStack);
             ItemWrapper item = nmsItemStack.getItem();
             String unlocalizedName = item.getUnlocalizedName(nmsItemStack);

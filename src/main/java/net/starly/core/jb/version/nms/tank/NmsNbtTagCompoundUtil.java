@@ -5,13 +5,13 @@ import net.starly.core.jb.version.nms.wrapper.NBTTagCompoundWrapper;
 
 import java.lang.reflect.Method;
 
-public class NmsNbtTagCompoundTank {
+public class NmsNbtTagCompoundUtil {
 
     @Getter private Class<?> NBTTagCompound;
     @Getter private Method getStringMethod;
     @Getter private Method setStringMethod;
 
-    NmsNbtTagCompoundTank(
+    NmsNbtTagCompoundUtil(
             String nbtTagCompoundClassName
     ) throws ClassNotFoundException, NoSuchMethodException {
         try {

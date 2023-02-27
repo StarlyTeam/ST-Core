@@ -289,3 +289,26 @@ public class Main extends JavaPlugin {
     }
 }
 ```
+### 4-2. NMSWrapper
+```java
+import net.starly.core.util.InventoryUtil;
+
+public class Main extends JavaPlugin {
+    @Override
+    public void onEnable() {
+        Player player = Bukkit.getPlayer("Starly");
+        Inventory inventory = player.getInventory();
+        
+        // 사용법: InventoryUtil#hasEnoughSpace(slots);
+        // ↪ inventory: 인벤토리.
+        // ↪ slots: 아이템을 넣을 슬롯.
+        // ※ 인벤토리에 slots만큼의 칸이 비어있는지 확인합니다.
+        System.out.println(InventoryUtil.hasEnoughSpace(inventory, 3)); // true|false
+      
+        // 사용법: InventoryUtil#getSpace(inventory);
+        // ↪ inventory: 인벤토리.
+        // ※ 인벤토리에 비어있는 칸의 개수를 반환합니다.
+        System.out.println(InventoryUtil.hasEnoughSpace(inventory));
+    }
+}
+```

@@ -8,45 +8,47 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 
-public class NmsItemStackTank {
+public class NmsItemStackUtil {
 
-    private static NmsItemStackTank tank;
+    private static NmsItemStackUtil tank;
 
     private Method bukkitCopyMethod;
     private Method nmsCopyMethod;
     @Getter private Method setTagMethod;
     @Getter private Method getTagMethod;
-    @Getter private NmsNbtTagCompoundTank nbtCompoundTank;
-    private NmsItemTank nmsItemSupport;
+    @Getter private NmsNbtTagCompoundUtil nbtCompoundUtil;
+    private NmsItemUtil nmsItemSupport;
 
     /**
-     * NMS 의 ItemStack 을 얻기 위한 Tank 객체를 가져옵니다.
-     * @return NmsItemStackTank
+     * NMS 의 ItemStack 을 얻기 위한 Util 객체를 가져옵니다.
+     * 이 Util 안에는 NBTTagCompound 를 얻기 위한 Util 객체를 가져갈 수 있는 메서드도 포함되어 있습니다.
+     * NmsItemStackUtil#getNbtTagCompoundUtil
+     * @return NmsItemStackUtil
      */
     @Nullable
-    public static NmsItemStackTank getInstance() {
+    public static NmsItemStackUtil getInstance() {
         try {
-            if(tank == null) tank = new NmsItemStackTank(VersionController.getInstance().getVersion());
+            if(tank == null) tank = new NmsItemStackUtil(VersionController.getInstance().getVersion());
             return tank;
         } catch (Exception e) { return null; }
     }
 
-    private NmsItemStackTank(VersionController.Version version) throws ClassNotFoundException, NoSuchMethodException {
+    private NmsItemStackUtil(VersionController.Version version) throws ClassNotFoundException, NoSuchMethodException {
         String craftItemStackClassName = "org.bukkit.craftbukkit." + version.getVersion() + ".inventory.CraftItemStack";
         String nmsItemStackClassName = "net.minecraft.server." + version.getVersion() + ".ItemStack";
-        nbtCompoundTank = new NmsNbtTagCompoundTank("net.minecraft.server."+ version.getVersion() +".NBTTagCompound");
+        nbtCompoundUtil = new NmsNbtTagCompoundUtil("net.minecraft.server."+ version.getVersion() +".NBTTagCompound");
 
         Class<?> craftItemStack = Class.forName(craftItemStackClassName);
         Class<?> NMSItemStack;
         try { NMSItemStack = Class.forName(nmsItemStackClassName); }
         catch (Exception e) { NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack"); }
-        try { nmsItemSupport = new NmsItemTank("net.minecraft.server."+version.getVersion()+".Item", NMSItemStack); }
-        catch (Exception e) { nmsItemSupport = new NmsItemTank("net.minecraft.world.item.Item", NMSItemStack); }
+        try { nmsItemSupport = new NmsItemUtil("net.minecraft.server."+version.getVersion()+".Item", NMSItemStack); }
+        catch (Exception e) { nmsItemSupport = new NmsItemUtil("net.minecraft.world.item.Item", NMSItemStack); }
         bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
         try {
-            setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundTank.getNBTTagCompound());
-        } catch (Exception e) { setTagMethod = NMSItemStack.getDeclaredMethod("a", nbtCompoundTank.getNBTTagCompound()); }
+            setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundUtil.getNBTTagCompound());
+        } catch (Exception e) { setTagMethod = NMSItemStack.getDeclaredMethod("a", nbtCompoundUtil.getNBTTagCompound()); }
         try { getTagMethod = NMSItemStack.getDeclaredMethod("getTag"); }
         catch (Exception e) { getTagMethod = NMSItemStack.getDeclaredMethod("u"); }
     }
