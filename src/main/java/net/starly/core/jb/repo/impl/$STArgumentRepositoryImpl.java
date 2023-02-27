@@ -16,7 +16,17 @@ public class $STArgumentRepositoryImpl implements STArgumentRepository {
     public $STArgumentRepositoryImpl() {
         argumentMap = new HashMap<>();
         registerArguments(
-                new STArgument<>(Player.class, "플레이어", (buf) -> Bukkit.getServer().getPlayer(buf), () -> null, false, 0)
+                new STArgument<>(Player.class, "플레이어", (buf) -> Bukkit.getServer().getPlayer(buf), () -> null, false, 0),
+                new STArgument<>(Integer.class, "정수(int)", (buf) -> {
+                    try { return Integer.parseInt(buf); } catch (NumberFormatException ignored) { return null; }
+                }, () -> null, false, 0),
+                new STArgument<>(Long.class, "정수(long)", (buf) -> {
+                    try { return Long.parseLong(buf); } catch (NumberFormatException ignored) { return null; }
+                }, () -> null, false, 0),
+                new STArgument<>(Double.class, "실수", (buf) -> {
+                    try { return Double.parseDouble(buf); } catch (NumberFormatException ignored) { return null; }
+                }, () -> null, false, 0),
+                new STArgument<>(String.class, "문자열", (buf) -> buf, () -> null, false, 0)
         );
     }
 
