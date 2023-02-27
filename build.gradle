@@ -3,7 +3,6 @@ plugins {
     id 'java'
     id 'java-library'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'maven-publish'
 }
 
 group 'net.starly.core'
@@ -38,18 +37,6 @@ dependencies {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'net.starly.core'
-            artifactId = 'ST-Core'
-            version = '1.6.3'
-
-            from components.java
-        }
-    }
 }
 
 jar {
