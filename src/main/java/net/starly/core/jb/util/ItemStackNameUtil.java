@@ -24,6 +24,7 @@ public class ItemStackNameUtil {
     private static final Splitter splitter = Splitter.on('=').limit(2);
     private static Map<String, String> languageMap = new HashMap<>();
 
+    @Deprecated
     public static void $initializingLocale(JavaPlugin plugin) {
         if(!VersionController.getInstance().getVersion().isHighVersion()) {
             languageMap = new HashMap<>();
@@ -51,6 +52,11 @@ public class ItemStackNameUtil {
         }
     }
 
+    /**
+     * ItemStack 의 한국어 이름을 가져옵니다.
+     * @param itemStack 아이템
+     * @return 한국어 이름
+     */
     public static String getItemName(ItemStack itemStack) {
         if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
             return itemStack.getItemMeta().getDisplayName();

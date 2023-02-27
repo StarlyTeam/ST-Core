@@ -7,6 +7,15 @@ import java.util.stream.Stream;
 public class PercentUtility {
 
     private static final Random random = new Random();
+
+    /**
+     * Key = 객체
+     * Value = 무게
+     * 위의 값으로 설정 된 맵에서 무게에 따른 랜덤 Key 를 추출해줍니다.
+     * @param randomMap Map<객체, 무게(Double)>
+     * @return 랜덤으로 뽑힌 객체
+     * @param <T> 해당 객체의 타입
+     */
     public static <T> T random(Map<T, Double> randomMap) {
         Stream<Map.Entry<T, Double>> entry = randomMap.entrySet().stream();
         return entry
@@ -15,6 +24,11 @@ public class PercentUtility {
                 .orElseThrow(IllegalAccessError::new).getKey();
     }
 
+    /**
+     * 확률을 weight random 알고리즘으로 테스트 할 수 있습니다.
+     * @param percent 확률 (Double)
+     * @return 성공 여부
+     */
     public static boolean isSuccess(double percent) {
         if(percent >= 100.0) return true;
         else if(percent <= 0.0) return false;
@@ -29,6 +43,11 @@ public class PercentUtility {
         }
     }
 
+    /**
+     * 확률을 weight random 알고리즘으로 테스트 할 수 있습니다.
+     * @param percent 확률 (Integer)
+     * @return 성공 여부
+     */
     public static boolean isSuccess(int percent) {
         return isSuccess((double) percent);
     }

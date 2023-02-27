@@ -23,6 +23,11 @@ public class ItemWrapper {
         }
     }
 
+    /**
+     * 아이템의 현지화되지 않은 이름을 가져옵니다.
+     * @param nmsItemStack ItemStackWrapper
+     * @return 현지화되지 않은 이름
+     */
     public String getUnlocalizedName(ItemStackWrapper nmsItemStack) {
         try {
             return (String) support.getJMethod().invoke(Item, nmsItemStack.getNmsItemStack());

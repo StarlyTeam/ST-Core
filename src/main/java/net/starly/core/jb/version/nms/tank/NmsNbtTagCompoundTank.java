@@ -24,6 +24,10 @@ public class NmsNbtTagCompoundTank {
         catch (Exception e) { setStringMethod = NBTTagCompound.getDeclaredMethod("a", String.class, String.class); }
     }
 
+    /**
+     * NMS 의 NBTTagCompound 를 생성해줍니다.
+     * @return NBTTagCompoundWrapper
+     */
     public NBTTagCompoundWrapper newInstance() {
         try {
             return new NBTTagCompoundWrapper(NBTTagCompound.newInstance(), this);

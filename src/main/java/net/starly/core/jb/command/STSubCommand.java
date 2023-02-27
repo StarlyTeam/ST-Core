@@ -4,6 +4,7 @@ import net.starly.core.StarlyCore;
 import net.starly.core.jb.annotation.ArgumentLabel;
 import net.starly.core.jb.annotation.NullableArgument;
 import net.starly.core.jb.annotation.Subcommand;
+import net.starly.core.jb.context.MessageContext;
 import net.starly.core.jb.util.Pair;
 import net.starly.core.jb.command.wrapper.CommandSenderWrapper;
 import java.lang.reflect.Method;
@@ -46,30 +47,30 @@ public class STSubCommand {
 
     public void execute(CommandSenderWrapper sender, String[] args) {
         if(annotation.isOp() && !sender.isOp()) {
-            // TODO: throw exception ( Permission Exception )
-
+            sender.sendMessage(MessageContext.COMMAND_PERMISSION_ERROR);
         } else if(!sender.hasPermission(annotation.permission())) {
-            // TODO: throw exception ( Permission Exception )
-
+            sender.sendMessage(MessageContext.COMMAND_PERMISSION_ERROR);
         } else {
             List<Object> argumentList = new ArrayList<>();
             argumentList.add(sender);
             for(int i = 0; i < arguments.size(); i++) {
                 Pair<STArgument<?>, Boolean> it = arguments.get(i);
                 Object obj;
-                try { obj = it.getFirst().cast(args[i]); } catch (Exception e) {
-                    e.printStackTrace();
-                    obj = null;
-                }
+                try { obj = it.getFirst().cast(args[i]); } catch (Exception e) { obj = null; }
                 if(it.getSecond() && obj == null) {
-                    // TODO: throw exception ( Null Parameter Exception )
+                    String label = it.getFirst().getLabel();
+                    if(function.getParameters()[i].isAnnotationPresent(ArgumentLabel.class))
+                        label = function.getParameters()[i].getAnnotation(ArgumentLabel.class).value();
+                    sender.sendMessage(String.format(MessageContext.COMMAND_NOT_NULL_ARGUMENT, label));
+                    return;
                 } else argumentList.add(obj);
             }
             try {
                 function.invoke(parent, argumentList.toArray());
+            } catch (IllegalArgumentException e) {
+                sender.sendMessage(MessageContext.COMMAND_INVALID_ARGUMENT_SIZE);
             } catch (Exception e) {
-                // TODO: throw exception ( Invalid Parameter Exception )
-                
+                e.printStackTrace();
             }
         }
     }

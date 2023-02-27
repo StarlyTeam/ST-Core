@@ -33,6 +33,7 @@ public class VersionController {
     private static VersionController instance;
     private static JavaPlugin plugin;
 
+    @Deprecated
     public static void $initializing(JavaPlugin plugin) {
         VersionController.plugin = plugin;
     }
