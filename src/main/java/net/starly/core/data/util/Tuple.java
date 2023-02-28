@@ -1,5 +1,7 @@
 package net.starly.core.data.util;
 
+import net.starly.core.jb.util.Pair;
+
 import java.util.HashMap;
 import java.util.Map;
 
