@@ -19,8 +19,8 @@ dependencies {
     compileOnly "org.jetbrains:annotations:23.0.0"
     api "org.reflections:reflections:0.10.2"
     api "org.java-websocket:Java-WebSocket:1.5.1"
-    api group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-    api group: 'commons-io', name: 'commons-io', version: '2.6'
+    api "org.apache.commons:commons-lang3:3.0"
+    api "commons-io:commons-io:2.7"
     implementation 'org.json:json:20220924'
 
     // LOMBOK
@@ -28,7 +28,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     //BUKKIT DEPENDENCIES
-    compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
+    compileOnly "org.spigotmc:spigot-api:R0.1:1.19.3"
 
     // KOTLIN
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
