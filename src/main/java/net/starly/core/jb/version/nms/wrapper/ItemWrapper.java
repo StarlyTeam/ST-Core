@@ -1,7 +1,10 @@
 package net.starly.core.jb.version.nms.wrapper;
 
+import jdk.jfr.events.ExceptionThrownEvent;
 import lombok.Getter;
 import net.starly.core.jb.version.nms.tank.NmsItemUtil;
+import net.starly.core.jb.version.nms.tank.NmsOtherUtil;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
 
@@ -35,6 +38,16 @@ public class ItemWrapper {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Object getEnumInteractionResult(WorldWrapper world, Player player, Object enumHand) {
+        try {
+            return support.getAMethod().invoke(
+                    world.getWorld(),
+                    NmsOtherUtil.INSTANCE.getGetHandleAtPlayer().invoke(NmsOtherUtil.INSTANCE.getCraftPlayerClass().cast(player)),
+                    enumHand
+            );
+        } catch (Exception ignored) { return null; }
     }
 
 }

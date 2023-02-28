@@ -30,7 +30,10 @@ public class NmsItemStackUtil {
         try {
             if(tank == null) tank = new NmsItemStackUtil(VersionController.getInstance().getVersion());
             return tank;
-        } catch (Exception e) { return null; }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private NmsItemStackUtil(VersionController.Version version) throws ClassNotFoundException, NoSuchMethodException {

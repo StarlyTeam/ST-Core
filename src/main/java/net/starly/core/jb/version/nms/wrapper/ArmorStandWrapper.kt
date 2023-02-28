@@ -68,7 +68,17 @@ class ArmorStandWrapper(
     private fun setHelmetItem(target: Player) {
         if(helmet == null) return
         val enumItemSlot = NmsOtherUtil.valueOfEnumItemSlot.invoke(null, "head")
-        val args = if(NmsOtherUtil.highVersion) arrayOf(id, listOf(NmsOtherUtil.Pair!!.newInstance(enumItemSlot, NmsItemStackUtil.getInstance()!!.asNMSCopy(helmet)!!.nmsItemStack!!)))
+        val args = if(NmsOtherUtil.highVersion)
+            arrayOf(id,
+                listOf(NmsOtherUtil
+                    .Pair!!
+                    .newInstance(enumItemSlot,
+                        NmsItemStackUtil.getInstance()!!
+                        .asNMSCopy(helmet)!!
+                        .nmsItemStack!!
+                    )
+                )
+            )
         else arrayOf(id, enumItemSlot, NmsItemStackUtil.getInstance()!!.asNMSCopy(helmet)!!.nmsItemStack!!)
         NmsOtherUtil.sendPacket(target, NmsOtherUtil.Packet.PacketPlayOutEntityEquipment, *args)
     }

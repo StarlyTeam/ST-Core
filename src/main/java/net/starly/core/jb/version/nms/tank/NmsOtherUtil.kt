@@ -24,10 +24,10 @@ object NmsOtherUtil {
     val EntityPlayerClass: Class<*> =
         try { Class.forName("$nmsPackage.EntityPlayer") }
         catch (_: ClassNotFoundException) { Class.forName("net.minecraft.server.level.EntityPlayer") }
-    val EntityHuman: Class<*> =
+    val EntityHumanClass: Class<*> =
         try { Class.forName("$nmsPackage.EntityHuman") }
         catch (_: ClassNotFoundException) { Class.forName("net.minecraft.world.entity.player.EntityHuman") }
-    private val PlayerConnection: Field =
+    val PlayerConnection: Field =
         try { EntityPlayerClass.getField("playerConnection") }
         catch (_: Exception) { EntityPlayerClass.getField("b") }
     private val PlayerConnectionClass: Class<*> =
@@ -111,11 +111,11 @@ object NmsOtherUtil {
         try { Class.forName("$nmsPackage.EnumHand") }
         catch (_: ClassNotFoundException) { Class.forName("net.minecraft.world.EnumHand") }
     val EnumMainHand: Any =
-        try { EnumHandClass.getMethod("valueOf", String::class.java).invoke("MAIN_HAND") }
-        catch (_: Exception) { EnumHandClass.getMethod("valueOf", String::class.java).invoke("a") }
+        try { EnumHandClass.getMethod("valueOf", String::class.java).invoke(null,"MAIN_HAND") }
+        catch (_: Exception) { EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "a") }
     val EnumOffHand: Any =
-        try { EnumHandClass.getMethod("valueOf", String::class.java).invoke("OFF_HAND") }
-        catch (_: Exception) { EnumHandClass.getMethod("valueOf", String::class.java).invoke("OFF_HAND") }
+        try { EnumHandClass.getMethod("valueOf", String::class.java).invoke(null,"OFF_HAND") }
+        catch (_: Exception) { EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "b") }
     val valueOfEnumItemSlot: Method =
         try { EnumItemSlot.getMethod("fromName", String::class.java) }
         catch (_: Exception) { EnumItemSlot.getMethod("a", String::class.java) }
