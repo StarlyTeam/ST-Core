@@ -5,7 +5,7 @@ website: http://starly.kr/discord
 
 description: Core Plugin.
 
-version: 1.6.3
+version: 1.6.6
 api-version: 1.13
 
 commands:

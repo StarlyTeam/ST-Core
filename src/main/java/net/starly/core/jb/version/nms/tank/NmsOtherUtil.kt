@@ -74,7 +74,7 @@ object NmsOtherUtil {
             try { Class.forName("$nmsPackage.PacketPlayOutEntityDestroy").getConstructor(IntArray::class.java) }
             catch (_: Exception) { Class.forName("net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy").getConstructor(IntArray::class.java) }
         val PacketPlayOutEntityEquipment: Constructor<*> =
-            try { Class.forName("$nmsPackage.PacketPlayOutEntityEquipment").getConstructor(Int::class.java, EnumItemSlot::class.java, ItemStackClass::class.java) }
+            try { Class.forName("$nmsPackage.PacketPlayOutEntityEquipment").getConstructor(Int::class.java, EnumItemSlot, ItemStackClass) }
             catch (_: Exception) {
                 try { Class.forName("$nmsPackage.PacketPlayOutEntityEquipment").getConstructor(Int::class.java, List::class.java) }
                 catch (_: Exception) { Class.forName("net.minecraft.network.protocol.game.PacketPlayOutEntityEquipment").getConstructor(Int::class.java, List::class.java) }
@@ -119,9 +119,10 @@ object NmsOtherUtil {
     val valueOfEnumItemSlot: Method =
         try { EnumItemSlot.getMethod("fromName", String::class.java) }
         catch (_: Exception) { EnumItemSlot.getMethod("a", String::class.java) }
-    val Vector3f: Constructor<*> =
-        try { Class.forName("$nmsPackage.Vector3f").getConstructor(Float::class.java, Float::class.java, Float::class.java) }
-        catch (_: Exception) { Class.forName("net.minecraft.core.Vector3f").getConstructor(Float::class.java, Float::class.java, Float::class.java) }
+    val Vector3fClass: Class<*> =
+        try { Class.forName("$nmsPackage.Vector3f") }
+        catch (_: ClassNotFoundException) { Class.forName("net.minecraft.core.Vector3f") }
+    val Vector3f: Constructor<*> = Vector3fClass.getConstructor(Float::class.java, Float::class.java, Float::class.java)
     @Deprecated("Support 1.13+")
     val Pair: Constructor<*>? = try { Class.forName("com.mojang.datafixers.util.Pair").getConstructor(Any::class.java, Any::class.java) } catch (_: Exception) { null }
     @Deprecated("Support 1.13+")
@@ -155,9 +156,12 @@ object NmsOtherUtil {
     val getDataWatcher: Method =
         try { EntityArmorStandClass.getMethod("getDataWatcher") }
         catch (_: Exception) { EntityArmorStandClass.getMethod("al") }
-    val headPose: Field =
-        try { EntityArmorStandClass.getField("headPose") }
-        catch (_: Exception) { EntityArmorStandClass.getField("cg") }
+    val setHeadPose: Method =
+        try { EntityArmorStandClass.getMethod("setHeadPose", Vector3fClass) }
+        catch (_: Exception) { EntityArmorStandClass.getMethod("a", Vector3fClass) }
+    val getHeadPose: Method =
+        try { EntityArmorStandClass.getMethod("getHeadPose") }
+        catch (_: Exception) { EntityArmorStandClass.getMethod("u") }
     @Deprecated("Support 1.19+")
     val getNonDefaultValues: Method? = try { DataWatcherClass.getMethod("c") } catch (_: Exception) { null }
 

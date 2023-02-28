@@ -14,7 +14,7 @@ class ArmorStandWrapper(
     private val entityArmorStand: Any,
 ) {
 
-    private val defaultHeadPose = NmsOtherUtil.headPose.get(entityArmorStand)
+    private val defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
 
     var displayName = ""
         set(value) {
@@ -42,12 +42,16 @@ class ArmorStandWrapper(
 
     var helmet: ItemStack? = null
 
-    fun setHeadPose(x: Float, y: Float, z: Float) {
-        NmsOtherUtil.headPose.set(entityArmorStand, NmsOtherUtil.Vector3f.newInstance(x, y, z))
+    fun getHeadPose(): HeadPoseWrapper {
+        return HeadPoseWrapper(NmsOtherUtil.getHeadPose.invoke(entityArmorStand))
+    }
+
+    fun setHeadPose(pose: HeadPoseWrapper) {
+        NmsOtherUtil.setHeadPose.invoke(entityArmorStand, pose.obj)
     }
 
     fun resetHeadPose() {
-        NmsOtherUtil.headPose.set(entityArmorStand, defaultHeadPose)
+        NmsOtherUtil.setHeadPose.invoke(entityArmorStand, defaultHeadPose)
     }
 
     fun teleport(target: Player, location: Location) {
@@ -101,6 +105,20 @@ class ArmorStandWrapper(
                 true
             )
         }
+    }
+
+    class HeadPoseWrapper(val x: Float, val y: Float, val z: Float) {
+
+        companion object {
+            private val xMethod = try { NmsOtherUtil.Vector3fClass.getMethod("getX") } catch (_: Exception) { NmsOtherUtil.Vector3fClass.getMethod("b") }
+            private val yMethod = try { NmsOtherUtil.Vector3fClass.getMethod("getY") } catch (_: Exception) { NmsOtherUtil.Vector3fClass.getMethod("c") }
+            private val zMethod = try { NmsOtherUtil.Vector3fClass.getMethod("getZ") } catch (_: Exception) { NmsOtherUtil.Vector3fClass.getMethod("d") }
+        }
+
+        constructor(obj: Any): this(xMethod.invoke(obj) as Float, yMethod.invoke(obj) as Float, zMethod.invoke(obj) as Float)
+
+        internal val obj get() = NmsOtherUtil.Vector3f.newInstance(x, y, z)
+
     }
 
 }
