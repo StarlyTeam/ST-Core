@@ -22,8 +22,8 @@ public class VersionController {
         v1_19_R2("1.19", true);
 
         @Getter private final String v;
-        @Getter private final String version = name();
-        @Getter private final boolean highVersion;
+        @Getter public final String version = name();
+        @Getter public final boolean highVersion;
         Version(String v, boolean highVersion) {
             this.v = v;
             this.highVersion = highVersion;
@@ -47,7 +47,7 @@ public class VersionController {
         }
     }
 
-    @Getter private final Version version;
+    @Getter public final Version version;
 
     private VersionController(Server server) throws UnSupportedVersionException {
         version = checkVersions(server);

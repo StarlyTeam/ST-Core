@@ -48,7 +48,7 @@ public class NmsItemStackUtil {
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
         try {
             setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundUtil.getNBTTagCompound());
-        } catch (Exception e) { setTagMethod = NMSItemStack.getDeclaredMethod("a", nbtCompoundUtil.getNBTTagCompound()); }
+        } catch (Exception e) { setTagMethod = NMSItemStack.getDeclaredMethod("c", nbtCompoundUtil.getNBTTagCompound()); }
         try { getTagMethod = NMSItemStack.getDeclaredMethod("getTag"); }
         catch (Exception e) { getTagMethod = NMSItemStack.getDeclaredMethod("u"); }
     }

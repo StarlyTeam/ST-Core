@@ -10,6 +10,7 @@ import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 public class ItemStackWrapper {
 
     private Object nmsItemStack;
+    public Object getNmsItemStack() { return nmsItemStack; }
     private NmsItemUtil itemSupport;
     private NmsItemStackUtil wrapper;
 
@@ -34,7 +35,8 @@ public class ItemStackWrapper {
     public void setTag(NBTTagCompoundWrapper tag) {
         try {
             wrapper.getSetTagMethod().invoke(nmsItemStack, tag.getNbtTagCompound());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public ItemWrapper getItem() {

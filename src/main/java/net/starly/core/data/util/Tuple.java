@@ -1,5 +1,8 @@
 package net.starly.core.data.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("unused")
 public class Tuple<A, B> {
     public A a;
