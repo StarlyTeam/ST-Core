@@ -68,7 +68,6 @@ public abstract class STContainer implements InventoryHolder {
     private void createInventory() {
         Server server = StarlyCore.getInstance().getServer();
         inventory = type == null ? server.createInventory(this, size, title) : server.createInventory(this, type, title);
-        initializingInventory(inventory);
     }
 
     public void registerButton(int slot, STButton button) {
@@ -100,13 +99,14 @@ public abstract class STContainer implements InventoryHolder {
     public void open(Player player) {
         if(player == null || !player.isOnline()) return;
         try {
+            viewer = player;
+            initializingInventory(inventory);
             plugin.getServer().getScheduler().runTaskLater(plugin, ()->{
                 InventoryView openInventory = player.getOpenInventory();
                 if(!openInventory.getType().equals(InventoryType.PLAYER) && !openInventory.getType().equals(InventoryType.CREATIVE)) {
                     player.closeInventory();
                     plugin.getServer().getScheduler().runTaskLater(plugin, () ->  open(player), 1L);
                 } else {
-                    viewer = player;
                     openedInitializing();
                     player.openInventory(inventory);
                     registerPlayer(player);
@@ -126,6 +126,7 @@ public abstract class STContainer implements InventoryHolder {
         if(!wrapper.isButtonCancelled() && slotMap.containsKey(wrapper.getRawSlot())) {
             STButton button = slotMap.get(wrapper.getRawSlot());
             button.execute(this, new ButtonClickEventWrapper(event, button));
+            if(button.isCancelled()) event.setCancelled(true);
         }
     }
     public void $close(InventoryCloseEvent event) {

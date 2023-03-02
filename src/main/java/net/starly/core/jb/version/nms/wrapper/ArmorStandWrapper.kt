@@ -7,6 +7,7 @@ import net.starly.core.jb.version.nms.tank.NmsItemStackUtil
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import java.util.Objects
 
 class ArmorStandWrapper(
     val id: Int,
@@ -14,7 +15,7 @@ class ArmorStandWrapper(
     private val entityArmorStand: Any,
 ) {
 
-    private val defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
+    private var defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
 
     var displayName = ""
         set(value) {
@@ -54,19 +55,21 @@ class ArmorStandWrapper(
         NmsOtherUtil.setHeadPose.invoke(entityArmorStand, defaultHeadPose)
     }
 
-    fun teleport(target: Player, location: Location) {
+    fun teleport(target: Player, location: Location, savePose: Boolean = false) {
         val wrapper = NmsOtherUtil.toFeatherLocation(location)
         NmsOtherUtil.setLocation.invoke(entityArmorStand, wrapper.x, wrapper.y, wrapper.z, wrapper.yaw, wrapper.pitch)
         NmsOtherUtil.sendPacket(target, NmsOtherUtil.Packet.PacketPlayOutEntityTeleport, entityArmorStand)
         this.location = wrapper
+        if(savePose) defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
     }
 
     fun spawn(target: Player) {
         NmsOtherUtil.sendPacket(target, NmsOtherUtil.Packet.PacketPlayOutSpawnEntity, entityArmorStand)
+        applyMeta(target)
     }
 
     fun remove(target: Player) {
-        NmsOtherUtil.sendPacket(target, NmsOtherUtil.Packet.PacketPlayOutEntityDestroy, id)
+        NmsOtherUtil.sendPacket(target, NmsOtherUtil.Packet.PacketPlayOutEntityDestroy, arrayOf(id).toIntArray())
     }
 
     private fun setHelmetItem(target: Player) {

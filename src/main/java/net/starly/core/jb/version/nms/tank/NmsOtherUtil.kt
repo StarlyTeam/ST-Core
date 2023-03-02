@@ -126,7 +126,10 @@ object NmsOtherUtil {
     @Deprecated("Support 1.13+")
     val Pair: Constructor<*>? = try { Class.forName("com.mojang.datafixers.util.Pair").getConstructor(Any::class.java, Any::class.java) } catch (_: Exception) { null }
     @Deprecated("Support 1.13+")
-    private val serializeMethod: Method? = try { ChatSerializerClass.getMethod("a", String::class.java) } catch (_: Exception) { null }
+    private val serializeMethod: Method? = try {
+        if(highVersion) ChatSerializerClass.getMethod("a", String::class.java)
+        else null
+    } catch (_: Exception) { null }
 
     /**
      * ArmorStand

@@ -80,7 +80,9 @@ public class STSubCommand {
     public STArgument<?> getArgument(CommandSenderWrapper sender, int index) {
         try {
             if(!sender.isOp() && annotation.isOp()) return null;
-            else return arguments.get(index).getFirst();
+            else if(!annotation.permission().isEmpty() && sender.hasPermission(annotation.permission())) return arguments.get(index).getFirst();
+            else if(annotation.permission().isEmpty()) return arguments.get(index).getFirst();
+            else return null;
         } catch (Exception e) { return null; }
     }
 

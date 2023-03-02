@@ -6,12 +6,11 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.starly.core.jb.exception.UnSupportedVersionException;
 import net.starly.core.jb.version.VersionController;
+import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.libs.org.apache.commons.codec.binary.Base64;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -62,7 +61,7 @@ public class PlayerSkullManager {
         byte[] byteArray = String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes();
         byte[] encodedData;
         try {
-            encodedData = launchBase64Method(byteArray, highVersion);
+            encodedData = launchBase64Method(byteArray);
         } catch (Exception e) { return new ItemStack(Material.STONE); }
         profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
         Field profileField;
@@ -124,13 +123,14 @@ public class PlayerSkullManager {
         } catch (Exception e) { throw new UnSupportedVersionException(server.getVersion()); }
     }
 
-    private static byte[] launchBase64Method(byte[] byteArray, boolean highVersion) throws UnSupportedVersionException{
-        if(highVersion) return Base64.encodeBase64(byteArray);
-        else {
+    private static byte[] launchBase64Method(byte[] byteArray) throws UnSupportedVersionException{
+        try {
+            return Base64.encodeBase64(byteArray);
+        } catch (Exception ignored) {
             try {
-                Method method = Class.forName("org.apache.commons.codec.binary.Base64").getMethod("encodeBase64", byte[].class);
+                Method method = Class.forName("org.bukkit.craftbukkit.libs.org.apache.commons.codec.binary.Base64").getMethod("encodeBase64", byte[].class);
                 return (byte[]) method.invoke(null, byteArray);
-            } catch (Exception ignored) {
+            } catch (Exception ignored_) {
                 throw new UnSupportedVersionException(server.getVersion());
             }
         }

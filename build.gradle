@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'net.starly.core'
-version '1.6.6'
+version '1.6.8'
 
 repositories {
     mavenCentral()
@@ -20,6 +20,7 @@ dependencies {
     api "org.java-websocket:Java-WebSocket:1.5.1"
     api "org.apache.commons:commons-lang3:3.0"
     api "commons-io:commons-io:2.7"
+    api group: 'commons-codec', name: 'commons-codec', version: '1.15'
     implementation 'org.json:json:20220924'
 
     // LOMBOK

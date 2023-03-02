@@ -23,4 +23,5 @@ public class InventoryClickEventWrapper {
     public boolean isCancelled() { return event.isCancelled(); }
     public boolean isShift() { return event.isShiftClick(); }
     public boolean isWheel() { return event.getClick().equals(ClickType.MIDDLE); }
+    public int getHotbarButton() { return event.getHotbarButton(); }
 }

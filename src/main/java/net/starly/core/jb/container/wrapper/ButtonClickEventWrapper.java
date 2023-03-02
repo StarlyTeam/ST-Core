@@ -25,6 +25,7 @@ public class ButtonClickEventWrapper {
     public ClickType getClickType() { return event.getClick(); }
     public Player getPlayer() { return (Player) event.getWhoClicked(); }
     public boolean isCancelled() { return event.isCancelled(); }
+    public void setCancelled(boolean cancel) { event.setCancelled(cancel); }
     public boolean isShift() { return event.isShiftClick(); }
     public boolean isWheel() { return event.getClick().equals(ClickType.MIDDLE); }
     public boolean isLeft() { return event.isLeftClick(); }
@@ -32,4 +33,6 @@ public class ButtonClickEventWrapper {
     public boolean isShiftRight() { return event.getClick().equals(ClickType.SHIFT_RIGHT); }
     public boolean isShiftLeft() { return event.getClick().equals(ClickType.SHIFT_LEFT); }
     public boolean pressQButton() { return event.getClick().equals(ClickType.DROP); }
+    public int getHotbarButton() { return event.getHotbarButton(); }
+
 }

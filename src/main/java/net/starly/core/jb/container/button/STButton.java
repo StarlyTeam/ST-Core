@@ -21,6 +21,7 @@ public class STButton {
 
     @Getter private boolean isGlow;
     @Getter private boolean isCleanable;
+    @Getter private boolean isCancelled;
     private BiConsumer<ButtonClickEventWrapper, STContainer> function;
     private ItemStack itemStack;
     private String displayName;
@@ -29,6 +30,7 @@ public class STButton {
     private STButton() {
         isGlow = false;
         isCleanable = true;
+        isCancelled = false;
         displayName = null;
         lore = null;
     }
@@ -79,6 +81,10 @@ public class STButton {
             this();
             button.itemStack = new ItemStack(material, amount);
         }
+        public STButtonBuilder(String url) {
+            this();
+            button.itemStack = PlayerSkullManager.getCustomSkull(url);
+        }
         public STButtonBuilder(Player player) {
             this();
             button.itemStack = PlayerSkullManager.getPlayerSkull(player.getUniqueId());
@@ -110,6 +116,11 @@ public class STButton {
 
         public STButtonBuilder setCleanable(boolean cleanable) {
             button.isCleanable = cleanable;
+            return this;
+        }
+
+        public STButtonBuilder setCancelled(boolean cancel) {
+            button.isCancelled = cancel;
             return this;
         }
 
