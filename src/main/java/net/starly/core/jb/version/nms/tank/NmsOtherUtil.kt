@@ -137,7 +137,10 @@ object NmsOtherUtil {
     private val EntityArmorStand: Constructor<*> = EntityArmorStandClass.getConstructor(WorldClass, Double::class.java, Double::class.java, Double::class.java)
     private val getId: Method =
         try { EntityArmorStandClass.getMethod("getId") }
-        catch (_: Exception) { EntityArmorStandClass.getMethod("ah") }
+        catch (_: Exception) {
+            if(version == VersionController.Version.v1_19_R1) EntityArmorStandClass.getMethod("ae")
+            else EntityArmorStandClass.getMethod("ah")
+        }
     val setInvisible: Method =
         try { EntityArmorStandClass.getMethod("setInvisible", Boolean::class.java) }
         catch (_: Exception) { EntityArmorStandClass.getMethod("j", Boolean::class.java) }
@@ -158,13 +161,21 @@ object NmsOtherUtil {
         catch (_: Exception) { EntityArmorStandClass.getMethod("a", Double::class.java, Double::class.java, Double::class.java, Float::class.java, Float::class.java) }
     val getDataWatcher: Method =
         try { EntityArmorStandClass.getMethod("getDataWatcher") }
-        catch (_: Exception) { EntityArmorStandClass.getMethod("al") }
+        catch (_: Exception) {
+            try { EntityArmorStandClass.getMethod("al") }
+            catch (_: Exception) {EntityArmorStandClass.getMethod("ai")
+            }
+        }
     val setHeadPose: Method =
         try { EntityArmorStandClass.getMethod("setHeadPose", Vector3fClass) }
         catch (_: Exception) { EntityArmorStandClass.getMethod("a", Vector3fClass) }
     val getHeadPose: Method =
         try { EntityArmorStandClass.getMethod("getHeadPose") }
-        catch (_: Exception) { EntityArmorStandClass.getMethod("u") }
+        catch (_: Exception) {
+            try {
+                EntityArmorStandClass.getMethod("v")
+            } catch (_: Exception) { EntityArmorStandClass.getMethod("u") }
+        }
     @Deprecated("Support 1.19+")
     val getNonDefaultValues: Method? = try { DataWatcherClass.getMethod("c") } catch (_: Exception) { null }
 

@@ -4,8 +4,6 @@ import lombok.Getter;
 import net.starly.core.jb.exception.UnSupportedVersionException;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -19,6 +17,7 @@ public class VersionController {
         v1_16_R1("1.16", true),
         v1_17_R1("1.17", true),
         v1_18_R1("1.18", true),
+        v1_19_R1("1.19-R0.1", true),
         v1_19_R2("1.19", true);
 
         @Getter private final String v;
@@ -54,7 +53,8 @@ public class VersionController {
     }
 
     private Version checkVersions(Server server) throws UnSupportedVersionException {
-        Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->server.getVersion().contains(it.v)).findFirst();
+        System.out.println(server.getBukkitVersion());
+        Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->server.getBukkitVersion().contains(it.v)).findFirst();
         if(versionFilter.isPresent()) return versionFilter.get();
         else throw new UnSupportedVersionException(server.getVersion());
     }
