@@ -59,6 +59,9 @@ public abstract class STCommand implements CommandExecutor, TabCompleter {
     protected List<String> tabComplete(CommandSenderWrapper sender, String[] args) {
         if(args.length <= 1) return StringUtil.copyPartialMatches(args[0], subCommands.entrySet().stream().filter(it->{
             STSubCommand value = it.getValue();
+            if(!value.getAnnotation().permission().isEmpty())
+                if(!sender.hasPermission(value.getAnnotation().permission())) return false;
+
             return !(value.getAnnotation().isOp() && !sender.isOp());
         }).map(Map.Entry::getKey).collect(Collectors.toList()), new ArrayList<>());
         else {
