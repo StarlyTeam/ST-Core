@@ -1,7 +1,7 @@
 package net.starly.core.data;
 
 import net.starly.core.builder.ItemBuilder;
-import net.starly.core.data.impl.DefaultConfigImpl;
+import net.starly.core.data.impl.DefaultConfig;
 import net.starly.core.exception.InventoryLoadException;
 import net.starly.core.util.PreCondition;
 import org.bukkit.Bukkit;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @deprecated Use {@link FileConfiguration} instead.
  */
 @Deprecated
-public class Config implements DefaultConfigImpl {
+public class Config implements DefaultConfig {
     private final JavaPlugin plugin;
 
     private FileConfiguration config = new YamlConfiguration();

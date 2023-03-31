@@ -1,6 +1,6 @@
 package net.starly.core.data;
 
-import net.starly.core.data.impl.DefaultConfigImpl;
+import net.starly.core.data.impl.DefaultConfig;
 import net.starly.core.util.PreCondition;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,7 +15,7 @@ import java.util.List;
  * @deprecated Use {@link ConfigurationSection} instead.
  */
 @Deprecated
-public class ConfigSection implements DefaultConfigImpl {
+public class ConfigSection implements DefaultConfig {
     private final Config config;
     private final ConfigurationSection section;
     private final String path;

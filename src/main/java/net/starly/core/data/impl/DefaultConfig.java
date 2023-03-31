@@ -2,7 +2,7 @@ package net.starly.core.data.impl;
 
 import java.util.List;
 
-public interface DefaultConfigImpl {
+public interface DefaultConfig {
     void setString(String path, String value);
     String getString(String path);
 

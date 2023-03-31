@@ -57,7 +57,7 @@ public class NmsItemStackUtil {
     }
 
     /**
-     * ItemStackWrapper 을/를 Bukkit-API 의 ItemStack 으로 변경해줍니다.
+     * ItemStackWrapper 을/를 Bukkit-API의 ItemStack으로 변경해줍니다.
      * @param nmsItemStack ItemStackWrapper
      * @return Bukkit-API ItemStack
      */
@@ -70,7 +70,7 @@ public class NmsItemStackUtil {
     }
 
     /**
-     * Bukkit-API 의 ItemStack 을/를 ItemStackWrapper 로 변경해줍니다.
+     * Bukkit-API의 ItemStack을 ItemStackWrapper로 변경해줍니다.
      * @param itemStack Bukkit-API ItemStack
      * @return ItemStackWrapper
      */
