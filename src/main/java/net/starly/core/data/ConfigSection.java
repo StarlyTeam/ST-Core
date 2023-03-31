@@ -11,6 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @deprecated Use {@link ConfigurationSection} instead.
+ */
+@Deprecated
 public class ConfigSection implements DefaultConfigImpl {
     private final Config config;
     private final ConfigurationSection section;

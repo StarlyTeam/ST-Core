@@ -1,17 +1,15 @@
 package net.starly.core.data;
 
-import net.starly.core.StarlyCore;
 import net.starly.core.builder.ItemBuilder;
 import net.starly.core.data.impl.DefaultConfigImpl;
+import net.starly.core.exception.InventoryLoadException;
 import net.starly.core.util.PreCondition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_16_R3.persistence.CraftPersistentDataContainer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -28,7 +26,10 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("all")
+/**
+ * @deprecated Use {@link FileConfiguration} instead.
+ */
+@Deprecated
 public class Config implements DefaultConfigImpl {
     private final JavaPlugin plugin;
 
@@ -521,7 +522,7 @@ public class Config implements DefaultConfigImpl {
 
 
         ConfigurationSection section = getConfigurationSection(path);
-        ItemBuilder itemBuilder;
+        ItemBuilder itemBuilder = null;
 
 
         // ----------------------------------------------------
@@ -530,20 +531,20 @@ public class Config implements DefaultConfigImpl {
         try {
             itemBuilder = new ItemBuilder(Material.valueOf(section.getString("material")));
         } catch (Exception e) {
-            throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".material");
+            new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".material").printStackTrace();
         }
 
         try {
             itemBuilder.setAmount(section.getInt("amount"));
         } catch (Exception e) {
-            throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".amount");
+            new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".amount").printStackTrace();
         }
 
         if (section.get("durability") != null) {
             try {
                 itemBuilder.setDurability((short) section.getInt("durability"));
             } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".durability");
+                new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".durability").printStackTrace();
             }
         }
 
@@ -555,7 +556,7 @@ public class Config implements DefaultConfigImpl {
             try {
                 itemBuilder.setDisplayName(section.getString("meta.displayName"));
             } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.displayName");
+                new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.displayName").printStackTrace();
             }
         }
 
@@ -567,7 +568,7 @@ public class Config implements DefaultConfigImpl {
             try {
                 itemBuilder.setLore(section.getStringList("meta.lores"));
             } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.lores");
+                new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.lores").printStackTrace();
             }
         }
 
@@ -579,7 +580,7 @@ public class Config implements DefaultConfigImpl {
             try {
                 itemBuilder.setCustomModelData(section.getInt("meta.customModelData"));
             } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.customModelData");
+                new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".meta.customModelData").printStackTrace();
             }
         }
 
@@ -611,11 +612,11 @@ public class Config implements DefaultConfigImpl {
                     try {
                         itemStack.addUnsafeEnchantment(Enchantment.getByName(key), section.getInt("enchantments." + key));
                     } catch (Exception ignored) {
-                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments." + key);
+                        new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments." + key).printStackTrace();
                     }
                 });
             } catch (Exception ignored) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments");
+                new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".enchantments").printStackTrace();
             }
         }
 
@@ -628,11 +629,11 @@ public class Config implements DefaultConfigImpl {
                         meta.addStoredEnchant(Enchantment.getByName(key), section.getInt("bookEnchantments." + key), true);
                         itemStack.setItemMeta(meta);
                     } catch (Exception ex) {
-                        throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".bookEnchantments." + key);
+                        new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".bookEnchantments." + key).printStackTrace();
                     }
                 });
             } catch (Exception e) {
-                throw new IllegalArgumentException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".bookEnchantments");
+                new InventoryLoadException("아이템을 불러오는데 실패했습니다. 경로: " + path + ".bookEnchantments").printStackTrace();
             }
         }
 
@@ -677,20 +678,28 @@ public class Config implements DefaultConfigImpl {
         Inventory inventory;
         try {
             inventory = Bukkit.createInventory(null, section.getInt("size"), section.getString("title"));
+
+            try {
+                section.getConfigurationSection("items").getKeys(false).forEach(key -> {
+                    try {
+                        inventory.setItem(Integer.parseInt(key), getItemStack(path + ".items." + key));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        new InventoryLoadException("인벤토리를 불러오는데 실패했습니다. 경로: " + path + ".items." + key).printStackTrace();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                new InventoryLoadException("인벤토리를 불러오는데 실패했습니다. 경로: " + path + ".items").printStackTrace();
+            }
+
+            return inventory;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalArgumentException("인벤토리를 불러오는데 실패했습니다. 경로: " + path);
-        }
+            new InventoryLoadException("인벤토리를 불러오는데 실패했습니다. 경로: " + path).printStackTrace();
 
-        try {
-            section.getConfigurationSection("items").getKeys(false).forEach(key ->
-                    inventory.setItem(Integer.parseInt(key), getItemStack(path + ".items." + key)));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("인벤토리를 불러오는데 실패했습니다. 경로: " + path + ".items");
+            return null;
         }
-
-        return inventory;
     }
 
     public void setLocation(String path, Location value) {

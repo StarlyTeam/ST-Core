@@ -1,15 +1,8 @@
 package net.starly.core.data.util;
 
-import net.starly.core.jb.util.Pair;
-
-import java.util.HashMap;
-import java.util.Map;
-
-@SuppressWarnings("unused")
 public class Tuple<A, B> {
-    public A a;
-
-    public B b;
+    private A a;
+    private B b;
 
     public Tuple(final A a, final B b) {
         this.a = a;
@@ -20,24 +13,24 @@ public class Tuple<A, B> {
         return new Tuple<>(a, b);
     }
 
-    public A getA() {
+    public A getFirst() {
         return this.a;
     }
 
-    public B getB() {
+    public B getSecond() {
         return this.b;
     }
 
-    public void setA(final A a) {
+    public void setFirst(final A a) {
         this.a = a;
     }
 
-    public void setB(final B b) {
+    public void setSecond(final B b) {
         this.b = b;
     }
 
     @Override
     public String toString() {
-        return "[" + this.a + ", " + this.b + "]";
+        return "Tuple {" + a + ", " + b + "}";
     }
 }

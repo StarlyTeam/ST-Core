@@ -1,12 +1,9 @@
 package net.starly.core.data.util;
 
-@SuppressWarnings("unused")
 public class Triple<A, B, C> {
-    public A a;
-
-    public B b;
-
-    public C c;
+    private A a;
+    private B b;
+    private C c;
 
     public Triple(final A a, final B b, final C c) {
         this.a = a;
@@ -18,31 +15,32 @@ public class Triple<A, B, C> {
         return new Triple<>(a, b, c);
     }
 
-    public A getA() {
+    public A getFirst() {
         return this.a;
     }
 
-    public B getB() {
+    public B getSecond() {
         return this.b;
     }
 
-    public C getC() {
+    public C getThird() {
         return this.c;
     }
 
-    public void setA(final A a) {
+    public void setFirst(final A a) {
         this.a = a;
     }
 
-    public void setB(final B b) {
+    public void setSecond(final B b) {
         this.b = b;
     }
 
-    public void setC(final C c) {
+    public void setThird(final C c) {
         this.c = c;
     }
 
+    @Override
     public String toString() {
-        return "[" + this.a + ", " + this.b + ", " + this.c + "]";
+        return "Triple{" + a + ", " + b + ", " + c + "}";
     }
 }

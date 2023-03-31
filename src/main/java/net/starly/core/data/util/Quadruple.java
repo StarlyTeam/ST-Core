@@ -1,11 +1,10 @@
 package net.starly.core.data.util;
 
-@SuppressWarnings("unused")
 public class Quadruple<A, B, C, D> {
-    public A a;
-    public B b;
-    public C c;
-    public D d;
+    private A a;
+    private B b;
+    private C c;
+    private D d;
 
     public Quadruple(A a, B b, C c, D d) {
         this.a = a;
@@ -18,39 +17,40 @@ public class Quadruple<A, B, C, D> {
         return new Quadruple<>(a, b, c, d);
     }
 
-    public A getA() {
+    public A getFirst() {
         return a;
     }
 
-    public B getB() {
+    public B getSecond() {
         return b;
     }
 
-    public C getC() {
+    public C getThird() {
         return c;
     }
 
-    public D getD() {
+    public D getFourth() {
         return d;
     }
 
-    public void setA(A a) {
+    public void setFirst(A a) {
         this.a = a;
     }
 
-    public void setB(B b) {
+    public void setSecond(B b) {
         this.b = b;
     }
 
-    public void setC(C c) {
+    public void setThird(C c) {
         this.c = c;
     }
 
-    public void setD(D d) {
+    public void setFourth(D d) {
         this.d = d;
     }
 
+    @Override
     public String toString() {
-        return "[" + a + ", " + b + ", " + c + ", " + d + "]";
+        return "Quadruple{" + a + ", " + b + ", " + c + ", " + d + "}";
     }
 }
