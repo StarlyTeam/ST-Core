@@ -1,4 +1,4 @@
-package net.starly.core.util;
+package net.starly.core.util.security;
 
 import javax.crypto.Cipher;
 import java.security.Key;
