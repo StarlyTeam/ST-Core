@@ -53,12 +53,10 @@ public class VersionController {
     }
 
     private Version checkVersions(Server server) throws UnSupportedVersionException {
-        System.out.println(server.getBukkitVersion());
         try {
             Class.forName("org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack");
             return Version.v1_19_R1;
-        }
-        catch (ClassNotFoundException ignored) {}
+        } catch (ClassNotFoundException ignored) {}
         Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it->server.getBukkitVersion().contains(it.v)).findFirst();
         if(versionFilter.isPresent()) return versionFilter.get();
         else throw new UnSupportedVersionException(server.getVersion());

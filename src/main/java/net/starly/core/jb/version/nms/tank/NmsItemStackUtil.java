@@ -45,7 +45,7 @@ public class NmsItemStackUtil {
         Class<?> NMSItemStack;
         try { NMSItemStack = Class.forName(nmsItemStackClassName); }
         catch (Exception e) { NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack"); }
-        try { nmsItemSupport = new NmsItemUtil("net.minecraft.server."+version.getVersion()+".Item", NMSItemStack); }
+        try { nmsItemSupport = new NmsItemUtil("net.minecraft.server." + version.getVersion() + ".Item", NMSItemStack); }
         catch (Exception e) { nmsItemSupport = new NmsItemUtil("net.minecraft.world.item.Item", NMSItemStack); }
         bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
