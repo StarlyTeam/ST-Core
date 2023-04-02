@@ -16,11 +16,11 @@ repositories {
 dependencies {
     //JAVA DEPENDENCIES
     compileOnly "org.jetbrains:annotations:23.0.0"
-    api "org.reflections:reflections:0.10.2"
     api "org.java-websocket:Java-WebSocket:1.5.1"
     api "org.apache.commons:commons-lang3:3.0"
     api "commons-io:commons-io:2.7"
     api "commons-codec:commons-codec:1.15"
+    api "com.google.guava:guava:31.1-jre"
     implementation "org.json:json:20220924"
 
     // LOMBOK

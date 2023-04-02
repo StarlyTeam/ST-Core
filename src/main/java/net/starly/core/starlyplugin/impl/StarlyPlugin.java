@@ -1,6 +1,6 @@
 package net.starly.core.starlyplugin.impl;
 
-public interface StarlyPlugin {
-    void onRegister();
-    void onUnRegister();
+public abstract class StarlyPlugin {
+    public void onRegister() {}
+    public void onUnRegister() {}
 }
