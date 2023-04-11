@@ -2,6 +2,7 @@ package net.starly.core.jb.version.nms.wrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import net.starly.core.jb.version.nms.tank.NmsItemStackUtil;
 import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 
@@ -9,8 +10,7 @@ import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 @AllArgsConstructor
 public class ItemStackWrapper {
 
-    private Object nmsItemStack;
-    public Object getNmsItemStack() { return nmsItemStack; }
+    @Getter private Object nmsItemStack;
     private NmsItemUtil itemSupport;
     private NmsItemStackUtil wrapper;
 

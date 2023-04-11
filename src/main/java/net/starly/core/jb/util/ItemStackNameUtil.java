@@ -10,6 +10,7 @@ import net.starly.core.jb.version.nms.wrapper.ItemWrapper;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -26,7 +27,7 @@ public class ItemStackNameUtil {
 
     @Deprecated
     public static void $initializingLocale(JavaPlugin plugin) {
-        if(!VersionController.getInstance().getVersion().isHighVersion()) {
+        if (VersionController.getInstance().getVersion().isPresent()) {
             languageMap = new HashMap<>();
             try (InputStream var1 = plugin.getResource("ko_kr_12.lang")) {
                 for (String var3 : IOUtils.readLines(var1, StandardCharsets.UTF_8)) {
@@ -44,7 +45,7 @@ public class ItemStackNameUtil {
         } else {
             try (InputStream var1 = plugin.getResource("ko_kr_19.json")) {
                 Gson gson = new Gson();
-                Reader reader = new InputStreamReader(var1,StandardCharsets.UTF_8);
+                Reader reader = new InputStreamReader(var1, StandardCharsets.UTF_8);
                 languageMap = gson.fromJson(reader, Map.class);
             } catch (Exception ignored) {
                 ignored.printStackTrace();
@@ -54,11 +55,12 @@ public class ItemStackNameUtil {
 
     /**
      * ItemStack 의 한국어 이름을 가져옵니다.
+     *
      * @param itemStack 아이템
      * @return 한국어 이름
      */
     public static String getItemName(ItemStack itemStack) {
-        if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
             return itemStack.getItemMeta().getDisplayName();
 
         try {
@@ -66,9 +68,14 @@ public class ItemStackNameUtil {
             ItemStackWrapper nmsItemStack = nmsItem.asNMSCopy(itemStack);
             ItemWrapper item = nmsItemStack.getItem();
             String unlocalizedName = item.getUnlocalizedName(nmsItemStack);
-            if(!VersionController.getInstance().getVersion().isHighVersion()) unlocalizedName += ".name";
-            if (languageMap.containsKey(unlocalizedName))
+            if (languageMap.containsKey(unlocalizedName)) {
                 return languageMap.get(unlocalizedName);
+            } else {
+                unlocalizedName += ".name";
+                if (languageMap.containsKey(unlocalizedName)) {
+                    return languageMap.get(unlocalizedName);
+                }
+            }
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }

@@ -23,7 +23,7 @@ public class $STArgumentRepositoryImpl implements STArgumentRepository {
                 new STArgument<>(Long.class, "정수(long)", (buf) -> {
                     try { return Long.parseLong(buf); } catch (NumberFormatException ignored) { return null; }
                 }, () -> null, false, 0),
-                new STArgument<>(Double.class, "실수", (buf) -> {
+                new STArgument<>(double.class, "실수", (buf) -> {
                     try { return Double.parseDouble(buf); } catch (NumberFormatException ignored) { return null; }
                 }, () -> null, false, 0),
                 new STArgument<>(String.class, "문자열", (buf) -> buf, () -> null, false, 0)

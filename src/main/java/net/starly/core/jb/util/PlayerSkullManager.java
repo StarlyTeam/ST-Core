@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.starly.core.jb.exception.UnSupportedVersionException;
-import net.starly.core.jb.version.VersionController;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -17,10 +16,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerSkullManager {
 
@@ -29,8 +25,8 @@ public class PlayerSkullManager {
     private static Server server;
 
     @Deprecated
-    public static void $initializing(VersionController.Version version, Server server) {
-        highVersion = version.isHighVersion();
+    public static void $initializing(Optional<String> version, Server server) {
+        highVersion = !version.isPresent();
         PlayerSkullManager.server = server;
     }
 
@@ -43,6 +39,7 @@ public class PlayerSkullManager {
     /**
      * MCHeads 사이트에 있는 머리를 불러옵니다.
      * https://minecraft-heads.com/custom-heads
+     *
      * @param tempTag MCHeads 사이트 제일 아래있는 Minecraft-URL 값
      * @return 머리 블럭 ( 지원하지 않는 버전일 시, STONE )
      */
@@ -78,6 +75,7 @@ public class PlayerSkullManager {
     /**
      * 플레이어의 머리 블럭을 마인크래프트 스킨 서버에서 얻어옵니다.
      * OfflinePlayer 의 경우 Async 환경에서 가져오는 것을 추천드립니다.
+     *
      * @param targetUniqueId 유저의 UUID
      * @return 머리 블럭 ( 지원하지 않는 버전일 시, STONE )
      */

@@ -1,6 +1,5 @@
 package net.starly.core;
 
-import kotlin.Suppress;
 import net.starly.core.jb.container.ContainerListener;
 import net.starly.core.jb.repo.STArgumentRepository;
 import net.starly.core.jb.repo.impl.$STArgumentRepositoryImpl;
@@ -24,7 +23,6 @@ public class StarlyCore extends JavaPlugin {
         argumentRepository = new $STArgumentRepositoryImpl();
         new Metrics(this, 17172);
 
-        VersionController.$initializing(this);
         PlayerSkullManager.$initializing(VersionController.getInstance().getVersion(), getServer());
         ItemStackNameUtil.$initializingLocale(this);
 
