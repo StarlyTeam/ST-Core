@@ -89,7 +89,7 @@ public class NmsItemStackUtil {
 
         try {
             nmsItemSupport = new NmsItemUtil("net.minecraft.world.item.Item", NMSItemStack);
-        } catch (ClassNotFoundException ignored) {
+        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
             try {
                 nmsItemSupport = new NmsItemUtil("net.minecraft.server." + version.get() + ".Item", NMSItemStack);
             } catch (NoSuchElementException | ClassNotFoundException ignored_) {
@@ -98,12 +98,9 @@ public class NmsItemStackUtil {
                     try {
                         NMSItemStack = Class.forName("net.minecraft.server." + s + ".ItemStack");
                         break;
-                    } catch (ClassNotFoundException ignored__) {}
+                    } catch (ClassNotFoundException ignored1) {}
                 }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return;
         }
 
 
@@ -111,9 +108,9 @@ public class NmsItemStackUtil {
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
         try {
             setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundUtil.getNBTTagCompound());
-        } catch (Exception e) { setTagMethod = NMSItemStack.getDeclaredMethod("c", nbtCompoundUtil.getNBTTagCompound()); }
+        } catch (NoSuchMethodException ignored) { setTagMethod = NMSItemStack.getDeclaredMethod("c", nbtCompoundUtil.getNBTTagCompound()); }
         try { getTagMethod = NMSItemStack.getDeclaredMethod("getTag"); }
-        catch (Exception e) { getTagMethod = NMSItemStack.getDeclaredMethod("u"); }
+        catch (NoSuchMethodException ignored) { getTagMethod = NMSItemStack.getDeclaredMethod("u"); }
     }
 
     /**
