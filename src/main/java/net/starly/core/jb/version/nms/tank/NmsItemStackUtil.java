@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class NmsItemStackUtil {
@@ -58,7 +59,7 @@ public class NmsItemStackUtil {
                 try {
                     craftItemStack = Class.forName("org.bukkit.craftbukkit." + s + ".inventory.CraftItemStack");
                     break;
-                } catch (Exception ignored) {}
+                } catch (ClassNotFoundException ignored) {}
             }
         }
         if (craftItemStack == null) throw new UnSupportedVersionException(Bukkit.getBukkitVersion() + " 버전은 지원하지 않습니다.");
@@ -74,8 +75,14 @@ public class NmsItemStackUtil {
         } else {
             try {
                 NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack");
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (ClassNotFoundException ignored) {
+                STSet<String> versions = VersionController.HIGH_VERSIONS;
+                for (String s : versions) {
+                    try {
+                        NMSItemStack = Class.forName("net.minecraft.server." + s + ".ItemStack");
+                        break;
+                    } catch (ClassNotFoundException ignored_) {}
+                }
             }
         }
         if (NMSItemStack == null) throw new UnSupportedVersionException(Bukkit.getBukkitVersion() + " 버전은 지원하지 않습니다.");
@@ -85,9 +92,14 @@ public class NmsItemStackUtil {
         } catch (ClassNotFoundException ignored) {
             try {
                 nmsItemSupport = new NmsItemUtil("net.minecraft.server." + version.get() + ".Item", NMSItemStack);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return;
+            } catch (NoSuchElementException | ClassNotFoundException ignored_) {
+                STSet<String> versions = VersionController.HIGH_VERSIONS;
+                for (String s : versions) {
+                    try {
+                        NMSItemStack = Class.forName("net.minecraft.server." + s + ".ItemStack");
+                        break;
+                    } catch (ClassNotFoundException ignored__) {}
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
