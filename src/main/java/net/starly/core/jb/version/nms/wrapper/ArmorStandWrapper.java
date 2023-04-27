@@ -94,7 +94,7 @@ public class ArmorStandWrapper {
         NmsOtherUtil.getInstance().sendPacket(target, NmsOtherUtil.getInstance().getPacketInstance().getPacketPlayOutEntityDestroy(), new int[]{id});
     }
 
-    private void setHelmetItem(Player target) {
+    public void setHelmetItem(Player target) {
         if (helmet == null) return;
         Object enumItemSlot;
         try { enumItemSlot = NmsOtherUtil.getInstance().getValueOfEnumItemSlot().invoke(null, "head"); }
