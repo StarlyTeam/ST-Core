@@ -4,7 +4,6 @@ import lombok.Getter;
 import net.starly.core.jb.exception.UnSupportedVersionException;
 import net.starly.core.jb.version.VersionController;
 import net.starly.core.jb.version.nms.wrapper.ItemStackWrapper;
-import net.starly.core.util.collection.STList;
 import net.starly.core.util.collection.STSet;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;

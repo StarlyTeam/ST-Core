@@ -8,8 +8,6 @@ import net.starly.core.util.collection.STSet;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class NmsNbtTagCompoundUtil {
 
     @Getter private Class<?> NBTTagCompound;

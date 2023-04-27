@@ -8,13 +8,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class ArmorStandWrapper {
     private int id;
     private FeatherLocation location;
-    private Object entityArmorStand;
+    private final Object entityArmorStand;
     private EulerAngle defaultHeadPose;
 
     public ArmorStandWrapper(int id, FeatherLocation location, Object entityArmorStand) {
@@ -26,12 +25,17 @@ public class ArmorStandWrapper {
         catch (Exception ex) { defaultHeadPose = null; }
     }
 
+
     private String displayName = "";
     private boolean small = true;
     private boolean invisible = true;
     private boolean customNameVisible = false;
     private ItemStack helmet = null;
 
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setDisplayName(String value) {
         this.displayName = value;
@@ -55,6 +59,10 @@ public class ArmorStandWrapper {
         this.customNameVisible = value;
         try { NmsOtherUtil.getInstance().getSetCustomNameVisible().invoke(entityArmorStand, value); }
         catch (Exception ex) { ex.printStackTrace(); }
+    }
+
+    public void setHelmet(ItemStack itemStack) {
+        this.helmet = itemStack;
     }
 
     public HeadPoseWrapper getHeadPose() {
