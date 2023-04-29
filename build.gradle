@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'net.starly.core'
-version '1.7.3.4'
+version '1.7.4'
 
 repositories {
     mavenCentral()

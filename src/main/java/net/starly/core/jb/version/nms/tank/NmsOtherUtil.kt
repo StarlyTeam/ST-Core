@@ -276,7 +276,8 @@ object NmsOtherUtil {
         try {
             EntityArmorStandClass.getMethod("setSmall", Boolean::class.java)
         } catch (_: Exception) {
-            EntityArmorStandClass.getMethod("a", Boolean::class.java)
+            if (version == VersionController.Version.v1_19_R3) EntityArmorStandClass.getMethod("t", Boolean::class.java)
+            else EntityArmorStandClass.getMethod("a", Boolean::class.java)
         }
     val setLocation: Method =
         try {
