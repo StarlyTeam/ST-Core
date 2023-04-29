@@ -37,11 +37,11 @@ public class STButton {
 
     private STButton apply() {
         ItemMeta meta = itemStack.getItemMeta();
-        if(displayName != null) meta.setDisplayName(displayName);
-        if(lore != null) meta.setLore(lore);
-        if(isGlow) meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (displayName != null) meta.setDisplayName(displayName);
+        if (lore != null) meta.setLore(lore);
+        if (isGlow) meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemStack.setItemMeta(meta);
-        if(isGlow) itemStack.addUnsafeEnchantment(Enchantment.LURE, 1);
+        if (isGlow) itemStack.addUnsafeEnchantment(Enchantment.LURE, 1);
         return this;
     }
 
@@ -56,7 +56,7 @@ public class STButton {
     }
 
     public void execute(STContainer container, ButtonClickEventWrapper wrapper) {
-        if(function == null) return;
+        if (function == null) return;
         function.accept(wrapper, container);
     }
 
@@ -71,7 +71,7 @@ public class STButton {
         public STButtonBuilder(ItemStack itemStack) {
             this();
             button.itemStack = itemStack.clone();
-            if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) button.lore = itemStack.getItemMeta().getLore();
+            if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) button.lore = itemStack.getItemMeta().getLore();
         }
         public STButtonBuilder(Material material) {
             this();

@@ -30,8 +30,8 @@ public class PercentUtility {
      * @return 성공 여부
      */
     public static boolean isSuccess(double percent) {
-        if(percent >= 100.0) return true;
-        else if(percent <= 0.0) return false;
+        if (percent >= 100.0) return true;
+        else if (percent <= 0.0) return false;
         else {
             BigDecimal dec = new BigDecimal(percent);
             BigDecimal fail = new BigDecimal(100);

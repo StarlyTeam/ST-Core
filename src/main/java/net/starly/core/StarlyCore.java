@@ -7,7 +7,7 @@ import net.starly.core.jb.util.AsyncExecutor;
 import net.starly.core.bstats.Metrics;
 import net.starly.core.jb.util.ItemStackNameUtil;
 import net.starly.core.jb.util.PlayerSkullManager;
-import net.starly.core.jb.version.VersionController;
+import net.starly.core.jb.version.nms.VersionController;
 import net.starly.core.starlyplugin.StarlyPluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +23,7 @@ public class StarlyCore extends JavaPlugin {
         argumentRepository = new $STArgumentRepositoryImpl();
         new Metrics(this, 17172);
 
+        VersionController.$initializing(this);
         PlayerSkullManager.$initializing(VersionController.getInstance().getVersion(), getServer());
         ItemStackNameUtil.$initializingLocale(this);
 

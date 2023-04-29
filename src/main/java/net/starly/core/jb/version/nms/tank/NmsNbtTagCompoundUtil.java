@@ -1,50 +1,33 @@
 package net.starly.core.jb.version.nms.tank;
 
 import lombok.Getter;
-import net.starly.core.jb.version.VersionController;
 import net.starly.core.jb.version.nms.wrapper.NBTTagCompoundWrapper;
-import net.starly.core.util.collection.STSet;
 
 import java.lang.reflect.Method;
-import java.util.Optional;
 
 public class NmsNbtTagCompoundUtil {
 
-    @Getter private Class<?> NBTTagCompound;
-    @Getter private Method getStringMethod;
-    @Getter private Method setStringMethod;
+    @Getter
+    private Class<?> NBTTagCompound;
+    @Getter
+    private Method getStringMethod;
+    @Getter
+    private Method setStringMethod;
 
-    NmsNbtTagCompoundUtil() throws NoSuchMethodException {
-        Optional<String> version = VersionController.getInstance().getVersion();
-
-        if (version.isPresent()) {
-            try {
-                NBTTagCompound = Class.forName("net.minecraft.server." + version.get() + ".NBTTagCompound");
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            try {
-                NBTTagCompound = Class.forName("net.minecraft.nbt.NBTTagCompound");
-            } catch (ClassNotFoundException ignored) {
-                STSet<String> versions = VersionController.HIGH_VERSIONS;
-                for (String s : versions) {
-                    try {
-                        NBTTagCompound = Class.forName("net.minecraft.server." + s + ".NBTTagCompound");
-                        break;
-                    } catch (ClassNotFoundException ignored_) {}
-                }
-            }
+    NmsNbtTagCompoundUtil(String nbtTagCompoundClassName) throws ClassNotFoundException, NoSuchMethodException {
+        try {
+            NBTTagCompound = Class.forName(nbtTagCompoundClassName);
+        } catch (Exception ignored) {
+            NBTTagCompound = Class.forName("net.minecraft.nbt.NBTTagCompound");
         }
-
         try {
             getStringMethod = NBTTagCompound.getDeclaredMethod("getString", String.class);
-        } catch (NoSuchMethodException ignored) {
+        } catch (Exception e) {
             getStringMethod = NBTTagCompound.getDeclaredMethod("l", String.class);
         }
         try {
             setStringMethod = NBTTagCompound.getDeclaredMethod("setString", String.class, String.class);
-        } catch (NoSuchMethodException ignored) {
+        } catch (Exception e) {
             setStringMethod = NBTTagCompound.getDeclaredMethod("a", String.class, String.class);
         }
     }
@@ -61,4 +44,5 @@ public class NmsNbtTagCompoundUtil {
             return null;
         }
     }
+
 }

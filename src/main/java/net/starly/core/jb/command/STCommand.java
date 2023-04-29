@@ -29,14 +29,14 @@ public abstract class STCommand implements CommandExecutor, TabCompleter {
                         )
         );
         PluginCommand pluginCommand = plugin.getCommand(command);
-        if(pluginCommand != null) {
+        if (pluginCommand != null) {
             pluginCommand.setExecutor(this);
             pluginCommand.setTabCompleter(this);
         }
     }
 
     private void command(CommandSenderWrapper sender, String[] args) {
-        if(args.length == 0) executeDefaultCommand(sender);
+        if (args.length == 0) executeDefaultCommand(sender);
         else {
             String sub = args[0];
             try { subCommands.get(sub).execute(sender, Arrays.copyOfRange(args, 1, args.length)); }
@@ -51,29 +51,29 @@ public abstract class STCommand implements CommandExecutor, TabCompleter {
     public void printHelpLine(CommandSenderWrapper sender) {
         sender.sendMessage("&6/"+ command + " : &f" + description);
         subCommands.values().forEach((sub)-> {
-            if(sub.getAnnotation().isOp() && !sender.isOp()) return;
+            if (sub.getAnnotation().isOp() && !sender.isOp()) return;
             sub.printHelpMessage(sender);
         });
     }
 
     protected List<String> tabComplete(CommandSenderWrapper sender, String[] args) {
-        if(args.length <= 1) return StringUtil.copyPartialMatches(args[0], subCommands.entrySet().stream().filter(it->{
+        if (args.length <= 1) return StringUtil.copyPartialMatches(args[0], subCommands.entrySet().stream().filter(it->{
             STSubCommand value = it.getValue();
-            if(!value.getAnnotation().permission().isEmpty())
-                if(!sender.hasPermission(value.getAnnotation().permission())) return false;
+            if (!value.getAnnotation().permission().isEmpty())
+                if (!sender.hasPermission(value.getAnnotation().permission())) return false;
 
             return !(value.getAnnotation().isOp() && !sender.isOp());
         }).map(Map.Entry::getKey).collect(Collectors.toList()), new ArrayList<>());
         else {
             int index = args.length - 2;
             STSubCommand target = subCommands.get(args[0]);
-            if(target == null) return null;
+            if (target == null) return null;
             else {
                 STArgument<?> tab = target.getArgument(sender, index);
-                if(tab == null) return Collections.emptyList();
+                if (tab == null) return Collections.emptyList();
                 else {
                     List<String> result = tab.getTabCompleter().apply();
-                    if(result == null) return null;
+                    if (result == null) return null;
                     else return StringUtil.copyPartialMatches(args[args.length - 1], result, new ArrayList<>());
                 }
             }

@@ -46,14 +46,14 @@ public class JsonUtil {
      * @param <T> 해당 객체의 타입
      */
     public static <T> File toJsonFile(File folder, String fileName, T data) {
-        if(!fileName.endsWith(".json")) fileName += ".json";
-        if(!folder.exists()) folder.mkdirs();
+        if (!fileName.endsWith(".json")) fileName += ".json";
+        if (!folder.exists()) folder.mkdirs();
         File file = new File(folder, fileName);
         return $toJsonFile(file, data);
     }
 
     private static <T> File $toJsonFile(File file, T data) {
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) { e.printStackTrace(); }
@@ -74,7 +74,7 @@ public class JsonUtil {
      * @param <T> 해당 객체의 타입
      */
     public static <T> T fromJsonFile(File file, Class<T> clazz) {
-        if(!file.exists()) return null;
+        if (!file.exists()) return null;
         FileReader fr = null;
         BufferedReader br = null;
         T result = null;

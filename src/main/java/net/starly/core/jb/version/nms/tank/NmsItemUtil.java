@@ -15,7 +15,7 @@ public class NmsItemUtil {
         NmsItemClass = Class.forName(className);
         NmsItemStackClass = nmsItemStackClass;
         jMethod = NmsItemClass.getMethod("j", nmsItemStackClass);
-        aMethod = NmsItemClass.getMethod("a", NmsOtherUtil.getInstance().getWorldClass(), NmsOtherUtil.getInstance().getEntityHumanClass(), NmsOtherUtil.getInstance().getEnumHandClass());
+//        aMethod = NmsItemClass.getMethod("a", NmsOtherUtil.INSTANCE.getWorldClass(), NmsOtherUtil.INSTANCE.getEntityHumanClass(), NmsOtherUtil.INSTANCE.getEnumHandClass()); TODO: FIX
     }
 
 }

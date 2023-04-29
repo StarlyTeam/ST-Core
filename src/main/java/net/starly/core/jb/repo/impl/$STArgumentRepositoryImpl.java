@@ -38,9 +38,9 @@ public class $STArgumentRepositoryImpl implements STArgumentRepository {
 
     @Override
     public STArgument<?> getArgument(Class<?> clazz) {
-        if(argumentMap.containsKey(clazz.getSimpleName())) {
+        if (argumentMap.containsKey(clazz.getSimpleName())) {
             List<STArgument<?>> list = argumentMap.get(clazz.getSimpleName());
-            if(list.isEmpty()) return null;
+            if (list.isEmpty()) return null;
             else return list.get(0);
         }
         return null;

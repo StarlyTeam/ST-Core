@@ -1,17 +1,12 @@
 package net.starly.core.jb.version.nms.tank;
 
 import lombok.Getter;
-import net.starly.core.jb.exception.UnSupportedVersionException;
-import net.starly.core.jb.version.VersionController;
+import net.starly.core.jb.version.nms.VersionController;
 import net.starly.core.jb.version.nms.wrapper.ItemStackWrapper;
-import net.starly.core.util.collection.STSet;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 public class NmsItemStackUtil {
 
@@ -45,75 +40,39 @@ public class NmsItemStackUtil {
         }
     }
 
-    private NmsItemStackUtil(Optional<String> version) throws ClassNotFoundException, NoSuchMethodException, UnSupportedVersionException {
-        nbtCompoundUtil = new NmsNbtTagCompoundUtil();
+    private NmsItemStackUtil(VersionController.Version version) throws ClassNotFoundException, NoSuchMethodException {
+        String craftItemStackClassName = "org.bukkit.craftbukkit." + version.version + ".inventory.CraftItemStack";
+        String nmsItemStackClassName = "net.minecraft.server." + version.version + ".ItemStack";
+        nbtCompoundUtil = new NmsNbtTagCompoundUtil("net.minecraft.server." + version.version + ".NBTTagCompound");
 
-
-        Class<?> craftItemStack = null;
-        if (version.isPresent()) {
-            craftItemStack = Class.forName("org.bukkit.craftbukkit." + version.get() + ".inventory.CraftItemStack");
-        } else {
-            STSet<String> versions = VersionController.HIGH_VERSIONS;
-            for (String s : versions) {
-                try {
-                    craftItemStack = Class.forName("org.bukkit.craftbukkit." + s + ".inventory.CraftItemStack");
-                    break;
-                } catch (ClassNotFoundException ignored) {}
-            }
-        }
-        if (craftItemStack == null) throw new UnSupportedVersionException(Bukkit.getBukkitVersion() + " 버전은 지원하지 않습니다.");
-
-        Class<?> NMSItemStack = null;
-        if (version.isPresent()) {
-            try {
-                NMSItemStack = Class.forName("net.minecraft.server." + version.get() + ".ItemStack");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return;
-            }
-        } else {
-            try {
-                NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack");
-            } catch (ClassNotFoundException ignored) {
-                STSet<String> versions = VersionController.HIGH_VERSIONS;
-                for (String s : versions) {
-                    try {
-                        NMSItemStack = Class.forName("net.minecraft.server." + s + ".ItemStack");
-                        break;
-                    } catch (ClassNotFoundException ignored_) {}
-                }
-            }
-        }
-        if (NMSItemStack == null) throw new UnSupportedVersionException(Bukkit.getBukkitVersion() + " 버전은 지원하지 않습니다.");
-
+        Class<?> craftItemStack = Class.forName(craftItemStackClassName);
+        Class<?> NMSItemStack;
         try {
-            nmsItemSupport = new NmsItemUtil("net.minecraft.world.item.Item", NMSItemStack);
-        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
-            try {
-                nmsItemSupport = new NmsItemUtil("net.minecraft.server." + version.get() + ".Item", NMSItemStack);
-            } catch (NoSuchElementException | ClassNotFoundException ignored_) {
-                STSet<String> versions = VersionController.HIGH_VERSIONS;
-                for (String s : versions) {
-                    try {
-                        NMSItemStack = Class.forName("net.minecraft.server." + s + ".ItemStack");
-                        break;
-                    } catch (ClassNotFoundException ignored1) {}
-                }
-            }
+            NMSItemStack = Class.forName(nmsItemStackClassName);
+        } catch (Exception e) {
+            NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack");
         }
-
-
+        try {
+            nmsItemSupport = new NmsItemUtil("net.minecraft.server." + version.version + ".Item", NMSItemStack);
+        } catch (Exception e) {
+            nmsItemSupport = new NmsItemUtil("net.minecraft.world.item.Item", NMSItemStack);
+        }
         bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
         try {
             setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundUtil.getNBTTagCompound());
-        } catch (NoSuchMethodException ignored) { setTagMethod = NMSItemStack.getDeclaredMethod("c", nbtCompoundUtil.getNBTTagCompound()); }
-        try { getTagMethod = NMSItemStack.getDeclaredMethod("getTag"); }
-        catch (NoSuchMethodException ignored) { getTagMethod = NMSItemStack.getDeclaredMethod("u"); }
+        } catch (Exception e) {
+            setTagMethod = NMSItemStack.getDeclaredMethod("c", nbtCompoundUtil.getNBTTagCompound());
+        }
+        try {
+            getTagMethod = NMSItemStack.getDeclaredMethod("getTag");
+        } catch (Exception e) {
+            getTagMethod = NMSItemStack.getDeclaredMethod("u");
+        }
     }
 
     /**
-     * ItemStackWrapper 을/를 Bukkit-API의 ItemStack으로 변경해줍니다.
+     * ItemStackWrapper 을/를 Bukkit-API 의 ItemStack 으로 변경해줍니다.
      *
      * @param nmsItemStack ItemStackWrapper
      * @return Bukkit-API ItemStack
@@ -121,14 +80,13 @@ public class NmsItemStackUtil {
     public ItemStack asBukkitCopy(ItemStackWrapper nmsItemStack) {
         try {
             return (ItemStack) bukkitCopyMethod.invoke(null, nmsItemStack.getNmsItemStack());
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
             return null;
         }
     }
 
     /**
-     * Bukkit-API의 ItemStack을 ItemStackWrapper로 변경해줍니다.
+     * Bukkit-API 의 ItemStack 을/를 ItemStackWrapper 로 변경해줍니다.
      *
      * @param itemStack Bukkit-API ItemStack
      * @return ItemStackWrapper
@@ -137,8 +95,7 @@ public class NmsItemStackUtil {
     public ItemStackWrapper asNMSCopy(ItemStack itemStack) {
         try {
             return new ItemStackWrapper(nmsCopyMethod.invoke(null, itemStack), nmsItemSupport, this);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
             return null;
         }
     }

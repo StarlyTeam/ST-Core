@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.starly.core.jb.exception.UnSupportedVersionException;
+import net.starly.core.jb.version.nms.VersionController;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -25,13 +26,13 @@ public class PlayerSkullManager {
     private static Server server;
 
     @Deprecated
-    public static void $initializing(Optional<String> version, Server server) {
-        highVersion = !version.isPresent();
+    public static void $initializing(VersionController.Version version, Server server) {
+        highVersion = version.highVersion;
         PlayerSkullManager.server = server;
     }
 
     private static String getSkinTag(UUID uniqueId) {
-        if(skinTagMap.containsKey(uniqueId))
+        if (skinTagMap.containsKey(uniqueId))
             return skinTagMap.get(uniqueId);
         return null;
     }
@@ -46,7 +47,7 @@ public class PlayerSkullManager {
     public static ItemStack getCustomSkull(String tempTag) {
         ItemStack baseItem;
         try {
-            if(!highVersion) baseItem = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
+            if (!highVersion) baseItem = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
             else baseItem = new ItemStack(Material.PLAYER_HEAD);
         } catch (Exception ignore) {
             return new ItemStack(Material.STONE);
@@ -81,7 +82,7 @@ public class PlayerSkullManager {
      */
     public static ItemStack getPlayerSkull(UUID targetUniqueId) {
         String skinTag;
-        if(skinTagMap.containsKey(targetUniqueId)) skinTag = skinTagMap.get(targetUniqueId);
+        if (skinTagMap.containsKey(targetUniqueId)) skinTag = skinTagMap.get(targetUniqueId);
         else {
             try {
                 String contents = getURLContents("https://sessionserver.mojang.com/session/minecraft/profile/" + targetUniqueId);
@@ -102,7 +103,7 @@ public class PlayerSkullManager {
         ItemStack baseItem;
 
         try {
-            if(!highVersion) baseItem = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
+            if (!highVersion) baseItem = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
             else baseItem = new ItemStack(Material.PLAYER_HEAD, 1);
         } catch (Exception ignore) {
             return new ItemStack(Material.STONE);

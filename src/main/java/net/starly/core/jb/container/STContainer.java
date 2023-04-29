@@ -36,7 +36,7 @@ public abstract class STContainer implements InventoryHolder {
 
     private static void closeFunc(String playerName) {
         Player target = server.getPlayer(playerName);
-        if(target != null) {
+        if (target != null) {
             target.closeInventory();
         } else viewers.remove(playerName);
     }
@@ -71,7 +71,7 @@ public abstract class STContainer implements InventoryHolder {
     }
 
     public void registerButton(int slot, STButton button) {
-        if(slotMap.containsKey(slot)) {
+        if (slotMap.containsKey(slot)) {
             //STButton old = slotMap.get(slot);
             ItemStack oldItem = inventory.getItem(slot);
             oldItem.setType(button.getOriginalItemStack().getType());
@@ -86,7 +86,7 @@ public abstract class STContainer implements InventoryHolder {
 
     public void refresh() {
         for(int i = 0; i < size; i++) {
-            if(slotMap.containsKey(i)) {
+            if (slotMap.containsKey(i)) {
                 if (!slotMap.get(i).isCleanable()) continue;
             }
             inventory.setItem(i, null);
@@ -97,13 +97,13 @@ public abstract class STContainer implements InventoryHolder {
     }
 
     public void open(Player player) {
-        if(player == null || !player.isOnline()) return;
+        if (player == null || !player.isOnline()) return;
         try {
             viewer = player;
             initializingInventory(inventory);
             plugin.getServer().getScheduler().runTaskLater(plugin, ()->{
                 InventoryView openInventory = player.getOpenInventory();
-                if(!openInventory.getType().equals(InventoryType.PLAYER)
+                if (!openInventory.getType().equals(InventoryType.PLAYER)
                         && !openInventory.getType().equals(InventoryType.CREATIVE)
                         && !openInventory.getType().equals(InventoryType.CRAFTING)
                 ) {
@@ -121,15 +121,15 @@ public abstract class STContainer implements InventoryHolder {
     protected void openedInitializing() {}
 
     public void $click(InventoryClickEvent event) {
-        if(cancel) event.setCancelled(true);
+        if (cancel) event.setCancelled(true);
         InventoryClickEventWrapper wrapper = new InventoryClickEventWrapper(event, false);
         guiClick(wrapper);
         ItemStack itemChecker = event.getCurrentItem();
-        if(itemChecker == null || itemChecker.getType().equals(Material.AIR)) return;
-        if(!wrapper.isButtonCancelled() && slotMap.containsKey(wrapper.getRawSlot())) {
+        if (itemChecker == null || itemChecker.getType().equals(Material.AIR)) return;
+        if (!wrapper.isButtonCancelled() && slotMap.containsKey(wrapper.getRawSlot())) {
             STButton button = slotMap.get(wrapper.getRawSlot());
             button.execute(this, new ButtonClickEventWrapper(event, button));
-            if(button.isCancelled()) event.setCancelled(true);
+            if (button.isCancelled()) event.setCancelled(true);
         }
     }
     public void $close(InventoryCloseEvent event) {

@@ -23,7 +23,7 @@ public class STArgument<T> implements Comparable<STArgument> {
         this.castable = castable;
         this.tabCompletable = tabCompletable;
         this.async = async;
-        if(priority < 0) priority = 0;
+        if (priority < 0) priority = 0;
         this.priority = priority;
     }
 
@@ -36,7 +36,7 @@ public class STArgument<T> implements Comparable<STArgument> {
     }
 
     public T cast(String buf) {
-        if(async) return AsyncExecutor.submit(()->castable.cast(buf));
+        if (async) return AsyncExecutor.submit(()->castable.cast(buf));
         else return castable.cast(buf);
     }
 

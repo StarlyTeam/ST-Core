@@ -1,5 +1,6 @@
 package net.starly.core.jb.version.nms.wrapper;
 
+import jdk.jfr.events.ExceptionThrownEvent;
 import lombok.Getter;
 import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 import net.starly.core.jb.version.nms.tank.NmsOtherUtil;
@@ -43,9 +44,9 @@ public class ItemWrapper {
         try {
             return support.getAMethod().invoke(
                     world.getWorld(),
-                    NmsOtherUtil.getInstance().getGetHandleAtPlayer().invoke(NmsOtherUtil.getInstance().getCraftPlayerClass().cast(player),
-                    NmsOtherUtil.getInstance().getEnumHandClass().cast(enumHand)
-            ));
+                    NmsOtherUtil.INSTANCE.getGetHandleAtPlayer().invoke(NmsOtherUtil.INSTANCE.getCraftPlayerClass().cast(player)),
+                    enumHand
+            );
         } catch (Exception ignored) { return null; }
     }
 

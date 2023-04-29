@@ -27,15 +27,15 @@ public class STSubCommand {
         builder.append("§e/").append(parent.getCommand()).append(" ").append(annotation.subCommand());
         Parameter[] params = method.getParameters();
         for(int i = 0; i < params.length; i++) {
-            if(i == 0) continue;
+            if (i == 0) continue;
             Parameter param = params[i];
             Class<?> paramClass = param.getType();
             STArgument<?> argument = StarlyCore.getArgumentRepository().getArgument(paramClass);
-            if(argument != null) {
+            if (argument != null) {
                 if (param.isAnnotationPresent(NullableArgument.class)) arguments.add(new Pair<>(argument, false));
                 else arguments.add(new Pair<>(argument, true));
                 String label = argument.getLabel();
-                if(param.isAnnotationPresent(ArgumentLabel.class))
+                if (param.isAnnotationPresent(ArgumentLabel.class))
                     label = param.getAnnotation(ArgumentLabel.class).value();
                 builder.append(" ").append(label);
             }
@@ -46,9 +46,9 @@ public class STSubCommand {
     public Subcommand getAnnotation() { return annotation; }
 
     public void execute(CommandSenderWrapper sender, String[] args) {
-        if(annotation.isOp() && !sender.isOp()) {
+        if (annotation.isOp() && !sender.isOp()) {
             sender.sendMessage(MessageContext.COMMAND_PERMISSION_ERROR);
-        } else if(!sender.hasPermission(annotation.permission())) {
+        } else if (!sender.hasPermission(annotation.permission())) {
             sender.sendMessage(MessageContext.COMMAND_PERMISSION_ERROR);
         } else {
             List<Object> argumentList = new ArrayList<>();
@@ -57,9 +57,9 @@ public class STSubCommand {
                 Pair<STArgument<?>, Boolean> it = arguments.get(i);
                 Object obj;
                 try { obj = it.getFirst().cast(args[i]); } catch (Exception e) { obj = null; }
-                if(it.getSecond() && obj == null) {
+                if (it.getSecond() && obj == null) {
                     String label = it.getFirst().getLabel();
-                    if(function.getParameters()[i].isAnnotationPresent(ArgumentLabel.class))
+                    if (function.getParameters()[i].isAnnotationPresent(ArgumentLabel.class))
                         label = function.getParameters()[i].getAnnotation(ArgumentLabel.class).value();
                     sender.sendMessage(String.format(MessageContext.COMMAND_NOT_NULL_ARGUMENT, label));
                     return;
@@ -79,9 +79,9 @@ public class STSubCommand {
 
     public STArgument<?> getArgument(CommandSenderWrapper sender, int index) {
         try {
-            if(!sender.isOp() && annotation.isOp()) return null;
-            else if(!annotation.permission().isEmpty() && sender.hasPermission(annotation.permission())) return arguments.get(index).getFirst();
-            else if(annotation.permission().isEmpty()) return arguments.get(index).getFirst();
+            if (!sender.isOp() && annotation.isOp()) return null;
+            else if (!annotation.permission().isEmpty() && sender.hasPermission(annotation.permission())) return arguments.get(index).getFirst();
+            else if (annotation.permission().isEmpty()) return arguments.get(index).getFirst();
             else return null;
         } catch (Exception e) { return null; }
     }

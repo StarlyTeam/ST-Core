@@ -22,7 +22,7 @@ public class CommandSenderWrapper {
     }
 
     public boolean hasPermission(String permission) {
-        if(permission.isEmpty()) return true;
+        if (permission.isEmpty()) return true;
         return sender.hasPermission(permission);
     }
 
@@ -55,11 +55,11 @@ public class CommandSenderWrapper {
     }
 
     public void teleport(Location location) {
-        if(isPlayer) getPlayer().teleport(location);
+        if (isPlayer) getPlayer().teleport(location);
     }
 
     public void openInventory(Inventory inventory) {
-        if(isPlayer) getPlayer().openInventory(inventory);
+        if (isPlayer) getPlayer().openInventory(inventory);
     }
 
     public void performCommand(String command) {
@@ -67,12 +67,12 @@ public class CommandSenderWrapper {
     }
 
     public void performCommand(String command, boolean setOp) {
-        if(!isPlayer) return;
+        if (!isPlayer) return;
         boolean op = isOp;
         try {
             sender.setOp(setOp);
             getPlayer().performCommand(command);
-        } finally { if(!op) sender.setOp(false); }
+        } finally { if (!op) sender.setOp(false); }
     }
 
 }

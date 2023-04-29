@@ -3,7 +3,7 @@ package net.starly.core.jb.util;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
-import net.starly.core.jb.version.VersionController;
+import net.starly.core.jb.version.nms.VersionController;
 import net.starly.core.jb.version.nms.tank.NmsItemStackUtil;
 import net.starly.core.jb.version.nms.wrapper.ItemStackWrapper;
 import net.starly.core.jb.version.nms.wrapper.ItemWrapper;
@@ -27,7 +27,7 @@ public class ItemStackNameUtil {
 
     @Deprecated
     public static void $initializingLocale(JavaPlugin plugin) {
-        if (VersionController.getInstance().getVersion().isPresent()) {
+        if (VersionController.getInstance().getVersion().highVersion) {
             languageMap = new HashMap<>();
             try (InputStream var1 = plugin.getResource("ko_kr_12.lang")) {
                 for (String var3 : IOUtils.readLines(var1, StandardCharsets.UTF_8)) {
