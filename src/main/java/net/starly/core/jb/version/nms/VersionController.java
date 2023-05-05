@@ -69,7 +69,7 @@ public class VersionController {
     }
 
     private Version checkVersions(Server server) throws UnSupportedVersionException {
-        System.out.println(server.getBukkitVersion());
+        System.out.println("Running on currently version : " + server.getBukkitVersion());
         Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it -> Arrays.stream(it.v.split(" \\| ")).anyMatch(v -> server.getBukkitVersion().contains(v))).findFirst();
         if (versionFilter.isPresent()) return versionFilter.get();
         else throw new UnSupportedVersionException(server.getVersion());
