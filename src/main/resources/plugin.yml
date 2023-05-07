@@ -5,5 +5,9 @@ website: http://starly.kr/
 
 description: Core Plugin.
 
-version: 1.7.6
+version: 1.7.7
 api-version: 1.13
+
+commands:
+  st-core:
+    description: 코어 디버깅용 명령어입니다.
