@@ -54,7 +54,8 @@ public class VersionController {
         try {
             if (instance == null) instance = new VersionController(plugin.getServer());
             return instance;
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }
