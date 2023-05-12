@@ -47,9 +47,10 @@ public class PlayerSkullManager {
     public static ItemStack getCustomSkull(String tempTag) {
         ItemStack baseItem;
         try {
-            if (!highVersion) baseItem = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
-            else baseItem = new ItemStack(Material.PLAYER_HEAD);
-        } catch (Exception ignore) {
+            baseItem = new ItemStack(Material.valueOf("PLAYER_HEAD"));
+        } catch (IllegalArgumentException ignored) {
+            baseItem = new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
+        } catch (Exception ignored) {
             return new ItemStack(Material.STONE);
         }
 
