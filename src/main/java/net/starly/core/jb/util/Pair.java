@@ -1,6 +1,8 @@
 package net.starly.core.jb.util;
 
-public class Pair<F,S> {
+import java.io.Serializable;
+
+public class Pair<F,S> implements Serializable {
 
     private final F first;
     private final S second;
