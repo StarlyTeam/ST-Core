@@ -1,11 +1,14 @@
-package net.starly.core.plugin.command;
+package net.starly.core.coreplugin.command;
 
 import net.starly.core.StarlyCore;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -53,6 +56,16 @@ public class STCoreCmd implements CommandExecutor {
                         );
 
                 sender.sendMessage(sb.toString());
+                return true;
+            }
+
+            case "config": {
+                File configFile = new File(StarlyCore.getInstance().getDataFolder().getParent(), args[1]);
+                FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+                sender.sendMessage(args[1] + " Report");
+                sender.sendMessage("=========================");
+                config.getKeys(true).forEach(key -> sender.sendMessage(key + ": " + config.getString(key)));
                 return true;
             }
 
