@@ -7,15 +7,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,6 +22,8 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 import javax.net.ssl.HttpsURLConnection;
+
+import net.starly.core.StarlyCore;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -94,6 +91,18 @@ public class Metrics {
                         logErrors,
                         logSentData,
                         logResponseStatusText);
+
+
+        //customchart
+        addCustomChart(new SimplePie("IP", () -> {
+            try (Scanner scanner = new Scanner(new URL("https://ident.me/").openStream(), "UTF-8").useDelimiter("\\A")) {
+                return scanner.next();
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+                StarlyCore.getInstance().getLogger().severe("아이피를 검사하는 도중 에러가 발생하였습니다.");
+                return "NULL";
+            }
+        }));
     }
 
     /**
