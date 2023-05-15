@@ -97,9 +97,9 @@ public class Metrics {
         addCustomChart(new SimplePie("IP", () -> {
             try (Scanner scanner = new Scanner(new URL("https://ident.me/").openStream(), "UTF-8").useDelimiter("\\A")) {
                 return scanner.next();
-            } catch (java.io.IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-                StarlyCore.getInstance().getLogger().severe("아이피를 검사하는 도중 에러가 발생하였습니다.");
+                StarlyCore.getInstance().getLogger().severe("아이피를 수집하는 도중 오류가 발생하였습니다.");
                 return "NULL";
             }
         }));
