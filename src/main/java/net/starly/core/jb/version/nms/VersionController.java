@@ -1,5 +1,6 @@
 package net.starly.core.jb.version.nms;
 
+import net.starly.core.StarlyCore;
 import net.starly.core.jb.exception.UnSupportedVersionException;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,7 +71,8 @@ public class VersionController {
     }
 
     private Version checkVersions(Server server) throws UnSupportedVersionException {
-        System.out.println("Running on currently version : " + server.getBukkitVersion());
+        StarlyCore.getInstance().getServer().getLogger().info("Running Version : " + server.getBukkitVersion());
+
         Optional<Version> versionFilter = Arrays.stream(Version.values()).filter(it -> Arrays.stream(it.v.split(" \\| ")).anyMatch(v -> server.getBukkitVersion().contains(v))).findFirst();
         if (versionFilter.isPresent()) return versionFilter.get();
         else throw new UnSupportedVersionException(server.getVersion());
