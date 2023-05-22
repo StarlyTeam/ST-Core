@@ -17,6 +17,7 @@ public class STCoreCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!sender.isOp()) return true;
         sender.sendMessage("§c§l!!!! §6This command is for DEVELOPERS. §c§l!!!!");
 
         if (args.length == 0) return true;
