@@ -1,5 +1,6 @@
 # ST-Core
 - Starly Store의 코어는 Starly Store의 모든 기능을 제공합니다.
+- 해당 문서는 최신버전이 아닙니다. 참고하고 읽어주세요.
 - 디스코드 : http://starly.kr/discord
 
 ---
