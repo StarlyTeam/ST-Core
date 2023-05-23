@@ -1,5 +1,6 @@
 package net.starly.core.data.location;
 
+import lombok.Getter;
 import net.starly.core.util.PreCondition;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Region {
     private final Location pos1;
     private final Location pos2;
@@ -44,33 +46,6 @@ public class Region {
 
         this.minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
         this.maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
-    }
-
-    /**
-     * 구역이 포함된 월드를 반환합니다.
-     *
-     * @return      World       소속된 월드
-     */
-    public World getWorld() {
-        return world;
-    }
-
-    /**
-     * 구역의 첫번째 위치를 반환합니다.
-     *
-     * @return      Location        첫번째 위치
-     */
-    public Location getPos1() {
-        return pos1;
-    }
-
-    /**
-     * 구역의 두번째 위치를 반환합니다.
-     *
-     * @return      Location        두번째 위치
-     */
-    public Location getPos2() {
-        return pos2;
     }
 
     /**
@@ -139,60 +114,6 @@ public class Region {
      */
     public void teleport(Player player) {
         player.teleport(getCenter());
-    }
-
-    /**
-     * 구역에서 가장 작은 X좌표를 반환합니다.
-     *
-     * @return      Integer         가장 작은 X좌표
-     */
-    public int getMinX() {
-        return minX;
-    }
-
-    /**
-     * 구역에서 가장 작은 Y좌표를 반환합니다.
-     *
-     * @return      Integer         가장 작은 Y좌표
-     */
-    public int getMinY() {
-        return minY;
-    }
-
-    /**
-     * 구역에서 가장 작은 Z좌표를 반환합니다.
-     *
-     * @return      Integer         가장 작은 Z좌표
-     */
-    public int getMinZ() {
-        return minZ;
-    }
-
-    /**
-     * 구역에서 가장 큰 X좌표를 반환합니다.
-     *
-     * @return      Integer         가장 큰 X좌표
-     */
-    public int getMaxX() {
-        return maxX;
-    }
-
-    /**
-     * 구역에서 가장 큰 Y좌표를 반환합니다.
-     *
-     * @return      Integer         가장 큰 Y좌표
-     */
-    public int getMaxY() {
-        return maxY;
-    }
-
-    /**
-     * 구역에서 가장 큰 Z좌표를 반환합니다.
-     *
-     * @return      Integer         가장 큰 Z좌표
-     */
-    public int getMaxZ() {
-        return maxZ;
     }
 
     @Override
