@@ -1,7 +1,6 @@
 package net.starly.core.data;
 
 import net.starly.core.builder.ItemBuilder;
-import net.starly.core.data.impl.DefaultConfig;
 import net.starly.core.exception.InventoryLoadException;
 import net.starly.core.util.PreCondition;
 import org.bukkit.Bukkit;

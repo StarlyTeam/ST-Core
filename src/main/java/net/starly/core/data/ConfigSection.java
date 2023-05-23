@@ -1,6 +1,5 @@
 package net.starly.core.data;
 
-import net.starly.core.data.impl.DefaultConfig;
 import net.starly.core.util.PreCondition;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

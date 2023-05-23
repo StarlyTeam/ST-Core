@@ -1,4 +1,4 @@
-package net.starly.core.data.impl;
+package net.starly.core.data;
 
 import java.util.List;
 
