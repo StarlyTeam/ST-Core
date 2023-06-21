@@ -48,8 +48,7 @@ object NmsOtherUtil {
             fieldNameMap["v1_19_R2"] = "b"
             fieldNameMap["v1_19_R3"] = "b"
             fieldNameMap["v1_20_R1"] = "c"
-
-            EntityPlayerClass.getField(fieldNameMap.get(version.name) ?: "")
+            EntityPlayerClass.getField(fieldNameMap[version.name] ?: "")
         }
     private val PlayerConnectionClass: Class<*> =
         try {
@@ -402,6 +401,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R1"] = "ai"
             methodNameMap["v1_19_R2"] = "al"
             methodNameMap["v1_19_R3"] = "aj"
+            methodNameMap["v1_20_R1"] = "aj"
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
         }
