@@ -51,19 +51,19 @@ public class NmsItemStackUtil {
         Class<?> NMSItemStack;
         try {
             NMSItemStack = Class.forName(nmsItemStackClassName);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             NMSItemStack = Class.forName("net.minecraft.world.item.ItemStack");
         }
         try {
             nmsItemSupport = new NmsItemUtil("net.minecraft.server." + version.version + ".Item", NMSItemStack);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             nmsItemSupport = new NmsItemUtil("net.minecraft.world.item.Item", NMSItemStack);
         }
         bukkitCopyMethod = craftItemStack.getDeclaredMethod("asBukkitCopy", NMSItemStack);
         nmsCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
         try {
-            setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundUtil.getNBTTagCompound());
-        } catch (Exception e) {
+            setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundUtil.getNBTTagCompoundClass());
+        } catch (Exception ignored) {
             Map<String, String> methodNameMap = new HashMap<>();
             methodNameMap.put("v1_16_R1", "c");
             methodNameMap.put("v1_16_R2", "c");
@@ -76,11 +76,11 @@ public class NmsItemStackUtil {
             methodNameMap.put("v1_19_R3", "c");
             methodNameMap.put("v1_20_R1", "c");
 
-            setTagMethod = NMSItemStack.getDeclaredMethod(methodNameMap.get(version.name()), nbtCompoundUtil.getNBTTagCompound());
+            setTagMethod = NMSItemStack.getDeclaredMethod(methodNameMap.get(version.name()), nbtCompoundUtil.getNBTTagCompoundClass());
         }
         try {
             getTagMethod = NMSItemStack.getDeclaredMethod("getTag");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             Map<String, String> methodNameMap = new HashMap<>();
             methodNameMap.put("v1_16_R1", "u");
             methodNameMap.put("v1_16_R2", "u");
@@ -91,7 +91,7 @@ public class NmsItemStackUtil {
             methodNameMap.put("v1_19_R1", "u");
             methodNameMap.put("v1_19_R2", "u");
             methodNameMap.put("v1_19_R3", "u");
-            methodNameMap.put("v1_20_R1", "u");
+            methodNameMap.put("v1_20_R1", "v");
 
             getTagMethod = NMSItemStack.getDeclaredMethod(methodNameMap.get(version.name()));
         }

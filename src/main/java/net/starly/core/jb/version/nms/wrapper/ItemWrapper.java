@@ -1,6 +1,5 @@
 package net.starly.core.jb.version.nms.wrapper;
 
-import jdk.jfr.events.ExceptionThrownEvent;
 import lombok.Getter;
 import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 import net.starly.core.jb.version.nms.tank.NmsOtherUtil;

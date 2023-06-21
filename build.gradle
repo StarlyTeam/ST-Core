@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'net.starly.core'
-version '1.8.1'
+version '1.9'
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.26"
 
     //BUKKIT DEPENDENCIES
-    compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
+    compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
     compileOnly "com.mojang:authlib:4.0.43"
 
     // KOTLIN

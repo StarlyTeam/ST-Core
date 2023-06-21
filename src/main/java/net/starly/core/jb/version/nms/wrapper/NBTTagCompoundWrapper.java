@@ -22,7 +22,8 @@ public class NBTTagCompoundWrapper {
             Object result = wrapper.getGetStringMethod().invoke(nbtTagCompound, key);
             if (result == null) return null;
             else return (String) result;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }
@@ -35,7 +36,8 @@ public class NBTTagCompoundWrapper {
     public void setString(String key, String value) {
         try {
             wrapper.getSetStringMethod().invoke(nbtTagCompound, key, value);
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -48,9 +50,11 @@ public class NBTTagCompoundWrapper {
     public <T> T getObject(Class<T> clazz) {
         try {
             String result = getString(clazz.getSimpleName());
+
             if (result == null) return null;
             else return JsonUtil.fromJson(result, clazz);
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }
@@ -64,7 +68,8 @@ public class NBTTagCompoundWrapper {
     public <T> void setObject(T object, Class<T> clazz) {
         try {
             setString(clazz.getSimpleName(), JsonUtil.toJson(object));
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

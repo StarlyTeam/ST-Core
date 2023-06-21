@@ -11,7 +11,7 @@ import java.util.Map;
 public class NmsNbtTagCompoundUtil {
 
     @Getter
-    private Class<?> NBTTagCompound;
+    private Class<?> NBTTagCompoundClass;
     @Getter
     private Method getStringMethod;
     @Getter
@@ -19,14 +19,14 @@ public class NmsNbtTagCompoundUtil {
 
     NmsNbtTagCompoundUtil(String nbtTagCompoundClassName) throws ClassNotFoundException, NoSuchMethodException {
         try {
-            NBTTagCompound = Class.forName(nbtTagCompoundClassName);
+            NBTTagCompoundClass = Class.forName(nbtTagCompoundClassName);
         } catch (Exception ignored) {
-            NBTTagCompound = Class.forName("net.minecraft.nbt.NBTTagCompound");
+            NBTTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
         }
 
         VersionController.Version version = VersionController.getInstance().getVersion();
         try {
-            getStringMethod = NBTTagCompound.getDeclaredMethod("getString", String.class);
+            getStringMethod = NBTTagCompoundClass.getDeclaredMethod("getString", String.class);
         } catch (Exception e) {
             Map<String, String> methodNameMap = new HashMap<>();
             methodNameMap.put("v1_16_R1", "l");
@@ -40,10 +40,10 @@ public class NmsNbtTagCompoundUtil {
             methodNameMap.put("v1_19_R3", "l");
             methodNameMap.put("v1_20_R1", "l");
 
-            getStringMethod = NBTTagCompound.getDeclaredMethod(methodNameMap.get(version.name()), String.class);
+            getStringMethod = NBTTagCompoundClass.getDeclaredMethod(methodNameMap.get(version.name()), String.class);
         }
         try {
-            setStringMethod = NBTTagCompound.getDeclaredMethod("setString", String.class, String.class);
+            setStringMethod = NBTTagCompoundClass.getDeclaredMethod("setString", String.class, String.class);
         } catch (Exception e) {
             Map<String, String> methodNameMap = new HashMap<>();
             methodNameMap.put("v1_16_R1", "a");
@@ -57,7 +57,7 @@ public class NmsNbtTagCompoundUtil {
             methodNameMap.put("v1_19_R3", "a");
             methodNameMap.put("v1_20_R1", "a");
 
-            setStringMethod = NBTTagCompound.getDeclaredMethod(methodNameMap.get(version.name()), String.class, String.class);
+            setStringMethod = NBTTagCompoundClass.getDeclaredMethod(methodNameMap.get(version.name()), String.class, String.class);
         }
     }
 
@@ -68,7 +68,7 @@ public class NmsNbtTagCompoundUtil {
      */
     public NBTTagCompoundWrapper newInstance() {
         try {
-            return new NBTTagCompoundWrapper(NBTTagCompound.newInstance(), this);
+            return new NBTTagCompoundWrapper(NBTTagCompoundClass.newInstance(), this);
         } catch (Exception e) {
             return null;
         }
