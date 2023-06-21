@@ -20,15 +20,17 @@ dependencies {
     api "org.apache.commons:commons-lang3:3.0"
     api "commons-io:commons-io:2.7"
     api "commons-codec:commons-codec:1.15"
-    api "com.google.guava:guava:31.1-jre"
-    implementation "org.json:json:20220924"
+    api "com.google.guava:guava:32.0.1-jre"
+    api "com.google.code.gson:gson:2.10.1"
+    implementation "org.json:json:20230227"
 
     // LOMBOK
     compileOnly "org.projectlombok:lombok:1.18.26"
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor "org.projectlombok:lombok:1.18.26"
 
     //BUKKIT DEPENDENCIES
-    compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
+    compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
+    compileOnly "com.mojang:authlib:4.0.43"
 
     // KOTLIN
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
