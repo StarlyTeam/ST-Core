@@ -48,6 +48,7 @@ object NmsOtherUtil {
             fieldNameMap["v1_19_R2"] = "b"
             fieldNameMap["v1_19_R3"] = "b"
             fieldNameMap["v1_20_R1"] = "c"
+
             EntityPlayerClass.getField(fieldNameMap[version.name] ?: "")
         }
     private val PlayerConnectionClass: Class<*> =
