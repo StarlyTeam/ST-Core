@@ -1,11 +1,15 @@
 package net.starly.core.jb.version.nms.wrapper
 
 import net.starly.core.jb.util.FeatherLocation
-import net.starly.core.jb.version.nms.tank.NmsOtherUtil
+import net.starly.core.jb.version.nms.VersionController
+import net.starly.core.jb.version.nms.VersionController.Version
 import net.starly.core.jb.version.nms.tank.NmsItemStackUtil
+import net.starly.core.jb.version.nms.tank.NmsOtherUtil
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+
+import kotlin.collections.HashMap
 
 class ArmorStandWrapper(
     val id: Int,
@@ -58,7 +62,7 @@ class ArmorStandWrapper(
         NmsOtherUtil.setLocation.invoke(entityArmorStand, wrapper.x, wrapper.y, wrapper.z, wrapper.yaw, wrapper.pitch)
         NmsOtherUtil.sendPacket(target, NmsOtherUtil.Packet.PacketPlayOutEntityTeleport, entityArmorStand)
         this.location = wrapper
-        if(savePose) defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
+        if (savePose) defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
     }
 
     fun spawn(target: Player) {
@@ -71,17 +75,20 @@ class ArmorStandWrapper(
     }
 
     private fun setHelmetItem(target: Player) {
-        if(helmet == null) return
+        if (helmet == null) return
         val enumItemSlot = NmsOtherUtil.valueOfEnumItemSlot.invoke(null, "head")
-        val args = if(NmsOtherUtil.highVersion)
-            arrayOf(id,
-                listOf(NmsOtherUtil
-                    .Pair!!
-                    .newInstance(enumItemSlot,
-                        NmsItemStackUtil.getInstance()!!
-                        .asNMSCopy(helmet)!!
-                        .nmsItemStack!!
-                    )
+        val args = if (NmsOtherUtil.highVersion)
+            arrayOf(
+                id,
+                listOf(
+                    NmsOtherUtil
+                        .Pair!!
+                        .newInstance(
+                            enumItemSlot,
+                            NmsItemStackUtil.getInstance()!!
+                                .asNMSCopy(helmet)!!
+                                .nmsItemStack!!
+                        )
                 )
             )
         else arrayOf(id, enumItemSlot, NmsItemStackUtil.getInstance()!!.asNMSCopy(helmet)!!.nmsItemStack!!)
@@ -111,12 +118,67 @@ class ArmorStandWrapper(
     class HeadPoseWrapper(val x: Float, val y: Float, val z: Float) {
 
         companion object {
-            private val xMethod = try { NmsOtherUtil.Vector3fClass.getMethod("getX") } catch (_: Exception) { NmsOtherUtil.Vector3fClass.getMethod("b") }
-            private val yMethod = try { NmsOtherUtil.Vector3fClass.getMethod("getY") } catch (_: Exception) { NmsOtherUtil.Vector3fClass.getMethod("c") }
-            private val zMethod = try { NmsOtherUtil.Vector3fClass.getMethod("getZ") } catch (_: Exception) { NmsOtherUtil.Vector3fClass.getMethod("d") }
+            private val xMethod = try {
+                NmsOtherUtil.Vector3fClass.getMethod("getX")
+            } catch (_: Exception) {
+                val methodNameMap = HashMap<String, String>()
+                methodNameMap["v1_16_R1"] = "b"
+                methodNameMap["v1_16_R2"] = "b"
+                methodNameMap["v1_16_R3"] = "b"
+                methodNameMap["v1_17_R1"] = "b"
+                methodNameMap["v1_18_R1"] = "b"
+                methodNameMap["v1_18_R2"] = "b"
+                methodNameMap["v1_19_R1"] = "b"
+                methodNameMap["v1_19_R2"] = "b"
+                methodNameMap["v1_19_R3"] = "b"
+                methodNameMap["v1_20_R1"] = "b"
+
+                val version: Version = VersionController.getInstance().version
+                NmsOtherUtil.Vector3fClass.getMethod(methodNameMap[version.name] ?: "")
+            }
+            private val yMethod = try {
+                NmsOtherUtil.Vector3fClass.getMethod("getY")
+            } catch (_: Exception) {
+                val methodNameMap = HashMap<String, String>()
+                methodNameMap["v1_16_R1"] = "c"
+                methodNameMap["v1_16_R2"] = "c"
+                methodNameMap["v1_16_R3"] = "c"
+                methodNameMap["v1_17_R1"] = "c"
+                methodNameMap["v1_18_R1"] = "c"
+                methodNameMap["v1_18_R2"] = "c"
+                methodNameMap["v1_19_R1"] = "c"
+                methodNameMap["v1_19_R2"] = "c"
+                methodNameMap["v1_19_R3"] = "c"
+                methodNameMap["v1_20_R1"] = "c"
+
+                val version: Version = VersionController.getInstance().version
+                NmsOtherUtil.Vector3fClass.getMethod(methodNameMap[version.name] ?: "")
+            }
+            private val zMethod = try {
+                NmsOtherUtil.Vector3fClass.getMethod("getZ")
+            } catch (_: Exception) {
+                val methodNameMap = HashMap<String, String>();
+                methodNameMap["v1_16_R1"] = "d"
+                methodNameMap["v1_16_R2"] = "d"
+                methodNameMap["v1_16_R3"] = "d"
+                methodNameMap["v1_17_R1"] = "d"
+                methodNameMap["v1_18_R1"] = "d"
+                methodNameMap["v1_18_R2"] = "d"
+                methodNameMap["v1_19_R1"] = "d"
+                methodNameMap["v1_19_R2"] = "d"
+                methodNameMap["v1_19_R3"] = "d"
+                methodNameMap["v1_20_R1"] = "d"
+
+                val version: Version = VersionController.getInstance().version
+                NmsOtherUtil.Vector3fClass.getMethod(methodNameMap[version.name] ?: "")
+            }
         }
 
-        constructor(obj: Any): this(xMethod.invoke(obj) as Float, yMethod.invoke(obj) as Float, zMethod.invoke(obj) as Float)
+        constructor(obj: Any) : this(
+            xMethod.invoke(obj) as Float,
+            yMethod.invoke(obj) as Float,
+            zMethod.invoke(obj) as Float
+        )
 
         internal val obj get() = NmsOtherUtil.Vector3f.newInstance(x, y, z)
 
