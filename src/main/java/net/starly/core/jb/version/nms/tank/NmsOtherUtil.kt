@@ -9,7 +9,6 @@ import org.bukkit.entity.Player
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
-import java.util.regex.Pattern
 
 object NmsOtherUtil {
 
@@ -188,19 +187,55 @@ object NmsOtherUtil {
         try {
             EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "MAIN_HAND")
         } catch (_: Exception) {
-            EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "a")
+            val enumNameMap = HashMap<String, String>()
+            enumNameMap["v1_16_R1"] = "a"
+            enumNameMap["v1_16_R2"] = "a"
+            enumNameMap["v1_16_R3"] = "a"
+            enumNameMap["v1_17_R1"] = "a"
+            enumNameMap["v1_18_R1"] = "a"
+            enumNameMap["v1_18_R2"] = "a"
+            enumNameMap["v1_19_R1"] = "a"
+            enumNameMap["v1_19_R2"] = "a"
+            enumNameMap["v1_19_R3"] = "a"
+            enumNameMap["v1_20_R1"] = "a"
+
+            EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, enumNameMap[version.name] ?: "")
         }
     val EnumOffHand: Any =
         try {
             EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "OFF_HAND")
         } catch (_: Exception) {
-            EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "b")
+            val enumNameMap = HashMap<String, String>()
+            enumNameMap["v1_16_R1"] = "b"
+            enumNameMap["v1_16_R2"] = "b"
+            enumNameMap["v1_16_R3"] = "b"
+            enumNameMap["v1_17_R1"] = "b"
+            enumNameMap["v1_18_R1"] = "b"
+            enumNameMap["v1_18_R2"] = "b"
+            enumNameMap["v1_19_R1"] = "b"
+            enumNameMap["v1_19_R2"] = "b"
+            enumNameMap["v1_19_R3"] = "b"
+            enumNameMap["v1_20_R1"] = "b"
+
+            EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, enumNameMap[version.name] ?: "")
         }
     val valueOfEnumItemSlot: Method =
         try {
             EnumItemSlot.getMethod("fromName", String::class.java)
         } catch (_: Exception) {
-            EnumItemSlot.getMethod("a", String::class.java)
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "a"
+            methodNameMap["v1_16_R2"] = "a"
+            methodNameMap["v1_16_R3"] = "a"
+            methodNameMap["v1_17_R1"] = "a"
+            methodNameMap["v1_18_R1"] = "a"
+            methodNameMap["v1_18_R2"] = "a"
+            methodNameMap["v1_19_R1"] = "a"
+            methodNameMap["v1_19_R2"] = "a"
+            methodNameMap["v1_19_R3"] = "a"
+            methodNameMap["v1_20_R1"] = "a"
+
+            EnumItemSlot.getMethod(methodNameMap[version.name] ?: "", String::class.java)
         }
     val Vector3fClass: Class<*> =
         try {
@@ -234,37 +269,56 @@ object NmsOtherUtil {
         try {
             EntityArmorStandClass.getMethod("getId")
         } catch (_: Exception) {
-            if (version == VersionController.Version.v1_17_R1) EntityArmorStandClass.getMethod("Z")
-            else if (version == VersionController.Version.v1_19_R1) EntityArmorStandClass.getMethod("ae")
-            else if (version == VersionController.Version.v1_19_R2) EntityArmorStandClass.getMethod("ah")
-            else if (version == VersionController.Version.v1_19_R3) EntityArmorStandClass.getMethod("af")
-            else {
-                try {
-                    EntityArmorStandClass.getMethod("V")
-                } catch (_: Exception) {
-                    try {
-                        EntityArmorStandClass.getMethod("Y")
-                    } catch (_: Exception) {
-                        EntityArmorStandClass.getMethod("X")
-                    }
-                }
-            }
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_15_R1"] = "S"
+            methodNameMap["v1_16_R1"] = "X"
+            methodNameMap["v1_16_R2"] = "X"
+            methodNameMap["v1_16_R3"] = "Y"
+            methodNameMap["v1_17_R1"] = "Z"
+            methodNameMap["v1_18_R1"] = "ae"
+            methodNameMap["v1_18_R2"] = "ae"
+            methodNameMap["v1_19_R1"] = "ae"
+            methodNameMap["v1_19_R2"] = "ah"
+            methodNameMap["v1_19_R3"] = "af"
+            methodNameMap["v1_20_R1"] = "af"
+
+            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
         }
     val setInvisible: Method =
         try {
             EntityArmorStandClass.getMethod("setInvisible", Boolean::class.java)
         } catch (_: Exception) {
-            EntityArmorStandClass.getMethod("j", Boolean::class.java)
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "j"
+            methodNameMap["v1_16_R2"] = "j"
+            methodNameMap["v1_16_R3"] = "j"
+            methodNameMap["v1_17_R1"] = "j"
+            methodNameMap["v1_18_R1"] = "j"
+            methodNameMap["v1_18_R2"] = "j"
+            methodNameMap["v1_19_R1"] = "j"
+            methodNameMap["v1_19_R2"] = "j"
+            methodNameMap["v1_19_R3"] = "j"
+            methodNameMap["v1_20_R1"] = "j"
+
+            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Boolean::class.java)
         }
     val setCustomName: Method =
         try {
             EntityClass.getMethod("setCustomName", String::class.java)
         } catch (_: Exception) {
-            try {
-                EntityClass.getMethod("setCustomName", IChatBaseComponentClass)
-            } catch (_: Exception) {
-                EntityClass.getMethod("b", IChatBaseComponentClass)
-            }
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "a"
+            methodNameMap["v1_16_R2"] = "a"
+            methodNameMap["v1_16_R3"] = "a"
+            methodNameMap["v1_17_R1"] = "a"
+            methodNameMap["v1_18_R1"] = "a"
+            methodNameMap["v1_18_R2"] = "a"
+            methodNameMap["v1_19_R1"] = "b"
+            methodNameMap["v1_19_R2"] = "b"
+            methodNameMap["v1_19_R3"] = "b"
+            methodNameMap["v1_20_R1"] = "b"
+
+            EntityClass.getMethod(methodNameMap[version.name] ?: "setCustomName", IChatBaseComponentClass)
         }
     val setCustomNameVisible: Method =
         try {
@@ -276,8 +330,19 @@ object NmsOtherUtil {
         try {
             EntityArmorStandClass.getMethod("setSmall", Boolean::class.java)
         } catch (_: Exception) {
-            if (version == VersionController.Version.v1_19_R3) EntityArmorStandClass.getMethod("t", Boolean::class.java)
-            else EntityArmorStandClass.getMethod("a", Boolean::class.java)
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "a"
+            methodNameMap["v1_16_R2"] = "a"
+            methodNameMap["v1_16_R3"] = "a"
+            methodNameMap["v1_17_R1"] = "a"
+            methodNameMap["v1_18_R1"] = "a"
+            methodNameMap["v1_18_R2"] = "a"
+            methodNameMap["v1_19_R1"] = "a"
+            methodNameMap["v1_19_R2"] = "a"
+            methodNameMap["v1_19_R3"] = "t"
+            methodNameMap["v1_20_R1"] = "t"
+
+            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Boolean::class.java)
         }
     val setLocation: Method =
         try {
@@ -290,8 +355,20 @@ object NmsOtherUtil {
                 Float::class.java
             )
         } catch (_: Exception) {
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "a"
+            methodNameMap["v1_16_R2"] = "a"
+            methodNameMap["v1_16_R3"] = "a"
+            methodNameMap["v1_17_R1"] = "a"
+            methodNameMap["v1_18_R1"] = "a"
+            methodNameMap["v1_18_R2"] = "a"
+            methodNameMap["v1_19_R1"] = "a"
+            methodNameMap["v1_19_R2"] = "a"
+            methodNameMap["v1_19_R3"] = "a"
+            methodNameMap["v1_20_R1"] = "a"
+
             EntityArmorStandClass.getMethod(
-                "a",
+                methodNameMap[version.name] ?: "",
                 Double::class.java,
                 Double::class.java,
                 Double::class.java,
@@ -303,28 +380,54 @@ object NmsOtherUtil {
         try {
             EntityArmorStandClass.getMethod("getDataWatcher")
         } catch (_: Exception) {
-            if (version == VersionController.Version.v1_16_R1) EntityArmorStandClass.getMethod("Y")
-            else if (version == VersionController.Version.v1_16_R2) EntityArmorStandClass.getMethod("aa")
-            else if (version == VersionController.Version.v1_17_R1) EntityArmorStandClass.getMethod("ad")
-            else if (version == VersionController.Version.v1_19_R1) EntityArmorStandClass.getMethod("ai")
-            else if (version == VersionController.Version.v1_19_R2) EntityArmorStandClass.getMethod("al")
-            else EntityArmorStandClass.getMethod("aj")
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "Y"
+            methodNameMap["v1_16_R2"] = "aa"
+            methodNameMap["v1_16_R3"] = "ab"
+            methodNameMap["v1_17_R1"] = "ad"
+            methodNameMap["v1_18_R1"] = "ai"
+            methodNameMap["v1_18_R2"] = "ai"
+            methodNameMap["v1_19_R1"] = "ai"
+            methodNameMap["v1_19_R2"] = "al"
+            methodNameMap["v1_19_R3"] = "aj"
+
+            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
         }
     val setHeadPose: Method =
         try {
             EntityArmorStandClass.getMethod("setHeadPose", Vector3fClass)
         } catch (_: Exception) {
-            EntityArmorStandClass.getMethod("a", Vector3fClass)
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "a"
+            methodNameMap["v1_16_R2"] = "a"
+            methodNameMap["v1_16_R3"] = "a"
+            methodNameMap["v1_17_R1"] = "a"
+            methodNameMap["v1_18_R1"] = "a"
+            methodNameMap["v1_18_R2"] = "a"
+            methodNameMap["v1_19_R1"] = "a"
+            methodNameMap["v1_19_R2"] = "a"
+            methodNameMap["v1_19_R3"] = "a"
+            methodNameMap["v1_20_R1"] = "a"
+
+            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Vector3fClass)
         }
     val getHeadPose: Method =
         try {
             EntityArmorStandClass.getMethod("getHeadPose")
         } catch (_: Exception) {
-            if (version == VersionController.Version.v1_12_R1) EntityArmorStandClass.getMethod("u") // TODO : FIX
-            else if (version.name.matches(Pattern.compile("v1_16_R[1-3]").toRegex())) EntityArmorStandClass.getMethod("r")
-            else if (version == VersionController.Version.v1_17_R1) EntityArmorStandClass.getMethod("v")
-            else if (version == VersionController.Version.v1_19_R1 || version == VersionController.Version.v1_19_R2) EntityArmorStandClass.getMethod("u")
-            else EntityArmorStandClass.getMethod("x")
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "r"
+            methodNameMap["v1_16_R2"] = "r"
+            methodNameMap["v1_16_R3"] = "r"
+            methodNameMap["v1_17_R1"] = "v"
+            methodNameMap["v1_18_R1"] = "u"
+            methodNameMap["v1_18_R2"] = "u"
+            methodNameMap["v1_19_R1"] = "u"
+            methodNameMap["v1_19_R2"] = "u"
+            methodNameMap["v1_19_R3"] = "x"
+            methodNameMap["v1_20_R1"] = "x"
+
+            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
         }
 
     @Deprecated("Support 1.19+")

@@ -7,10 +7,12 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NmsItemStackUtil {
 
-    private static NmsItemStackUtil tank;
+    private static NmsItemStackUtil instance;
 
     private Method bukkitCopyMethod;
     private Method nmsCopyMethod;
@@ -32,10 +34,10 @@ public class NmsItemStackUtil {
     @Nullable
     public static NmsItemStackUtil getInstance() {
         try {
-            if (tank == null) tank = new NmsItemStackUtil(VersionController.getInstance().getVersion());
-            return tank;
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (instance == null) instance = new NmsItemStackUtil(VersionController.getInstance().getVersion());
+            return instance;
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }
@@ -62,12 +64,36 @@ public class NmsItemStackUtil {
         try {
             setTagMethod = NMSItemStack.getDeclaredMethod("setTag", nbtCompoundUtil.getNBTTagCompound());
         } catch (Exception e) {
-            setTagMethod = NMSItemStack.getDeclaredMethod("c", nbtCompoundUtil.getNBTTagCompound());
+            Map<String, String> methodNameMap = new HashMap<>();
+            methodNameMap.put("v1_16_R1", "c");
+            methodNameMap.put("v1_16_R2", "c");
+            methodNameMap.put("v1_16_R3", "c");
+            methodNameMap.put("v1_17_R1", "c");
+            methodNameMap.put("v1_18_R1", "c");
+            methodNameMap.put("v1_18_R2", "c");
+            methodNameMap.put("v1_19_R1", "c");
+            methodNameMap.put("v1_19_R2", "c");
+            methodNameMap.put("v1_19_R3", "c");
+            methodNameMap.put("v1_20_R1", "c");
+
+            setTagMethod = NMSItemStack.getDeclaredMethod(methodNameMap.get(version.name()), nbtCompoundUtil.getNBTTagCompound());
         }
         try {
             getTagMethod = NMSItemStack.getDeclaredMethod("getTag");
         } catch (Exception e) {
-            getTagMethod = NMSItemStack.getDeclaredMethod("u");
+            Map<String, String> methodNameMap = new HashMap<>();
+            methodNameMap.put("v1_16_R1", "u");
+            methodNameMap.put("v1_16_R2", "u");
+            methodNameMap.put("v1_16_R3", "u");
+            methodNameMap.put("v1_17_R1", "u");
+            methodNameMap.put("v1_18_R1", "u");
+            methodNameMap.put("v1_18_R2", "u");
+            methodNameMap.put("v1_19_R1", "u");
+            methodNameMap.put("v1_19_R2", "u");
+            methodNameMap.put("v1_19_R3", "u");
+            methodNameMap.put("v1_20_R1", "u");
+
+            getTagMethod = NMSItemStack.getDeclaredMethod(methodNameMap.get(version.name()));
         }
     }
 
