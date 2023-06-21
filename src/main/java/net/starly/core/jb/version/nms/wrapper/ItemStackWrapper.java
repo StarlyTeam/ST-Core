@@ -23,7 +23,8 @@ public class ItemStackWrapper {
             Object obj = wrapper.getGetTagMethod().invoke(nmsItemStack);
             if (obj == null) return null;
             return new NBTTagCompoundWrapper(obj, wrapper.getNbtCompoundUtil());
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }
@@ -35,7 +36,8 @@ public class ItemStackWrapper {
     public void setTag(NBTTagCompoundWrapper tag) {
         try {
             wrapper.getSetTagMethod().invoke(nmsItemStack, tag.getNbtTagCompound());
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
