@@ -37,7 +37,19 @@ object NmsOtherUtil {
         try {
             EntityPlayerClass.getField("playerConnection")
         } catch (_: Exception) {
-            EntityPlayerClass.getField("b")
+            val fieldNameMap = HashMap<String, String>()
+            fieldNameMap["v1_16_R1"] = "b"
+            fieldNameMap["v1_16_R2"] = "b"
+            fieldNameMap["v1_16_R3"] = "b"
+            fieldNameMap["v1_17_R1"] = "b"
+            fieldNameMap["v1_18_R1"] = "b"
+            fieldNameMap["v1_18_R2"] = "b"
+            fieldNameMap["v1_19_R1"] = "b"
+            fieldNameMap["v1_19_R2"] = "b"
+            fieldNameMap["v1_19_R3"] = "b"
+            fieldNameMap["v1_20_R1"] = "c"
+
+            EntityPlayerClass.getField(fieldNameMap.get(version.name) ?: "")
         }
     private val PlayerConnectionClass: Class<*> =
         try {
