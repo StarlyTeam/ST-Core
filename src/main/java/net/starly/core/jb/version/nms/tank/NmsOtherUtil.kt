@@ -318,19 +318,23 @@ object NmsOtherUtil {
         try {
             EntityClass.getMethod("setCustomName", String::class.java)
         } catch (_: Exception) {
-            val methodNameMap = HashMap<String, String>()
-            methodNameMap["v1_16_R1"] = "a"
-            methodNameMap["v1_16_R2"] = "a"
-            methodNameMap["v1_16_R3"] = "a"
-            methodNameMap["v1_17_R1"] = "a"
-            methodNameMap["v1_18_R1"] = "a"
-            methodNameMap["v1_18_R2"] = "a"
-            methodNameMap["v1_19_R1"] = "b"
-            methodNameMap["v1_19_R2"] = "b"
-            methodNameMap["v1_19_R3"] = "b"
-            methodNameMap["v1_20_R1"] = "b"
+            try {
+                EntityClass.getMethod("setCustomName", IChatBaseComponentClass)
+            } catch (_: Exception) {
+                val methodNameMap = HashMap<String, String>()
+                methodNameMap["v1_16_R1"] = "a"
+                methodNameMap["v1_16_R2"] = "a"
+                methodNameMap["v1_16_R3"] = "a"
+                methodNameMap["v1_17_R1"] = "a"
+                methodNameMap["v1_18_R1"] = "a"
+                methodNameMap["v1_18_R2"] = "a"
+                methodNameMap["v1_19_R1"] = "b"
+                methodNameMap["v1_19_R2"] = "b"
+                methodNameMap["v1_19_R3"] = "b"
+                methodNameMap["v1_20_R1"] = "b"
 
-            EntityClass.getMethod(methodNameMap[version.name] ?: "setCustomName", IChatBaseComponentClass)
+                EntityClass.getMethod(methodNameMap[version.name] ?: "", IChatBaseComponentClass)
+            }
         }
     val setCustomNameVisible: Method =
         try {
