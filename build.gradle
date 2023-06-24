@@ -10,6 +10,7 @@ version '1.9'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url = "http://starly.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
 }
 
@@ -29,8 +30,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:1.18.26"
 
     //BUKKIT DEPENDENCIES
-    compileOnly "org.spigotmc:spigot-api:R0.1:1.16.5"
-    compileOnly "com.mojang:authlib:4.0.43"
+    compileOnly "org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT"
 
     // KOTLIN
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
