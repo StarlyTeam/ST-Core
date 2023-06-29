@@ -98,9 +98,7 @@ public class Metrics {
             try (Scanner scanner = new Scanner(new URL("https://ident.me/").openStream(), "UTF-8").useDelimiter("\\A")) {
                 return scanner.next();
             } catch (IOException e) {
-                e.printStackTrace();
-                StarlyCore.getInstance().getLogger().severe("아이피를 수집하는 도중 오류가 발생하였습니다.");
-                return "NULL";
+                return "ERROR";
             }
         }));
     }
