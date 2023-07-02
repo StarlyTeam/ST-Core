@@ -1,16 +1,19 @@
 package net.starly.core.jb.version.nms.tank
 
+import net.minecraft.server.v1_16_R3.EnumItemSlot
 import net.starly.core.jb.util.FeatherLocation
 import net.starly.core.jb.version.nms.VersionController
 import net.starly.core.jb.version.nms.wrapper.ArmorStandWrapper
 import net.starly.core.jb.version.nms.wrapper.WorldWrapper
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.inventory.EquipmentSlot
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 object NmsOtherUtil {
+
 
     val version: VersionController.Version = VersionController.getInstance().version
     val highVersion: Boolean = version.highVersion
@@ -79,31 +82,31 @@ object NmsOtherUtil {
         } catch (_: ClassNotFoundException) {
             Class.forName("net.minecraft.world.level.World")
         }
-    private val CraftWorldClass: Class<*> = Class.forName("org.bukkit.craftbukkit." + version.version + ".CraftWorld")
-    private val getHandleAtWorld: Method = CraftWorldClass.getMethod("getHandle")
+    val CraftWorldClass: Class<*> = Class.forName("org.bukkit.craftbukkit." + version.version + ".CraftWorld")
+    val getHandleAtWorld: Method = CraftWorldClass.getMethod("getHandle")
 
     /**
      * Entity
      */
-    private val EntityClass: Class<*> =
+    val EntityClass: Class<*> =
         try {
             Class.forName("$nmsPackage.Entity")
         } catch (_: ClassNotFoundException) {
             Class.forName("net.minecraft.world.entity.Entity")
         }
-    private val EntityLivingClass: Class<*> =
+    val EntityLivingClass: Class<*> =
         try {
             Class.forName("$nmsPackage.EntityLiving")
         } catch (_: ClassNotFoundException) {
             Class.forName("net.minecraft.world.entity.EntityLiving")
         }
-    private val EntityArmorStandClass: Class<*> =
+    val EntityArmorStandClass: Class<*> =
         try {
             Class.forName("$nmsPackage.EntityArmorStand")
         } catch (_: ClassNotFoundException) {
             Class.forName("net.minecraft.world.entity.decoration.EntityArmorStand")
         }
-    private val DataWatcherClass: Class<*> =
+    val DataWatcherClass: Class<*> =
         try {
             Class.forName("$nmsPackage.DataWatcher")
         } catch (_: ClassNotFoundException) {
@@ -231,23 +234,35 @@ object NmsOtherUtil {
 
             EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, enumNameMap[version.name] ?: "")
         }
-    val valueOfEnumItemSlot: Method =
+    val MainHandEnumItemSlot =
         try {
-            EnumItemSlot.getMethod("fromName", String::class.java)
+            EnumItemSlot.getField("MAINHAND")
         } catch (_: Exception) {
-            val methodNameMap = HashMap<String, String>()
-            methodNameMap["v1_16_R1"] = "a"
-            methodNameMap["v1_16_R2"] = "a"
-            methodNameMap["v1_16_R3"] = "a"
-            methodNameMap["v1_17_R1"] = "a"
-            methodNameMap["v1_18_R1"] = "a"
-            methodNameMap["v1_18_R2"] = "a"
-            methodNameMap["v1_19_R1"] = "a"
-            methodNameMap["v1_19_R2"] = "a"
-            methodNameMap["v1_19_R3"] = "a"
-            methodNameMap["v1_20_R1"] = "a"
-
-            EnumItemSlot.getMethod(methodNameMap[version.name] ?: "", String::class.java)
+            EnumItemSlot.getField("a")
+        }
+    val ChestEnumItemSlot =
+        try {
+            EnumItemSlot.getField("CHEST")
+        } catch (_: Exception) {
+            EnumItemSlot.getField("b")
+        }
+    val FeetEnumItemSlot =
+        try {
+            EnumItemSlot.getField("FEET")
+        } catch (_: Exception) {
+            EnumItemSlot.getField("c")
+        }
+    val LegsEnumItemSlot =
+        try {
+            EnumItemSlot.getField("LEGS")
+        } catch (_: Exception) {
+            EnumItemSlot.getField("d")
+        }
+    val HeadEnumItemSlot =
+        try {
+            EnumItemSlot.getField("HEAD")
+        } catch (_: Exception) {
+            EnumItemSlot.getField("f")
         }
     val Vector3fClass: Class<*> =
         try {
@@ -391,6 +406,24 @@ object NmsOtherUtil {
                 Float::class.java,
                 Float::class.java
             )
+        }
+    val setShowArms: Method =
+        try {
+            EntityArmorStandClass.getMethod("setShowArms", Boolean::class.java)
+        } catch (_: Exception) {
+            val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_16_R1"] = "p"
+            methodNameMap["v1_16_R2"] = "p"
+            methodNameMap["v1_16_R3"] = "p"
+            methodNameMap["v1_17_R1"] = "r"
+            methodNameMap["v1_18_R1"] = "r"
+            methodNameMap["v1_18_R2"] = "r"
+            methodNameMap["v1_19_R1"] = "r"
+            methodNameMap["v1_19_R2"] = "r"
+            methodNameMap["v1_19_R3"] = "a"
+            methodNameMap["v1_20_R1"] = "a"
+
+            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Boolean::class.java)
         }
     val getDataWatcher: Method =
         try {
