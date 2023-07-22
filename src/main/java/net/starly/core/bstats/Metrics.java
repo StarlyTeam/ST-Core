@@ -91,16 +91,6 @@ public class Metrics {
                         logErrors,
                         logSentData,
                         logResponseStatusText);
-
-
-        //customchart
-        addCustomChart(new SimplePie("IP", () -> {
-            try (Scanner scanner = new Scanner(new URL("https://ident.me/").openStream(), "UTF-8").useDelimiter("\\A")) {
-                return scanner.next();
-            } catch (IOException e) {
-                return "ERROR";
-            }
-        }));
     }
 
     /**
