@@ -6,12 +6,12 @@ plugins {
 }
 
 group 'net.starly.core'
-version '1.9.1'
+version '1.9.2'
 
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url = "http://starly.kr:8083/repository/maven-public/"; allowInsecureProtocol = true }
+    maven { url = "https://repo.starly.kr/repository/maven-public/" }
 }
 
 dependencies {

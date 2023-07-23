@@ -5,7 +5,7 @@ website: http://starly.kr/
 
 description: Core Plugin.
 
-version: 1.9.1
+version: 1.9.2
 api-version: 1.13
 
 commands:
