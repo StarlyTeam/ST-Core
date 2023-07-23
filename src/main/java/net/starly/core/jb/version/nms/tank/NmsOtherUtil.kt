@@ -236,33 +236,33 @@ object NmsOtherUtil {
         }
     val MainHandEnumItemSlot =
         try {
-            EnumItemSlot.getField("MAINHAND")
+            EnumItemSlot.getField("MAINHAND").get(EnumItemSlot)
         } catch (_: Exception) {
-            EnumItemSlot.getField("a")
+            EnumItemSlot.getField("a").get(EnumItemSlot)
         }
     val ChestEnumItemSlot =
         try {
-            EnumItemSlot.getField("CHEST")
+            EnumItemSlot.getField("CHEST").get(EnumItemSlot)
         } catch (_: Exception) {
-            EnumItemSlot.getField("b")
+            EnumItemSlot.getField("b").get(EnumItemSlot)
         }
     val FeetEnumItemSlot =
         try {
-            EnumItemSlot.getField("FEET")
+            EnumItemSlot.getField("FEET").get(EnumItemSlot)
         } catch (_: Exception) {
-            EnumItemSlot.getField("c")
+            EnumItemSlot.getField("c").get(EnumItemSlot)
         }
     val LegsEnumItemSlot =
         try {
-            EnumItemSlot.getField("LEGS")
+            EnumItemSlot.getField("LEGS").get(EnumItemSlot)
         } catch (_: Exception) {
-            EnumItemSlot.getField("d")
+            EnumItemSlot.getField("d").get(EnumItemSlot)
         }
     val HeadEnumItemSlot =
         try {
-            EnumItemSlot.getField("HEAD")
+            EnumItemSlot.getField("HEAD").get(EnumItemSlot)
         } catch (_: Exception) {
-            EnumItemSlot.getField("f")
+            EnumItemSlot.getField("f").get(EnumItemSlot)
         }
     val Vector3fClass: Class<*> =
         try {
