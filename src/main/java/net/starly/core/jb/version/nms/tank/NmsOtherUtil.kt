@@ -1,13 +1,11 @@
 package net.starly.core.jb.version.nms.tank
 
-import net.minecraft.server.v1_16_R3.EnumItemSlot
 import net.starly.core.jb.util.FeatherLocation
 import net.starly.core.jb.version.nms.VersionController
 import net.starly.core.jb.version.nms.wrapper.ArmorStandWrapper
 import net.starly.core.jb.version.nms.wrapper.WorldWrapper
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import org.bukkit.inventory.EquipmentSlot
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -203,6 +201,11 @@ object NmsOtherUtil {
             EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "MAIN_HAND")
         } catch (_: Exception) {
             val enumNameMap = HashMap<String, String>()
+            enumNameMap["v1_12_R1"] = "a"
+            enumNameMap["v1_13_R1"] = "a"
+            enumNameMap["v1_13_R2"] = "a"
+            enumNameMap["v1_14_R1"] = "a"
+            enumNameMap["v1_15_R1"] = "a"
             enumNameMap["v1_16_R1"] = "a"
             enumNameMap["v1_16_R2"] = "a"
             enumNameMap["v1_16_R3"] = "a"
@@ -221,6 +224,11 @@ object NmsOtherUtil {
             EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, "OFF_HAND")
         } catch (_: Exception) {
             val enumNameMap = HashMap<String, String>()
+            enumNameMap["v1_12_R1"] = "b"
+            enumNameMap["v1_13_R1"] = "b"
+            enumNameMap["v1_13_R2"] = "b"
+            enumNameMap["v1_14_R1"] = "b"
+            enumNameMap["v1_15_R1"] = "b"
             enumNameMap["v1_16_R1"] = "b"
             enumNameMap["v1_16_R2"] = "b"
             enumNameMap["v1_16_R3"] = "b"
@@ -297,6 +305,10 @@ object NmsOtherUtil {
             EntityArmorStandClass.getMethod("getId")
         } catch (_: Exception) {
             val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_12_R1"] = "S"
+            methodNameMap["v1_13_R1"] = "Q"
+            methodNameMap["v1_13_R2"] = "Q"
+            methodNameMap["v1_14_R1"] = "T"
             methodNameMap["v1_15_R1"] = "S"
             methodNameMap["v1_16_R1"] = "X"
             methodNameMap["v1_16_R2"] = "X"
@@ -316,6 +328,11 @@ object NmsOtherUtil {
             EntityArmorStandClass.getMethod("setInvisible", Boolean::class.java)
         } catch (_: Exception) {
             val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_12_R1"] = "h"
+            methodNameMap["v1_13_R1"] = "i"
+            methodNameMap["v1_13_R2"] = "i"
+            methodNameMap["v1_14_R1"] = "i"
+            methodNameMap["v1_15_R1"] = "j"
             methodNameMap["v1_16_R1"] = "j"
             methodNameMap["v1_16_R2"] = "j"
             methodNameMap["v1_16_R3"] = "j"
@@ -337,6 +354,10 @@ object NmsOtherUtil {
                 EntityClass.getMethod("setCustomName", IChatBaseComponentClass)
             } catch (_: Exception) {
                 val methodNameMap = HashMap<String, String>()
+                methodNameMap["v1_12_R1"] = "c"
+                methodNameMap["v1_13_R1"] = "b"
+                methodNameMap["v1_13_R2"] = "b"
+                methodNameMap["v1_14_R1"] = "b"
                 methodNameMap["v1_16_R1"] = "a"
                 methodNameMap["v1_16_R2"] = "a"
                 methodNameMap["v1_16_R3"] = "a"
@@ -362,6 +383,11 @@ object NmsOtherUtil {
             EntityArmorStandClass.getMethod("setSmall", Boolean::class.java)
         } catch (_: Exception) {
             val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_12_R1"] = "m"
+            methodNameMap["v1_13_R1"] = "p"
+            methodNameMap["v1_13_R2"] = "p"
+            methodNameMap["v1_14_R1"] = "n"
+            methodNameMap["v1_15_R1"] = "n"
             methodNameMap["v1_16_R1"] = "a"
             methodNameMap["v1_16_R2"] = "a"
             methodNameMap["v1_16_R3"] = "a"
@@ -387,6 +413,11 @@ object NmsOtherUtil {
             )
         } catch (_: Exception) {
             val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_12_R1"] = "a"
+            methodNameMap["v1_13_R1"] = "a"
+            methodNameMap["v1_13_R2"] = "a"
+            methodNameMap["v1_14_R1"] = "a"
+            methodNameMap["v1_15_R1"] = "a"
             methodNameMap["v1_16_R1"] = "a"
             methodNameMap["v1_16_R2"] = "a"
             methodNameMap["v1_16_R3"] = "a"
@@ -409,9 +440,14 @@ object NmsOtherUtil {
         }
     val setShowArms: Method =
         try {
-            EntityArmorStandClass.getMethod("setShowArms", Boolean::class.java)
+            EntityArmorStandClass.getMethod("setArms", Boolean::class.java)
         } catch (_: Exception) {
             val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_12_R1"] = "n"
+            methodNameMap["v1_13_R1"] = "q"
+            methodNameMap["v1_13_R2"] = "q"
+            methodNameMap["v1_14_R1"] = "o"
+            methodNameMap["v1_15_R1"] = "o"
             methodNameMap["v1_16_R1"] = "p"
             methodNameMap["v1_16_R2"] = "p"
             methodNameMap["v1_16_R3"] = "p"
@@ -430,6 +466,11 @@ object NmsOtherUtil {
             EntityArmorStandClass.getMethod("getDataWatcher")
         } catch (_: Exception) {
             val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_12_R1"] = "V"
+            methodNameMap["v1_13_R1"] = "T"
+            methodNameMap["v1_13_R2"] = "T"
+            methodNameMap["v1_14_R1"] = "W"
+            methodNameMap["v1_15_R1"] = "V"
             methodNameMap["v1_16_R1"] = "Y"
             methodNameMap["v1_16_R2"] = "aa"
             methodNameMap["v1_16_R3"] = "ab"
@@ -448,6 +489,11 @@ object NmsOtherUtil {
             EntityArmorStandClass.getMethod("setHeadPose", Vector3fClass)
         } catch (_: Exception) {
             val methodNameMap = HashMap<String, String>()
+            methodNameMap["v1_12_R1"] = "a"
+            methodNameMap["v1_13_R1"] = "a"
+            methodNameMap["v1_13_R2"] = "a"
+            methodNameMap["v1_14_R1"] = "a"
+            methodNameMap["v1_15_R1"] = "a"
             methodNameMap["v1_16_R1"] = "a"
             methodNameMap["v1_16_R2"] = "a"
             methodNameMap["v1_16_R3"] = "a"
@@ -461,23 +507,27 @@ object NmsOtherUtil {
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Vector3fClass)
         }
-    val getHeadPose: Method =
+    val getHeadPose: Method? =
         try {
             EntityArmorStandClass.getMethod("getHeadPose")
         } catch (_: Exception) {
-            val methodNameMap = HashMap<String, String>()
-            methodNameMap["v1_16_R1"] = "r"
-            methodNameMap["v1_16_R2"] = "r"
-            methodNameMap["v1_16_R3"] = "r"
-            methodNameMap["v1_17_R1"] = "v"
-            methodNameMap["v1_18_R1"] = "u"
-            methodNameMap["v1_18_R2"] = "u"
-            methodNameMap["v1_19_R1"] = "u"
-            methodNameMap["v1_19_R2"] = "u"
-            methodNameMap["v1_19_R3"] = "x"
-            methodNameMap["v1_20_R1"] = "x"
+            try {
+                val methodNameMap = HashMap<String, String>()
+                methodNameMap["v1_16_R1"] = "r"
+                methodNameMap["v1_16_R2"] = "r"
+                methodNameMap["v1_16_R3"] = "r"
+                methodNameMap["v1_17_R1"] = "v"
+                methodNameMap["v1_18_R1"] = "u"
+                methodNameMap["v1_18_R2"] = "u"
+                methodNameMap["v1_19_R1"] = "u"
+                methodNameMap["v1_19_R2"] = "u"
+                methodNameMap["v1_19_R3"] = "x"
+                methodNameMap["v1_20_R1"] = "x"
 
-            EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
+                EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
+            } catch (_: Exception) {
+                null
+            }
         }
 
     @Deprecated("Support 1.19+")

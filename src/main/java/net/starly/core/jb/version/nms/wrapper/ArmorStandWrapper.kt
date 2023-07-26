@@ -18,7 +18,7 @@ class ArmorStandWrapper(
     private val entityArmorStand: Any,
 ) {
 
-    private var defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
+    private var defaultHeadPose = NmsOtherUtil.getHeadPose?.invoke(entityArmorStand)
 
     var displayName = ""
         set(value) {
@@ -47,7 +47,7 @@ class ArmorStandWrapper(
     var helmet: ItemStack? = null
 
     fun getHeadPose(): HeadPoseWrapper {
-        return HeadPoseWrapper(NmsOtherUtil.getHeadPose.invoke(entityArmorStand))
+        return HeadPoseWrapper(NmsOtherUtil.getHeadPose!!.invoke(entityArmorStand))
     }
 
     fun setHeadPose(pose: HeadPoseWrapper) {
@@ -63,7 +63,7 @@ class ArmorStandWrapper(
         NmsOtherUtil.setLocation.invoke(entityArmorStand, wrapper.x, wrapper.y, wrapper.z, wrapper.yaw, wrapper.pitch)
         NmsOtherUtil.sendPacket(target, NmsOtherUtil.Packet.PacketPlayOutEntityTeleport, entityArmorStand)
         this.location = wrapper
-        if (savePose) defaultHeadPose = NmsOtherUtil.getHeadPose.invoke(entityArmorStand)
+        if (savePose) defaultHeadPose = NmsOtherUtil.getHeadPose?.invoke(entityArmorStand)
     }
 
     fun spawn(target: Player) {
