@@ -1,11 +1,14 @@
 package net.starly.core.jb.version.nms.wrapper;
 
 import lombok.Getter;
+import net.starly.core.jb.version.nms.VersionController;
 import net.starly.core.jb.version.nms.tank.NmsItemUtil;
 import net.starly.core.jb.version.nms.tank.NmsOtherUtil;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ItemWrapper {
 
@@ -16,20 +19,36 @@ public class ItemWrapper {
         try {
             support = itemSupport;
             Method getItemMethod;
+
+            VersionController.Version version = VersionController.getInstance().getVersion();
             try {
-                getItemMethod = itemSupport.getNmsItemStackClass().getMethod("getItem");
-            } catch (Exception e) { getItemMethod = itemSupport.getNmsItemStackClass().getMethod("c"); }
+                getItemMethod = itemSupport.getNmsItemClass().getMethod("getItem");
+            } catch (Exception e) {
+                Map<String, String> methodNameMap = new HashMap<>();
+                methodNameMap.put("v1_12_R1", "c");
+                methodNameMap.put("v1_13_R1", "b");
+                methodNameMap.put("v1_13_R2", "b");
+                methodNameMap.put("v1_14_R1", "b");
+                methodNameMap.put("v1_15_R1", "b");
+                methodNameMap.put("v1_16_R2", "b");
+                methodNameMap.put("v1_16_R3", "b");
+                methodNameMap.put("v1_17_R1", "c");
+                methodNameMap.put("v1_18_R1", "c");
+                methodNameMap.put("v1_18_R2", "c");
+                methodNameMap.put("v1_19_R1", "c");
+                methodNameMap.put("v1_19_R2", "c");
+                methodNameMap.put("v1_19_R3", "c");
+                methodNameMap.put("v1_20_R1", "d");
+                methodNameMap.put("v1_20_R2", "d");
+
+                getItemMethod = itemSupport.getNmsItemStackClass().getMethod(methodNameMap.get(version));
+            }
             Item = getItemMethod.invoke(nmsItemStackWrapper.getNmsItemStack());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
-    /**
-     * 아이템의 현지화되지 않은 이름을 가져옵니다.
-     * @param nmsItemStack ItemStackWrapper
-     * @return 현지화되지 않은 이름
-     */
     public String getUnlocalizedName(ItemStackWrapper nmsItemStack) {
         try {
             return (String) support.getJMethod().invoke(Item, nmsItemStack.getNmsItemStack());
@@ -48,5 +67,4 @@ public class ItemWrapper {
             );
         } catch (Exception ignored) { return null; }
     }
-
 }

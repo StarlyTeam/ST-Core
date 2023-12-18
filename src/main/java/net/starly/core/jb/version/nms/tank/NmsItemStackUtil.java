@@ -75,6 +75,7 @@ public class NmsItemStackUtil {
             methodNameMap.put("v1_19_R2", "c");
             methodNameMap.put("v1_19_R3", "c");
             methodNameMap.put("v1_20_R1", "c");
+            methodNameMap.put("v1_20_R2", "c");
 
             setTagMethod = NMSItemStack.getDeclaredMethod(methodNameMap.get(version.name()), nbtCompoundUtil.getNBTTagCompoundClass());
         }
@@ -92,6 +93,7 @@ public class NmsItemStackUtil {
             methodNameMap.put("v1_19_R2", "u");
             methodNameMap.put("v1_19_R3", "u");
             methodNameMap.put("v1_20_R1", "v");
+            methodNameMap.put("v1_20_R2", "v");
 
             getTagMethod = NMSItemStack.getDeclaredMethod(methodNameMap.get(version.name()));
         }

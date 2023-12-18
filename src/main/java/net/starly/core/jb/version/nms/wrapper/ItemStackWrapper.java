@@ -46,5 +46,4 @@ public class ItemStackWrapper {
     public ItemWrapper getItem() {
         return new ItemWrapper(itemSupport, this);
     }
-
 }

@@ -49,6 +49,8 @@ object NmsOtherUtil {
             fieldNameMap["v1_19_R2"] = "b"
             fieldNameMap["v1_19_R3"] = "b"
             fieldNameMap["v1_20_R1"] = "c"
+            fieldNameMap["v1_20_R2"] = "c"
+
 
             EntityPlayerClass.getField(fieldNameMap[version.name] ?: "")
         }
@@ -216,6 +218,7 @@ object NmsOtherUtil {
             enumNameMap["v1_19_R2"] = "a"
             enumNameMap["v1_19_R3"] = "a"
             enumNameMap["v1_20_R1"] = "a"
+            enumNameMap["v1_20_R2"] = "a"
 
             EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, enumNameMap[version.name] ?: "")
         }
@@ -239,6 +242,7 @@ object NmsOtherUtil {
             enumNameMap["v1_19_R2"] = "b"
             enumNameMap["v1_19_R3"] = "b"
             enumNameMap["v1_20_R1"] = "b"
+            enumNameMap["v1_20_R2"] = "b"
 
             EnumHandClass.getMethod("valueOf", String::class.java).invoke(null, enumNameMap[version.name] ?: "")
         }
@@ -320,6 +324,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R2"] = "ah"
             methodNameMap["v1_19_R3"] = "af"
             methodNameMap["v1_20_R1"] = "af"
+            methodNameMap["v1_20_R2"] = "ah"
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
         }
@@ -343,6 +348,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R2"] = "j"
             methodNameMap["v1_19_R3"] = "j"
             methodNameMap["v1_20_R1"] = "j"
+            methodNameMap["v1_20_R2"] = "j"
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Boolean::class.java)
         }
@@ -368,6 +374,7 @@ object NmsOtherUtil {
                 methodNameMap["v1_19_R2"] = "b"
                 methodNameMap["v1_19_R3"] = "b"
                 methodNameMap["v1_20_R1"] = "b"
+                methodNameMap["v1_20_R2"] = "b"
 
                 EntityClass.getMethod(methodNameMap[version.name] ?: "", IChatBaseComponentClass)
             }
@@ -398,6 +405,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R2"] = "a"
             methodNameMap["v1_19_R3"] = "t"
             methodNameMap["v1_20_R1"] = "t"
+            methodNameMap["v1_20_R2"] = "t"
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Boolean::class.java)
         }
@@ -428,6 +436,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R2"] = "a"
             methodNameMap["v1_19_R3"] = "a"
             methodNameMap["v1_20_R1"] = "a"
+            methodNameMap["v1_20_R2"] = "a"
 
             EntityArmorStandClass.getMethod(
                 methodNameMap[version.name] ?: "",
@@ -458,6 +467,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R2"] = "r"
             methodNameMap["v1_19_R3"] = "a"
             methodNameMap["v1_20_R1"] = "a"
+            methodNameMap["v1_20_R2"] = "a"
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Boolean::class.java)
         }
@@ -481,6 +491,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R2"] = "al"
             methodNameMap["v1_19_R3"] = "aj"
             methodNameMap["v1_20_R1"] = "aj"
+            methodNameMap["v1_20_R2"] = "al"
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
         }
@@ -504,6 +515,7 @@ object NmsOtherUtil {
             methodNameMap["v1_19_R2"] = "a"
             methodNameMap["v1_19_R3"] = "a"
             methodNameMap["v1_20_R1"] = "a"
+            methodNameMap["v1_20_R2"] = "a"
 
             EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "", Vector3fClass)
         }
@@ -523,6 +535,7 @@ object NmsOtherUtil {
                 methodNameMap["v1_19_R2"] = "u"
                 methodNameMap["v1_19_R3"] = "x"
                 methodNameMap["v1_20_R1"] = "x"
+                methodNameMap["v1_20_R2"] = "z"
 
                 EntityArmorStandClass.getMethod(methodNameMap[version.name] ?: "")
             } catch (_: Exception) {

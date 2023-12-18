@@ -39,6 +39,7 @@ public class NmsNbtTagCompoundUtil {
             methodNameMap.put("v1_19_R2", "l");
             methodNameMap.put("v1_19_R3", "l");
             methodNameMap.put("v1_20_R1", "l");
+            methodNameMap.put("v1_20_R2", "l");
 
             getStringMethod = NBTTagCompoundClass.getDeclaredMethod(methodNameMap.get(version.name()), String.class);
         }
@@ -56,6 +57,7 @@ public class NmsNbtTagCompoundUtil {
             methodNameMap.put("v1_19_R2", "a");
             methodNameMap.put("v1_19_R3", "a");
             methodNameMap.put("v1_20_R1", "a");
+            methodNameMap.put("v1_20_R2", "a");
 
             setStringMethod = NBTTagCompoundClass.getDeclaredMethod(methodNameMap.get(version.name()), String.class, String.class);
         }

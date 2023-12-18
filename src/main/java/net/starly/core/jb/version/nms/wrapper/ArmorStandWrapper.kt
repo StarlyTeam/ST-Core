@@ -1,6 +1,5 @@
 package net.starly.core.jb.version.nms.wrapper
 
-import net.minecraft.server.v1_16_R3.EntityArmorStand
 import net.starly.core.jb.util.FeatherLocation
 import net.starly.core.jb.version.nms.VersionController
 import net.starly.core.jb.version.nms.VersionController.Version
@@ -9,7 +8,6 @@ import net.starly.core.jb.version.nms.tank.NmsOtherUtil
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 class ArmorStandWrapper(
@@ -143,6 +141,7 @@ class ArmorStandWrapper(
                 methodNameMap["v1_19_R2"] = "b"
                 methodNameMap["v1_19_R3"] = "b"
                 methodNameMap["v1_20_R1"] = "b"
+                methodNameMap["v1_20_R2"] = "b"
 
                 val version: Version = VersionController.getInstance().version
                 NmsOtherUtil.Vector3fClass.getMethod(methodNameMap[version.name] ?: "")
@@ -161,6 +160,7 @@ class ArmorStandWrapper(
                 methodNameMap["v1_19_R2"] = "c"
                 methodNameMap["v1_19_R3"] = "c"
                 methodNameMap["v1_20_R1"] = "c"
+                methodNameMap["v1_20_R2"] = "c"
 
                 val version: Version = VersionController.getInstance().version
                 NmsOtherUtil.Vector3fClass.getMethod(methodNameMap[version.name] ?: "")
@@ -179,6 +179,7 @@ class ArmorStandWrapper(
                 methodNameMap["v1_19_R2"] = "d"
                 methodNameMap["v1_19_R3"] = "d"
                 methodNameMap["v1_20_R1"] = "d"
+                methodNameMap["v1_20_R2"] = "d"
 
                 val version: Version = VersionController.getInstance().version
                 NmsOtherUtil.Vector3fClass.getMethod(methodNameMap[version.name] ?: "")
